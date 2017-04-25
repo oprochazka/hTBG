@@ -14,28 +14,28 @@ GameEngine = {
 	iPlayer : 0,
 	tileW : 24,
 	tileH : 15,
+	allMove : false,
 
 	startServer : function()
 	{
-		Field.makeField(this.tileW, this.tileH);
-
-		//this.addPlayer("test");
+		Field.makeField(this.tileW, this.tileH);		
 
 		setInterval(this.onIter, 5000);
 	},
 
 	nextTurn : function(player)
-	{
-		
-		if(!this.currentPlayer || this.currentPlayer.id == player)
-		{
-			console.log("new turn");
+	{		
 
+		if(!this.currentPlayer || this.currentPlayer.id == player)
+		{		
+		console.log("wtf");	
 			this.currentPlayer = this.Players[this.iPlayer%this.Players.length];			
 
 			this.currentPlayer.newTurn();
 
-			this.iPlayer++;
+			Server.sendBroadcast(JSON.stringify({type : "newTurn", "playerId" : this.currentPlayer.id}));
+
+			this.iPlayer++;			
 		}		
 	},
 
@@ -69,7 +69,7 @@ GameEngine = {
 			}
 		}
 
-		var player = Player.makePlayer(name);
+		var player = Player.makePlayer(name);		
 
 		player.password = password;
 
@@ -97,6 +97,13 @@ GameEngine = {
 		{
 			player.buildArmy(x, y);		
 		}
+
+		if(!this.currentPlayer)
+		{			
+			this.nextTurn(player);
+		}
+
+		console.log(this.currentPlayer);
 	},
 
 	findPlayer : function(id)

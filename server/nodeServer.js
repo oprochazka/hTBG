@@ -2,7 +2,7 @@ Object.assign = require('object-assign')
 
 Server = {
     history : [],
-    clients : [],
+    clients : [],    
 
     initModule : function()
     {        
@@ -45,64 +45,77 @@ Server = {
         }
     },
 
+    _onActionMsg : function(json)
+    {        
+        
+        if((json.sender != GameEngine.currentPlayer.id) && !GameEngine.allMove)
+        {
+            console.log("neprijato", json, json.sender, GameEngine.currentPlayer.id );
+            return;
+        }
+
+        console.log("prijato", json);
+
+       if(json.type == "moving")
+        {        
+            var field = Field.findById(json.id);
+
+            if(field)
+            {                 
+                field.moving(json.x, json.y);
+            }
+        }
+
+        if(json.type == "attack")
+        {        
+            var field = Field.findById(json.id);
+            var fieldDef = Field.findById(json.idDef);
+
+            if(field && fieldDef)
+            {                 
+                field.attack(fieldDef);
+            }
+        }
+
+        if(json.type == "nextTurn")
+        {                        
+            GameEngine.nextTurn(json.player);
+        }   
+    },
+
     _onAccepting : function()
     {
         this.wsServer.on('request', function(request) {
-        console.log((new Date()) + ' Connection from origin ' + request.origin + '.');
+            console.log((new Date()) + ' Connection from origin ' + request.origin + '.');
 
-        var connection = request.accept(null, request.origin); 
-        
-        var index = Server.clients.push(connection) - 1;
-        var userName = false;
-        var userColor = false;
-
-        console.log((new Date()) + ' Connection accepted.');
-        
-        connection.on('message', function(message) {
+            var connection = request.accept(null, request.origin); 
             
-            if (message.type === 'utf8') { 
-                var json = JSON.parse(message.utf8Data);
-               
-                if(json.type == "startPlayer")
-                {                       
-                    if(!GameEngine.checkPassword(json.name, json.password))
-                    {
+            var index = Server.clients.push(connection) - 1;
+            var userName = false;
+            var userColor = false;
+
+            console.log((new Date()) + ' Connection accepted.');
+            
+            connection.on('message', function(message) {
+                
+                if (message.type === 'utf8') { 
+                    var json = JSON.parse(message.utf8Data);
+                   
+                    if(json.type == "startPlayer")
+                    {                       
+                        if(!GameEngine.checkPassword(json.name, json.password))
+                        {
+                            return;
+                        }
+
+                        connection.sendUTF(JSON.stringify( {type : "players", data : GameEngine.dumpPlayers()}));
+                        connection.sendUTF(JSON.stringify( {type : "field", data : Field.dumpField()}));
+                        GameEngine.addPlayer(json.name, json.password);
+
                         return;
                     }
-
-                    connection.sendUTF(JSON.stringify( {type : "players", data : GameEngine.dumpPlayers()}));
-                    connection.sendUTF(JSON.stringify( {type : "field", data : Field.dumpField()}));
-                    GameEngine.addPlayer(json.name, json.password);
+                    Server._onActionMsg(json);
                 }
-
-               if(json.type == "moving")
-                {        
-                    var field = Field.findById(json.id);
-
-                    if(field)
-                    {                 
-                        field.moving(json.x, json.y);
-                    }
-                }
-
-                
-
-                if(json.type == "attack")
-                {        
-                    var field = Field.findById(json.id);
-                    var fieldDef = Field.findById(json.idDef);
-
-                    if(field && fieldDef)
-                    {                 
-                        field.attack(fieldDef);
-                    }
-                }
-
-                if(json.type == "nextTurn")
-                {                        
-                    GameEngine.nextTurn(json.player);
-                }                
-            }
             });
 
             connection.on('close', function(connection) {

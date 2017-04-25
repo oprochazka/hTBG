@@ -30,6 +30,10 @@ BuildingShared = {
 				}
 			},
 
+			refreshStats : function()
+			{			
+			},
+
 			dump: function(json)
 			{
 				var dumpedOld = oldDumped.call(this,json);
@@ -49,5 +53,42 @@ BuildingShared = {
 		};
 
 		return Object.assign(buildingTile, building);			
+	},
+
+
+	makeBarracksShared : function()
+	{
+		var out = BuildingShared.makeBuildingShared("http://"+ GameEngine.server +"/asets/barracks.png");		
+
+		out.type = "barracks";
+
+		return out;	
+	},
+
+	makeCastleShared : function()
+	{
+		var out = BuildingShared.makeBuildingShared("http://"+ GameEngine.server +"/asets/castle.png");		
+
+		out.type = "castle";
+
+		return out;	
+	},
+
+	loadBuilding : function(json)
+	{
+		if(json.type == "barracks")
+		{
+			var building = this.makeBarracksTile();
+			building.load(json);				
+
+			return building;
+		}
+		if(json.type == "castle")
+		{
+			var building = this.makeCastleTile();
+			building.load(json);				
+
+			return building;
+		}
 	}
 };

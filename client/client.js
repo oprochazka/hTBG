@@ -22,7 +22,17 @@ Client = {
 
     sendMessage : function (msg)
     {
-        this.connection.send(msg);
+        var message = JSON.stringify(msg);
+        this.connection.send(message);
+    },
+
+    sendActionMessage : function(msg, player)
+    {        
+        if(GameEngine.getControllPlayer() == player || GameEngine.allMove)
+        {
+            msg.sender = player.id;
+            this.sendMessage(msg);
+        }
     },
 
     _onOpenConnection : function()
@@ -49,12 +59,16 @@ Client = {
         };
     },
 
+    _actionMsg : function(msg, player)
+    {
+        
+
+
+    },
+
     _onMessage : function()
     {
         this.connection.onmessage = function (message) {
-            // try to parse JSON message. Because we know that the server always returns
-            // JSON this should work without any problem but we should make sure that
-            // the massage is not chunked or otherwise damaged.
             try {
                 var json = JSON.parse(message.data);
             } catch (e) {
@@ -72,18 +86,7 @@ Client = {
                 GameEngine.startGame(json.data);
             }
 
-            if(json.type == "moving")
-            {                
-                var field = Field.findById(json.id);
-
-                if(field)
-                {                 
-                //    field.speed = json.speed;
-                    field.insert(json.x, json.y);
-                }
-                
-            }
-
+            
             if(json.type == "addPlayer")
             {         
                 GameEngine.addServerPlayer(json.player);
@@ -100,6 +103,16 @@ Client = {
                 }
             }
 
+            if(json.type == "moving")
+            {                
+                var field = Field.findById(json.id);
+                
+                if(field)
+                {                                 
+                    field.moved(json.x, json.y, json.speed);
+                }                
+            }
+
             if(json.type == "addArmy")
             {            
                 var obj = json.data;
@@ -114,11 +127,10 @@ Client = {
                 var building = Field.findById(json.buildingId);
                 player.addBuilding(building);            
             }
-
-            if(json.type == "nextTurn")
+            console.log(json.type, json.playerId)
+            if(json.type == "newTurn")
             {            
-                
-                
+                GameEngine.newTurn(json.playerId);                
             }
         };
     },

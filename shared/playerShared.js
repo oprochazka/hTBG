@@ -7,6 +7,7 @@ PlayerShared = {
 			controll: true,
 			color : null,			
 			building : [],
+			statusPlay : false,
 
 			buildArmy : function(x, y)
 			{
@@ -41,6 +42,32 @@ PlayerShared = {
 				return building;		
 			},
 
+			stopTurn : function()
+			{
+				this.statusPlay = true;
+			},
+
+			refreshStats : function()
+			{
+				for(var i = 0; i < this.army.length; i++)
+				{
+					var army = this.army[i];
+					if(army)
+					{
+						army.refreshStats();
+					}
+				}
+
+				for(var i = 0; i <this.building.length; i++)
+				{
+					var building = this.building[i];	
+					if(building)
+					{
+						building.refreshStats();
+					}
+				}
+			},
+
 			setControll: function(isControll)
 			{
 				this.controll = isControll;
@@ -48,24 +75,9 @@ PlayerShared = {
 
 			newTurn: function()
 			{
-				for(var i = 0; i < this.army.length; i++)
-				{
-					var army = Field.findById(this.army[i]);
+				this.statusPlay = true;
 
-					if(army)
-					{
-						army.newTurn();
-					}
-				}
-
-				for(var i = 0; i <this.building.length; i++)
-				{
-					var building = Field.findById(this.building[i]);	
-					if(building)
-					{
-						building.newTurn();
-					}
-				}
+				this.refreshStats();
 			},
 
 			dump: function()
@@ -86,7 +98,8 @@ PlayerShared = {
 					name : this.name,
 					army : serializeArmy,
 					color : this.color,
-					building : serializeBuilding
+					building : serializeBuilding,
+					statusPlay : this.statusPlay
 				}
 			}
 		}

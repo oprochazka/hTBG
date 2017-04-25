@@ -9,11 +9,9 @@ Building = {
 
 	makeBarracksTile : function()
 	{
-		var out = this.makeBuilding();		
+		var out = BuildingShared.makeBarracksShared();				
 
-		out.type = "barracks";		
-
-		out.productArmy = function()
+		/*out.productArmy = function()
 		{			
 			var army = Field.getArmyObject(out.position.x, out.position.y);		 
 		
@@ -27,18 +25,16 @@ Building = {
 		{
 			this.player = player;
 			setInterval(out.productArmy, 20000);
-		}
+		}*/
 
 		return out;	
 	},
 
 	makeCastleTile : function()
 	{
-		var out = this.makeBuilding();		
+		var out = BuildingShared.makeCastleShared();					
 
-		out.type = "castle";		
-
-		out.productArmy = function()
+		/*out.productArmy = function()
 		{			
 			var army = Field.getArmyObject(out.position.x, out.position.y);		 
 		
@@ -52,7 +48,7 @@ Building = {
 		{
 			this.player = player;
 			setInterval(out.productArmy, 20000);
-		}
+		}*/
 
 		return out;	
 	}

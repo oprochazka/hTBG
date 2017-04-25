@@ -70,7 +70,7 @@ Army = {
 			moving : function(x, y)
 			{
 				var msg = {type : "moving", id : this.id , x :  x, y :  y};
-				Client.sendMessage(JSON.stringify(msg));
+				Client.sendActionMessage(msg, this.player);
 			},
 
 			onClick : function(pos)
@@ -81,50 +81,11 @@ Army = {
 			attack : function(playerObj)
 			{			
 				var msg = {type : "attack", id : this.id , idDef : playerObj.id};
-				Client.sendMessage(JSON.stringify(msg));
+				Client.sendActionMessage(msg, this.player);
 			}		
 		}		
 
 		return Object.assign(armyShared, army);
-	},
-
-	makeSoldier : function()
-	{
-		var out = this.makeArmy("http://"+ GameEngine.server +"/asets/army.png");		
-
-		out.type = "soldier";
-
-
-		return out;	
-	},
-
-	makeArcher : function()
-	{
-		var out = this.makeArmy("http://"+ GameEngine.server +"/asets/archer.png");		
-
-		out.type = "archer";
-
-		return out;	
-	},
-
-	loadArmy : function(json)
-	{
-		if(json.type == "soldier")
-		{
-			var soldier = this.makeSoldier();
-			soldier.load(json);
-
-			return soldier;
-		}
-
-		if(json.type == "archer")
-		{
-			var soldier = this.makeArcher();
-			soldier.load(json);
-
-			return soldier;
-		}
-
 	}
 };
 

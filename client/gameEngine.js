@@ -5,24 +5,18 @@ GameEngine = {
 	server : null,
 	yourName : null,
 	controllPlayer : null,
+	allMove : false,
 
 	startGame : function(json)
 	{
 		this.server = this.ip+ ":" +this.port;
 
 		Field.loadField(json);
-		
+	},
 
-		/*var player1 = Player.makePlayer("WTFAK");
-
-		player1.buildArmy(1,1);
-		player1.buildArmy(1,2);
-		player1.setControll(true);
-
-		var player2 = Player.makePlayer("Blbak");
-
-		player2.buildArmy(5,5);
-		player2.setControll(false);*/
+	sendNextTurn: function()
+	{
+		Client.sendActionMessage({type : "nextTurn", player : this.getControllPlayer().id}, this.getControllPlayer());
 	},
 
 	getControllPlayer : function()
@@ -34,6 +28,13 @@ GameEngine = {
 				return this.Players[i];
 			}
 		}
+	},
+
+	newTurn: function(playerId)
+	{
+		var turnPlayer = this.findPlayer(playerId);
+
+		turnPlayer.newTurn();
 	},
 
 	findPlayer : function(id)
@@ -52,7 +53,7 @@ GameEngine = {
 
 		var msg = {type : "startPlayer", name : name, password : password};
 
-		Client.sendMessage(JSON.stringify(msg));
+		Client.sendMessage(msg);
 	},
 
 	addServerPlayer : function(json)
@@ -68,8 +69,6 @@ GameEngine = {
 
 	loadPlayers : function(json)
 	{	
-		
-
 		for(var i = 0; i < json.length; i++)
 		{
 			var obj = json[i];

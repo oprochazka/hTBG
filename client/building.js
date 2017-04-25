@@ -29,37 +29,17 @@ Building = {
 
 	makeBarracksTile : function()
 	{
-		var out = this.makeBuilding("http://"+ GameEngine.server +"/asets/barracks.png");		
-
-		out.type = "barracks";
+		var out = BuildingShared.makeBarracksShared();				
 
 		return out;	
 	},
 
 	makeCastleTile : function()
 	{
-		var out = this.makeBuilding("http://"+ GameEngine.server +"/asets/castle.png");		
-
-		out.type = "castle";
+		var out = BuildingShared.makeCastleShared();					
 
 		return out;	
-	},
-
-	loadBuilding : function(json)
-	{
-		if(json.type == "barracks")
-		{
-			var building = this.makeBarracksTile();
-			building.load(json);				
-
-			return building;
-		}
-		if(json.type == "castle")
-		{
-			var building = this.makeCastleTile();
-			building.load(json);				
-
-			return building;
-		}
 	}
 };
+
+Building = Object.assign(BuildingShared, Building);

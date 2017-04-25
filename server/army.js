@@ -15,13 +15,10 @@ Army = {
 						var armyObj = Field.getArmyObject(x, y);
 
 						if(!armyObj)
-						{						
-					//		this.speed = moveMap[i].speed;
-
-							this.insert(x, y);
-							Server.sendBroadcast(JSON.stringify({type : "moving", x : x, y : y, id : this.id, speed : moveMap[i].speed}));							
-						}						
-						
+						{													
+							this.moved(x, y, moveMap[i].speed);
+							Server.sendBroadcast(JSON.stringify({type : "moving", x : x, y : y, id : this.id, speed : this.speed}));							
+						}												
 					}
 				}
 			},
@@ -42,27 +39,6 @@ Army = {
 		}		
 
 		return	Object.assign(armyShared, army);
-	},
-
-	makeSoldier : function()
-	{
-		var out = this.makeArmy();		
-
-		out.type = "soldier";
-
-		return out;	
-	},
-
-	makeArcher : function()
-	{
-		var out = this.makeArmy();		
-
-		out.speed = 6;
-		out.initSpeed = 6;
-
-		out.type = "archer";
-
-		return out;	
 	}
 }
 

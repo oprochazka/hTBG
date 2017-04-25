@@ -7,9 +7,9 @@ UIPlayer = {
 
 	init : function()
 	{
-		this.endTurn.addEventListener('click', function(evt) {
-	     	
-	     	Client.sendMessage(JSON.stringify({type : "nextTurn", player : GameEngine.getControllPlayer().id}));
+		this.endTurn.addEventListener('click', function(evt) {	     	
+
+	     	Client.sendActionMessage({type : "nextTurn", player : GameEngine.getControllPlayer().id}, GameEngine.getControllPlayer());
 
     	}, false);
 

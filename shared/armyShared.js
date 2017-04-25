@@ -103,6 +103,11 @@ ArmyShared = {
 				this.speed = this.initSpeed;							
 			},
 
+			refreshStats : function()
+			{
+				this.speed = this.initSpeed;
+			},
+
 			setPlayer : function(player)
 			{
 				this.player = player;
@@ -125,6 +130,13 @@ ArmyShared = {
 					
 					this.player.addBuilding(buildingObj);
 				}
+			},
+
+			moved : function(x, y, decreaseSpeed)
+			{
+				this.speed = decreaseSpeed;
+
+				this.insert(x, y);
 			},
 
 			load : function(json)
@@ -172,5 +184,47 @@ ArmyShared = {
 
 
 		return	Object.assign(armyTile, army);
+	},	
+
+	makeSoldier : function()
+	{
+		var out = this.makeArmy("http://"+ GameEngine.server +"/asets/army.png");		
+
+		out.type = "soldier";
+
+
+		return out;	
 	},
+
+	makeArcher : function()
+	{
+		var out = this.makeArmy("http://"+ GameEngine.server +"/asets/archer.png");		
+
+		out.type = "archer";
+
+		out.speed = 6;
+		out.initSpeed = 6;
+
+		return out;	
+	},
+
+	loadArmy : function(json)
+	{
+		if(json.type == "soldier")
+		{
+			var soldier = this.makeSoldier();
+			soldier.load(json);
+
+			return soldier;
+		}
+
+		if(json.type == "archer")
+		{
+			var soldier = this.makeArcher();
+			soldier.load(json);
+
+			return soldier;
+		}
+
+	}
 };
