@@ -3,11 +3,12 @@ ArmyShared = {
 	{	
 		var t = Field.getObject(x, y);
 
-		if(!t)
+		if(!t || !t[0])
 		{
 			return;					
 		}
-		t = t[0];
+		t = t[0];		
+
 		var mov = t.configuration.movement;
 		var speed = 0;
 		for(var i = 0; i < moveMap.length; i++)
@@ -79,5 +80,97 @@ ArmyShared = {
 		
 		army.moveMap = moveMap;
 		return moveMap;
-	}
+	},
+
+	makeArmyShared : function(img)
+	{
+		var armyTile = Tile.makeTile("army", null);
+		var oldInsert = armyTile.insert;
+		var oldDumped = armyTile.dump;
+		
+		var army = {
+			count : 0,
+			attack : 0,
+			defend : 0,
+			speed : 3,
+			player : null,
+			moveMap : null,		
+			initSpeed: 3,
+			type : null,
+
+			newTurn : function(player)
+			{
+				this.speed = this.initSpeed;							
+			},
+
+			setPlayer : function(player)
+			{
+				this.player = player;
+			},
+			
+	        setPlayer : function( player)
+	        {
+	        	this.player = player;
+	        },
+
+			insert: function(x, y)
+			{			
+				oldInsert.call(this, x, y);
+
+				var buildingObj = Field.getBuildingObject(x, y);						
+
+				if(buildingObj && buildingObj.player != this.player)
+				{
+					var player = GameEngine.findPlayer(this.player);	
+					
+					this.player.addBuilding(buildingObj);
+				}
+			},
+
+			load : function(json)
+			{
+				this.id = json.id;
+				this.count = json.count;			
+				this.defend = json.defend;
+				this.speed = json.speed;
+				
+				for(var i = 0; i < GameEngine.Players.length; i++)
+				{
+					if(GameEngine.Players[i].id == json.player)
+					{
+						this.player = GameEngine.Players[i];
+						this.player.setArmy(this);						
+					}
+				}
+
+				this.initSpeed = json.initSpeed;
+
+				this.position.x = json.position.x;
+				this.position.y = json.position.y;
+			},
+
+			dump: function(json)
+			{
+				var dumpedOld = oldDumped.call(this,json);
+
+				var dumped = {
+					id : this.id,
+					count : this.count,
+					attack : this.attack,
+					defend : this.defend,
+					speed : this.speed,
+					player : this.player && this.player.id,					
+					initSpeed: this.initSpeed,
+					type : this.type
+				};
+
+				dumped = Object.assign(dumpedOld, dumped);
+
+				return dumped;
+			}		
+		}		
+
+
+		return	Object.assign(armyTile, army);
+	},
 };

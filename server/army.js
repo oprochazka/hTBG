@@ -1,51 +1,9 @@
-var merge = require('merge'), original, cloned;
-
 Army = {
-	server : "127.0.0.1:8080",
-
 	makeArmy : function(img)
 	{
-		var armyTile = Tile.makeTile("army", null);
-		var oldInsert = armyTile.insert;
+		var armyShared = ArmyShared.makeArmyShared(img, null);		
 		
-		var army = {
-			count : 0,
-			attack : 0,
-			defend : 0,
-			speed : 3,
-			player : null,
-			moveMap : null,		
-			initSpeed: 3,
-
-			newTurn : function(player)
-			{
-				this.speed = this.initSpeed;							
-			},
-
-			setPlayer : function(player)
-			{
-				this.player = player;
-			},
-			
-	        setPlayer : function( player)
-	        {
-	        	this.player = player;
-	        },
-
-			insert: function(x, y)
-			{			
-				oldInsert.call(this, x, y);
-
-				var buildingObj = Field.getBuildingObject(x, y);						
-
-				if(buildingObj && buildingObj.player != this.player)
-				{
-					var player = GameEngine.findPlayer(this.player);	
-					
-					player.addBuilding(buildingObj);
-				}
-			},			
-
+		var army = {						
 			moving: function(x, y)
 			{
 				var moveMap = Army.indexMovement(this);
@@ -83,8 +41,7 @@ Army = {
 			}			
 		}		
 
-
-		return	merge(armyTile, army);
+		return	Object.assign(armyShared, army);
 	},
 
 	makeSoldier : function()
@@ -109,4 +66,4 @@ Army = {
 	}
 }
 
-Army = merge(ArmyShared, Army);
+Army = Object.assign(ArmyShared, Army);

@@ -61,5 +61,4 @@ Tile = {
 	}
 };
 
-var merge = require('merge'), original, cloned;
-Tile = merge(TileShared, Tile);
+Tile = Object.assign(TileShared, Tile);

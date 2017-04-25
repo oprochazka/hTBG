@@ -11,6 +11,7 @@ TileShared = {
 			configuration : configuration,
 			name : name,
 			position : {x : 0, y : 0},
+			type : null,
 
 			insert : function(x, y)
 			{		
@@ -47,8 +48,19 @@ TileShared = {
 	        {
 	          	this.position.x = x;
 				this.position.y = y;
-	        }
+	        },
 
+	        dump : function()
+	        {
+	        	var dumped = {
+	        		configuration : this.configuration,
+	        		name : this.name,
+	        		position : this.position,
+	        		type : this.type
+	        	};
+
+	        	return dumped;
+	        }
 		};
 	}
 };

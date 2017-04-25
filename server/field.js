@@ -66,5 +66,4 @@ Field = {
 	}
 };
 
-var merge = require('merge'), original, cloned;
-Field = merge(FieldShared, Field);
+Field = Object.assign(FieldShared, Field);

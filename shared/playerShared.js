@@ -11,9 +11,9 @@ PlayerShared = {
 			buildArmy : function(x, y)
 			{
 				var soldier = Army.makeSoldier(this);
-				soldier.setPlayer(this.id);
+				soldier.setPlayer(this);
 
-				this.army[this.army.length] = soldier.id;
+				this.army[this.army.length] = soldier;
 
 				soldier.insert(x,y);
 
@@ -23,9 +23,9 @@ PlayerShared = {
 			buildArcher : function(x, y)
 			{
 				var archer = Army.makeArcher(this);
-				archer.setPlayer(this.id);
+				archer.setPlayer(this);
 
-				this.army[this.army.length] = archer.id;
+				this.army[this.army.length] = archer;
 
 				archer.insert(x,y);		
 
@@ -34,9 +34,9 @@ PlayerShared = {
 
 			addBuilding: function(building)
 			{
-				this.building[this.building.length] = building.id;
+				this.building[this.building.length] = building;
 
-				building.setPlayer(this.id);	
+				building.setPlayer(this);	
 
 				return building;		
 			},
@@ -70,12 +70,23 @@ PlayerShared = {
 
 			dump: function()
 			{				
+				var serializeArmy = [];
+				var serializeBuilding = [];
+				for(var i = 0; i < this.army.length; i++)
+				{
+					serializeArmy[serializeArmy.length] = this.army[i].id;
+				}
+				for(var i = 0; i < this.building.length; i++)
+				{
+					serializeBuilding[serializeBuilding.length] = this.building[i].id;
+				}
+
 				return {
 					id : this.id,
 					name : this.name,
-					army : this.army,
+					army : serializeArmy,
 					color : this.color,
-					building : this.building
+					building : serializeBuilding
 				}
 			}
 		}

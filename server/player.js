@@ -22,14 +22,14 @@ Player = {
 			{
 				var soldier = sharedBuildArmy.call(this, x, y);
 
-				Server.sendBroadcast(JSON.stringify({type : "addArmy", data : soldier}));
+				Server.sendBroadcast(JSON.stringify({type : "addArmy", data : soldier.dump()}));
 			},
 
 			buildArcher : function(x, y)
 			{
 				var archer = sharedBuildArcher.call(this, x, y);
 
-				Server.sendBroadcast(JSON.stringify({type : "addArmy", data : archer}));
+				Server.sendBroadcast(JSON.stringify({type : "addArmy", data : archer.dump()}));
 			},
 
 			addBuilding: function(building)
@@ -40,8 +40,6 @@ Player = {
 			}			
 		}
 
-		return merge(playerShared, player);
+		return Object.assign(playerShared, player);
 	}
 };
-
-var merge = require('merge'), original, cloned;

@@ -1,29 +1,10 @@
-var merge = require('merge'), original, cloned;
-
 Building = {
-	server : "127.0.0.1:8080",
 
 	makeBuilding : function(image, player)
 	{
-		var buildingTile = Tile.makeTile("building", null);	
+		var buildingShared = BuildingShared.makeBuildingShared(image, player);
 
-		var building = {
-			production : 0,			
-			player : player,						
-
-	        setPlayer : function( player)
-	        {
-	        	this.player = player;	        		        		        	
-	        },
-
-			newTurn : function(player)
-			{
-
-			}		
-
-		};
-
-		return merge(buildingTile, building);			
+		return buildingShared;	
 	},
 
 	makeBarracksTile : function()
@@ -33,14 +14,12 @@ Building = {
 		out.type = "barracks";		
 
 		out.productArmy = function()
-		{
-			var p = GameEngine.findPlayer(out.player);
-			var army = Field.getArmyObject(out.position.x, out.position.y);
-		 
+		{			
+			var army = Field.getArmyObject(out.position.x, out.position.y);		 
 		
 			if(!army)
 			{
-				p.buildArmy(out.position.x, out.position.y);			
+				out.player.buildArmy(out.position.x, out.position.y);			
 			}
 		}
 
@@ -60,14 +39,12 @@ Building = {
 		out.type = "castle";		
 
 		out.productArmy = function()
-		{
-			var p = GameEngine.findPlayer(out.player);
-			var army = Field.getArmyObject(out.position.x, out.position.y);
-		 
+		{			
+			var army = Field.getArmyObject(out.position.x, out.position.y);		 
 		
 			if(!army)
 			{
-				p.buildArcher(out.position.x, out.position.y);			
+				out.player.buildArcher(out.position.x, out.position.y);			
 			}
 		}
 

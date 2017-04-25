@@ -9,9 +9,9 @@ Tile = {
 	},
 
 	makeTile : function(name, img)
-	{
-		var square = Draw.makeSquare(this.tileSizeW, this.tileSizeH)
+	{		
 		var tileShared = TileShared.makeTileShared(name, img);
+		var square = Draw.makeSquare(this.tileSizeW, this.tileSizeH)		
 
 		var tile = {			
 			square : square,			

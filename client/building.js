@@ -2,48 +2,29 @@ Building = {
 
 	makeBuilding : function(image, player)
 	{
-		var buildingTile = Tile.makeTile("building", null);
-		var oldRender = buildingTile.render;
+		var buildingTileShared = BuildingShared.makeBuildingShared(image, player);
+
+		var oldRender = buildingTileShared.render;
 		var square = Draw.makeFillSquare(20, 20);
 
-		buildingTile.square.setImage(image);	
+		buildingTileShared.square.setImage(image);	
 
-		var building =  {
-			id : 0,
-			production : 0,			
-			player : player,				
-
+		var building =  {			
 			render : function()
 			{
 				oldRender.call(this);				
 
-				square.setPosition(buildingTile.square.x, buildingTile.square.y);
+				square.setPosition(buildingTileShared.square.x, buildingTileShared.square.y);
 
 				if(this.player)
 				{
 					square.setColor(this.player.color);
 					square.render();
 				}				
-			},				
-
-	        setPlayer : function( player)
-	        {
-	        	this.player = player;	        	
-	        },	       
-
-			load: function(json)
-			{
-				this.id = json.id;
-
-				if(json.player)
-				{					
-					this.player = GameEngine.findPlayer(json.player);
-					this.player.addBuilding(this);
-				}
-			}
+			}				            
 		};
 
-		return Object.assign(buildingTile, building);		
+		return Object.assign(buildingTileShared, building);		
 	},
 
 	makeBarracksTile : function()
@@ -81,4 +62,4 @@ Building = {
 			return building;
 		}
 	}
-}
+};

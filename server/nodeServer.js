@@ -1,9 +1,11 @@
+Object.assign = require('object-assign')
+
 Server = {
     history : [],
     clients : [],
 
     initModule : function()
-    {
+    {        
         var webSocketsServerPort = 1337;
         var webSocketServer = require('websocket').server;
         var http = require('http');
@@ -11,7 +13,8 @@ Server = {
         var fieldShared = require("./../shared/fieldShared.js");
         var armyShared = require("./../shared/armyShared.js");
         var tileShared = require("./../shared/tileShared.js");
-        var playerShared = require("./../shared/playerShared.js");
+        var playerShared = require("./../shared/buildingShared.js");
+        var playerShared = require("./../shared/playerShared.js");        
 
 
         var gameEngine = require("./gameEngine.js");       
@@ -68,7 +71,7 @@ Server = {
                     }
 
                     connection.sendUTF(JSON.stringify( {type : "players", data : GameEngine.dumpPlayers()}));
-                    connection.sendUTF(JSON.stringify( {type : "field", data : Field.tileField}));
+                    connection.sendUTF(JSON.stringify( {type : "field", data : Field.dumpField()}));
                     GameEngine.addPlayer(json.name, json.password);
                 }
 

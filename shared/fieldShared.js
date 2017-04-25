@@ -148,6 +148,22 @@ FieldShared = {
 	get2DFromIndex: function(index)
 	{
 		return {x : index%this.tilesW, y : Math.floor(index/this.tilesW)};
+	},
+
+	dumpField : function()
+	{
+		var dumped = [];
+		for(var i = 0; i < this.tileField.length; i++)
+		{
+			var objs = this.tileField[i];
+			dumped[dumped.length] = [];
+			for(var z = 0; z < objs.length; z++)
+			{
+				dumped[i][z] = objs[z].dump();
+			}
+		}
+
+		return dumped;
 	}
 
 }

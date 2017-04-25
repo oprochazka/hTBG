@@ -2,28 +2,22 @@ Army = {
 
 	makeArmy : function(img)
 	{
-		var armyTile = Tile.makeTile("army", null);	
+		var armyShared = ArmyShared.makeArmyShared(img);	
 		var square = Draw.makeFillSquare(20, 20);	
 
-		var oldRender = armyTile.render;
-		var oldInsert = armyTile.insert;
+		var oldRender = armyShared.render;		
 
-		armyTile.square.setImage(img);	
+		armyShared.square.setImage(img);	
 		
-		var army = {
-			count : 0,
-			attack : 0,
-			defend : 0,
-			speed : 3,
-			player : null,		
+		var army = {	
 			moveMap : null,
-			initSpeed: 3,			
+			
 
 			render : function()
 			{				
 				oldRender.call(this);		
 
-				square.setPosition(armyTile.square.x, armyTile.square.y);
+				square.setPosition(armyShared.square.x, armyShared.square.y);
 
 				if(this.player)
 				{
@@ -32,21 +26,6 @@ Army = {
 
 				square.render();
 			},
-
-			newTurn : function()
-			{
-				this.speed = this.initSpeed;
-			},		
-			
-	        setPlayer : function( player)
-	        {
-	        	this.player = player;	 
-	        },
-
-			insert: function(x, y)
-			{						
-				oldInsert.call(this,x,y);						
-			},			
 
 			lostFocus: function(mousePos)
 			{				
@@ -103,32 +82,10 @@ Army = {
 			{			
 				var msg = {type : "attack", id : this.id , idDef : playerObj.id};
 				Client.sendMessage(JSON.stringify(msg));
-			},
-
-			load : function(json)
-			{
-				this.id = json.id;
-				this.count = json.count;			
-				this.defend = json.defend;
-				this.speed = json.speed;
-				
-				for(var i = 0; i < GameEngine.Players.length; i++)
-				{
-					if(GameEngine.Players[i].id == json.player)
-					{
-						this.player = GameEngine.Players[i];
-						this.player.setArmy(this);						
-					}
-				}
-
-				this.initSpeed = json.initSpeed;
-
-				this.position.x = json.position.x;
-				this.position.y = json.position.y;
-			}	
+			}		
 		}		
 
-		return Object.assign(armyTile, army);
+		return Object.assign(armyShared, army);
 	},
 
 	makeSoldier : function()
