@@ -27,8 +27,7 @@ GameEngine = {
 	{		
 
 		if(!this.currentPlayer || this.currentPlayer.id == player)
-		{		
-		console.log("wtf");	
+		{				
 			this.currentPlayer = this.Players[this.iPlayer%this.Players.length];			
 
 			this.currentPlayer.newTurn();

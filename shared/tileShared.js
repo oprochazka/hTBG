@@ -4,7 +4,8 @@ TileShared = {
 		var configuration = {
 			movement : 1,
 			fire : 0,
-			defend : 0			
+			defend : 0,
+			range : 4		
 		}		
 
 		return {				
@@ -48,6 +49,15 @@ TileShared = {
 	        {
 	          	this.position.x = x;
 				this.position.y = y;
+	        },
+
+	        load : function(json)
+	        {
+	        	this.id = json.id;
+	        	this.position = json.position;
+	        	this.type = json.type;
+	        	this.name = json.name;
+	        	this.configuration = this.configuration;
 	        },
 
 	        dump : function()

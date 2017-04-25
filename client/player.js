@@ -33,11 +33,10 @@ Player = {
 				else
 				{
 					this.setControll(true);	
-				}				
-
-				this.building = json.building;
+				}								
 
 				this.color = json.color;
+				this.gold = json.gold;
 
 			}
 

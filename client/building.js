@@ -21,7 +21,23 @@ Building = {
 					square.setColor(this.player.color);
 					square.render();
 				}				
-			}				            
+			},
+			onClick : function(mousePos, key)
+			{
+				if(key == "right")
+				{
+					if(Field.getArmyObject(this.position.x, this.position.y))
+					{
+						return;
+					}
+					var soldier = Army.makeSoldier(this);
+					
+					if(this.player.payMoney(soldier.cost))
+					{
+						Client.sendActionMessage({type : "productBuilding", buildingId : this.id}, GameEngine.getControllPlayer());
+					}
+				}
+			}
 		};
 
 		return Object.assign(buildingTileShared, building);		

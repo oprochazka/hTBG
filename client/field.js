@@ -14,6 +14,7 @@ Field = {
 	canvas : null,
 
 	moveMap : null,
+	rangeMap : null,
 
 	initModule: function(canvas, squareW, squareH)
 	{
@@ -124,41 +125,63 @@ Field = {
 		this.insertObject(this.cursor, pos.x, pos.y);
   	},
 
-  	setMoveMap: function(moveMap)
+  	setMoveMap: function(moveMap, rangeMap)
   	{
-  		if(Field.moveMap)
-  		{
-  			Field.clearMoveMap();
-  		}
+  		this.clearMoveMap();
+  		this.setVisibilityMap(moveMap);
+  		this.setRangeMap(rangeMap);
+  	},
 
-  		Field.moveMap = moveMap;
+  	setVisibilityMap: function(mapObj)
+  	{ 		
+  		Field.moveMap = mapObj;
 
-  		for(var i = 0; i < moveMap.length; i++)
+  		for(var i = 0; i < mapObj.length; i++)
   		{  			
-  			var map = moveMap[i];  			
+  			var map = mapObj[i];  			
   			var tile = Draw.makeFillSquare(this.squareW, this.squareH);;			
 
-			var playerObj = this.getArmyObject(map.x, map.y);
-			if(playerObj && !playerObj.player.controll)
+			tile.name = "mapTile";
+			Field.insertObject(tile, map.x, map.y);
+  		}
+  	},
+
+  	setRangeMap: function(mapObj)
+  	{
+  		Field.rangeMap = mapObj;
+
+  		for(var i = 0; i < mapObj.length; i++)
+  		{  			
+  			var map = mapObj[i];  			
+  			var tile = Draw.makeFillSquare(this.squareW, this.squareH);
+  			var playerObj = this.getArmyObject(map.x, map.y);
+
+  			tile.setColor("rgba(10, 110, 10, 0.4)");	
+
+  			if(playerObj && playerObj.player.controll)
+  			{
+				tile.setColor("rgba(10, 110, 10, 0)");	
+			}			
+			
+			if(playerObj && !playerObj.player.controll )
 			{
 				tile.setColor("rgba(150, 0, 0, 0.7)");
 			}
 			tile.name = "mapTile";
 			Field.insertObject(tile, map.x, map.y);
   		}
-
   	},
 
-  	clearMoveMap: function()
-	{  				
-  		if(!Field.moveMap)
+  	clearMap : function(mapObj)
+  	{
+		if(!mapObj)
   		{
   			return;
   		}
 
-  		for(var i = 0; i < this.moveMap.length; i++)
+  		for(var i = 0; i < mapObj.length; i++)
   		{  			
-  			var map = this.moveMap[i];
+  			var map = mapObj[i];
 
   			var tile = Field.getObject(map.x, map.y);
 
@@ -171,11 +194,18 @@ Field = {
   			}
   			
   		}
-
-  		this.moveMap = null;
   	},
 
-  	onClick: function(mousePos, evt) {
+  	clearMoveMap: function()
+	{  				
+  		this.clearMap(this.moveMap);
+  		this.clearMap(this.rangeMap);
+
+  		this.moveMap = null;
+  		this.rangeMap = null;
+  	},
+
+  	onClick: function(mousePos, evt, key) {
   		var xOffset = 0;
     	var yOffset = 0;
 
@@ -201,7 +231,7 @@ Field = {
 				var obj = this.focusedTile[i];
 				if(obj.lostFocus)
 				{
-					obj.lostFocus(mousePos, object);
+					obj.lostFocus(mousePos, object, key);
 				}
 			}
 		}
@@ -210,7 +240,7 @@ Field = {
 		{
 			for(var i=0; i < object.length; i++)
 			{
-				object[i].onClick(mousePos);
+				object[i].onClick(mousePos, key);				
 			}
 		}
 

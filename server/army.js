@@ -6,7 +6,7 @@ Army = {
 		var army = {						
 			moving: function(x, y)
 			{
-				var moveMap = Army.indexMovement(this);
+				var moveMap = Army.indexMovement(this).moveMap;
 
 				for(var i = 0; i < moveMap.length; i++)
 				{
@@ -25,14 +25,21 @@ Army = {
 
 			attack : function(playerObj)
 			{
-				var moveMap = Army.indexMovement(this);
-
-				for(var i = 0; i < moveMap.length; i++)
+				if(this.turnAttacks <= 0)
 				{
-					if(moveMap[i].x == playerObj.position.x && moveMap[i].y == playerObj.position.y )
-					{						
-						Field.removeObject(playerObj, playerObj.position.x, playerObj.position.y);
-						Server.sendBroadcast(JSON.stringify({type : "attack", id : this.id, idDef : playerObj.id}));
+					return;
+				}
+
+
+				var rangeMap = Army.indexMovement(this).rangeMap;
+
+				for(var i = 0; i < rangeMap.length; i++)
+				{
+					if(rangeMap[i].x == playerObj.position.x && rangeMap[i].y == playerObj.position.y && playerObj.player != GameEngine.currentPlayer)
+					{			
+						var result = this.fight(playerObj);
+
+						Server.sendBroadcast(JSON.stringify({type : "attack", id : this.id, idDef : playerObj.id, hurt : result}));
 					}
 				}
 			}			

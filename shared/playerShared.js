@@ -8,17 +8,24 @@ PlayerShared = {
 			color : null,			
 			building : [],
 			statusPlay : false,
+			gold : 1000,
 
 			buildArmy : function(x, y)
 			{
 				var soldier = Army.makeSoldier(this);
-				soldier.setPlayer(this);
 
-				this.army[this.army.length] = soldier;
+				if(this.payMoney(soldier.cost))
+				{
+					soldier.setPlayer(this);
 
-				soldier.insert(x,y);
+					this.army[this.army.length] = soldier;
 
-				return soldier;	
+					soldier.insert(x,y);
+					
+					return soldier;		
+				}
+
+				return null;
 			},
 
 			buildArcher : function(x, y)
@@ -31,6 +38,20 @@ PlayerShared = {
 				archer.insert(x,y);		
 
 				return archer;		
+			},
+
+			payMoney : function(money)
+			{
+				var result = this.gold - money;
+
+				if(result < 0)
+				{
+					return false;
+				}
+
+				this.gold = result;
+
+				return true;
 			},
 
 			addBuilding: function(building)
@@ -99,7 +120,8 @@ PlayerShared = {
 					army : serializeArmy,
 					color : this.color,
 					building : serializeBuilding,
-					statusPlay : this.statusPlay
+					statusPlay : this.statusPlay,
+					gold : this.gold
 				}
 			}
 		}

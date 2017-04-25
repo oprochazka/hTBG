@@ -22,7 +22,10 @@ Player = {
 			{
 				var soldier = sharedBuildArmy.call(this, x, y);
 
-				Server.sendBroadcast(JSON.stringify({type : "addArmy", data : soldier.dump()}));
+				if(soldier)
+				{
+					Server.sendBroadcast(JSON.stringify({type : "addArmy", data : soldier.dump()}));
+				}
 			},
 
 			buildArcher : function(x, y)

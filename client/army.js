@@ -27,11 +27,14 @@ Army = {
 				square.render();
 			},
 
+
+
 			lostFocus: function(mousePos)
 			{				
 				if(!this.player.controll)
 				{
 					this.moveMap = null;
+					this.rangeMap = null;
 					return;
 				}
 
@@ -39,32 +42,41 @@ Army = {
 
 				if(this.moveMap)
 				{
-					for(var i =0; i < this.moveMap.length; i++)
-					{
-						var map = this.moveMap[i];
+					var move = Army.findInMap(pos.x, pos.y, this.moveMap);
+					var range = Army.findInMap(pos.x, pos.y, this.rangeMap);
+					var armyObj = Field.getArmyObject(pos.x, pos.y);
 
-						if(pos.x == map.x && pos.y == map.y)
-						{		
-							var armyObj = Field.getArmyObject(map.x, map.y);
-							
-							if(armyObj && !armyObj.player.controll)
+					if(range)
+					{						
+						if(armyObj && !armyObj.player.controll)
+						{
+							this.attack(armyObj);
+						}
+						else
+						{
+							if(move)
 							{
-								this.attack(armyObj);
+								this.moving(pos.x, pos.y);	
 							}
-
-							if(!armyObj)
-							{
-								this.moving(pos.x, pos.y);								
-							}							
 						}
 					}
+
+					if(move)
+					{
+						if(!armyObj)
+						{
+							this.moving(pos.x, pos.y);								
+						}			
+					}														
 				}
+
 				this.moveMap = null;
+				this.rangeMap = null;
 			},
 
 			kill : function(fieldDef)
 			{
-				Field.removeObject(fieldDef, fieldDef.position.x , fieldDef.position.y);
+				this.fight(fieldDef);
 			},
 
 			moving : function(x, y)
@@ -73,13 +85,29 @@ Army = {
 				Client.sendActionMessage(msg, this.player);
 			},
 
-			onClick : function(pos)
-			{									
-				Field.setMoveMap(Army.indexMovement(this));
+			onClick : function(pos, key)
+			{					
+				if(key == "left")
+				{
+					var maps = Army.indexMovement(this);				
+
+					var range = maps.rangeMap;
+					if(this.turnAttacks <= 0)
+					{
+						range = [];
+					}
+
+					Field.setMoveMap(maps.moveMap, range);
+				}
 			},		
 
 			attack : function(playerObj)
 			{			
+				if(this.turnAttacks <= 0)
+				{
+					return;
+				}
+
 				var msg = {type : "attack", id : this.id , idDef : playerObj.id};
 				Client.sendActionMessage(msg, this.player);
 			}		

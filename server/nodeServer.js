@@ -47,14 +47,12 @@ Server = {
 
     _onActionMsg : function(json)
     {        
-        
+
         if((json.sender != GameEngine.currentPlayer.id) && !GameEngine.allMove)
         {
-            console.log("neprijato", json, json.sender, GameEngine.currentPlayer.id );
+            console.log("failed request", json, json.sender, GameEngine.currentPlayer.id );
             return;
-        }
-
-        console.log("prijato", json);
+        }        
 
        if(json.type == "moving")
         {        
@@ -74,6 +72,16 @@ Server = {
             if(field && fieldDef)
             {                 
                 field.attack(fieldDef);
+            }
+        }
+
+        if(json.type == "productBuilding")
+        {        
+            var building = Field.findById(json.buildingId);            
+
+            if(building)
+            {                 
+                building.productArmy();
             }
         }
 

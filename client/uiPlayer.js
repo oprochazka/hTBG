@@ -4,6 +4,8 @@ UIPlayer = {
 	army : document.getElementById('countArmy'),
 	players : document.getElementById('players'),
 	endTurn : document.getElementById('endTurn'),
+	playerTurn : document.getElementById('playerTurn'),
+	playerGold : document.getElementById('playerGold'),
 
 	init : function()
 	{
@@ -28,6 +30,11 @@ UIPlayer = {
 		
 		this.building.innerHTML = player.building.length;
 		this.army.innerHTML = player.army.length;
-		
+
+		if(GameEngine.turnPlayer)
+		{
+			this.playerTurn.innerHTML =  "<span style='color: "+ GameEngine.turnPlayer.color +";' >" + GameEngine.turnPlayer.name + "</span>";			
+		}
+		this.playerGold.innerHTML =  GameEngine.getControllPlayer().gold;	
 	}
 };

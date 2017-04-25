@@ -31,14 +31,15 @@ function initialization()
     }, false);
 
   canvas.addEventListener('click', function(evt) {
-      var mousePos = getMousePos(canvas, evt);
+      var mousePos = getMousePos(canvas, evt );
       
-      Field.onClick(mousePos, evt);
+      Field.onClick(mousePos, evt, "left");
 
     }, false);
 
-  canvas.addEventListener('mousedown', function (e){
-    
+  canvas.addEventListener('contextmenu', function (evt){
+     var mousePos = getMousePos(canvas, evt);
+     Field.onClick(mousePos, evt, "right");
   }, false);
 
     UIPlayer.init();

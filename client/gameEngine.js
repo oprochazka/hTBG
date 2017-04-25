@@ -6,6 +6,7 @@ GameEngine = {
 	yourName : null,
 	controllPlayer : null,
 	allMove : false,
+	turnPlayer : null,
 
 	startGame : function(json)
 	{
@@ -33,6 +34,8 @@ GameEngine = {
 	newTurn: function(playerId)
 	{
 		var turnPlayer = this.findPlayer(playerId);
+
+		this.turnPlayer = turnPlayer;
 
 		turnPlayer.newTurn();
 	},

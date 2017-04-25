@@ -1,16 +1,21 @@
 ArmyShared = {
-	compare : function(x, y, moveMap)
-	{	
-		var t = Field.getObject(x, y);
-
-		if(!t || !t[0])
+	findInMap : function(x, y, mapObj)
+	{
+		for(var i =0; i < mapObj.length; i++)
 		{
-			return;					
-		}
-		t = t[0];		
+			var map = mapObj[i];
 
-		var mov = t.configuration.movement;
-		var speed = 0;
+			if(x == map.x && y == map.y)
+			{		
+				return mapObj[i];		
+			}
+		}
+	},
+
+	_countFar : function(x, y, moveMap, movement)
+	{
+		var speed = 0;		
+
 		for(var i = 0; i < moveMap.length; i++)
 		{
 			map = moveMap[i];
@@ -31,13 +36,13 @@ ArmyShared = {
 			}
 		}
 
-		var o = speed - mov;
+		var lessSpeed = speed - movement;
 
-		if(o < 0)
+		if(lessSpeed < 0)
 		{
 			return false;
 		}
-		var map = {x : x, y : y, speed : o};
+		var map = {x : x, y : y, speed : lessSpeed};
 		for(var i = 0; i < moveMap.length; i++)
 		{
 			if(moveMap[i].x == map.x && moveMap[i].y == map.y)
@@ -53,16 +58,52 @@ ArmyShared = {
 		moveMap[moveMap.length] = map;
 	},
 
+	compare : function(x, y, moveMap, rangeMap)
+	{	
+		var objs = Field.getObject(x, y);
+
+		if(!objs || !objs[0])
+		{
+			return;					
+		}
+		tile = objs[0];		
+
+		var mov = tile.configuration.movement;
+		var range = tile.configuration.range;
+
+		this._countFar(x, y, moveMap, mov);
+		this._countFar(x, y, rangeMap, range);
+	},
+
+	setSurrounding : function(x, y, map)
+	{
+		map[map.length] = {x : x - 1, y : y, speed : 0};
+		map[map.length] = {x : x + 1, y : y,  speed : 0};
+		map[map.length] = {x : x, y : y + 1, speed : 0};
+		map[map.length] = {x : x, y : y - 1, speed : 0};
+	},
+
 	indexMovement : function(army)
 	{
 		var speed = army.speed;
+		var range = army.range;
 
 		var moveMap = [];
+		var rangeMap = [];
 
 		moveMap[0] = {x : army.position.x, y : army.position.y, speed : speed};
-		for(var y = 0; y <= speed; y++)
+		rangeMap[0] = {x : army.position.x, y : army.position.y, speed : range};
+
+		var maxRange = speed;
+
+		if(range > maxRange)
 		{
-			for(var x = 0; x <= speed; x++)
+			maxRange = range;
+		}
+
+		for(var y = 0; y <= maxRange; y++)
+		{
+			for(var x = 0; x <= maxRange; x++)
 			{
 				var pX = army.position.x + x;
 				var pY = army.position.y + y;
@@ -70,16 +111,19 @@ ArmyShared = {
 				var mX = army.position.x - x;
 				var mY = army.position.y - y;
 
-				var map = this.compare(pX, pY, moveMap);
-				map= this.compare(pX, mY, moveMap);
-				map = this.compare(mX, pY, moveMap);
-				map = this.compare(mX, mY, moveMap);
+				var map = this.compare(pX, pY, moveMap, rangeMap);
+				map= this.compare(pX, mY, moveMap, rangeMap);
+				map = this.compare(mX, pY, moveMap, rangeMap);
+				map = this.compare(mX, mY, moveMap, rangeMap);
 				
 			}	
 		}
 		
 		army.moveMap = moveMap;
-		return moveMap;
+		army.rangeMap = rangeMap;
+		this.setSurrounding(army.position.x, army.position.y, army.rangeMap);
+
+		return {moveMap : moveMap, rangeMap : rangeMap};
 	},
 
 	makeArmyShared : function(img)
@@ -90,13 +134,19 @@ ArmyShared = {
 		
 		var army = {
 			count : 0,
-			attack : 0,
+			attackPower : 2,
+			range : 1,
 			defend : 0,
 			speed : 3,
 			player : null,
-			moveMap : null,		
+			moveMap : null,
+			rangeMap : null,		
 			initSpeed: 3,
 			type : null,
+			health : 3,
+			turnAttacks : 1,
+			initAttacks : 1,
+			cost : 50,
 
 			newTurn : function(player)
 			{
@@ -106,6 +156,7 @@ ArmyShared = {
 			refreshStats : function()
 			{
 				this.speed = this.initSpeed;
+				this.turnAttacks = this.initAttacks;
 			},
 
 			setPlayer : function(player)
@@ -137,6 +188,32 @@ ArmyShared = {
 				this.speed = decreaseSpeed;
 
 				this.insert(x, y);
+			},
+
+			setHealth : function(health)
+			{
+				this.health = health;
+			},
+
+			countFight : function(playerDef)
+			{
+				return playerDef.health - this.attackPower;
+			},
+
+			fight : function(playerDef)
+			{
+				var result = this.countFight(playerDef);
+
+				this.turnAttacks--;
+
+				playerDef.setHealth(result);
+
+				if(result <= 0 )
+				{
+					Field.removeObject(playerDef, playerDef.position.x, playerDef.position.y);
+				}
+
+				return result;
 			},
 
 			load : function(json)
@@ -173,7 +250,9 @@ ArmyShared = {
 					speed : this.speed,
 					player : this.player && this.player.id,					
 					initSpeed: this.initSpeed,
-					type : this.type
+					type : this.type,
+					initAttacks : this.initAttacks,
+					turnAttacks : this.turnAttacks
 				};
 
 				dumped = Object.assign(dumpedOld, dumped);
@@ -191,7 +270,9 @@ ArmyShared = {
 		var out = this.makeArmy("http://"+ GameEngine.server +"/asets/army.png");		
 
 		out.type = "soldier";
-
+		out.initSpeed = 3;
+		out.range = 1;
+		out.health = 1;
 
 		return out;	
 	},
@@ -204,6 +285,8 @@ ArmyShared = {
 
 		out.speed = 6;
 		out.initSpeed = 6;
+		out.range = 3;
+		out.health = 2;
 
 		return out;	
 	},

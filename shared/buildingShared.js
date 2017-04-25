@@ -4,6 +4,7 @@ BuildingShared = {
 		var buildingTile = Tile.makeTile("building", null);	
 
 		var oldDumped = buildingTile.dump;
+		var oldLoad = buildingTile.load;
 
 		var building = {
 			production : 0,			
@@ -21,13 +22,18 @@ BuildingShared = {
 
 			load: function(json)
 			{
-				this.id = json.id;
+				oldLoad.call(this,json);
 
 				if(json.player)
 				{					
 					this.player = GameEngine.findPlayer(json.player);
 					this.player.addBuilding(this);
 				}
+			},
+
+			productArmy : function()
+			{
+
 			},
 
 			refreshStats : function()
@@ -58,18 +64,32 @@ BuildingShared = {
 
 	makeBarracksShared : function()
 	{
-		var out = BuildingShared.makeBuildingShared("http://"+ GameEngine.server +"/asets/barracks.png");		
+		var out = Building.makeBuilding("http://"+ GameEngine.server +"/asets/barracks.png");		
 
 		out.type = "barracks";
+		
+		out.earn = 10;
+
+		out.productArmy = function()
+		{			
+			if(Field.getArmyObject(out.position.x, out.position.y))
+			{
+				return;
+			}
+
+			out.player.buildArmy(out.position.x, out.position.y);			
+		}
 
 		return out;	
 	},
 
 	makeCastleShared : function()
 	{
-		var out = BuildingShared.makeBuildingShared("http://"+ GameEngine.server +"/asets/castle.png");		
+		var out = Building.makeBuilding("http://"+ GameEngine.server +"/asets/castle.png");		
 
 		out.type = "castle";
+		
+		out.earn = 20;
 
 		return out;	
 	},

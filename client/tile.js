@@ -22,9 +22,12 @@ Tile = {
 				return this.position;
 			},
 
-			onClick : function(pos)
+			onClick : function(pos, key)
 			{
-				this.square.onClick(pos);
+				if(key == "left")
+				{
+					this.square.onClick(pos);
+				}
 			},
 			onMouseMove : function(pos)
 			{
@@ -42,12 +45,7 @@ Tile = {
 		  	setPosition : function (x,y)
 	        {
 	          this.square.setPosition(x, y)
-	        },
-
-	        load : function(json)
-	        {
-	        	this.id = json.id;
-	        }	        
+	        }        
 		};
 
 		return Object.assign(tileShared, tile);
