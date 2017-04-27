@@ -73,7 +73,7 @@ Server = {
         {        
             var field = Field.findById(json.id);
             var fieldDef = Field.findById(json.idDef);
-
+            
             if(field && fieldDef)
             {                 
                 field.attack(fieldDef);

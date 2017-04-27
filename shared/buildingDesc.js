@@ -11,6 +11,20 @@ BuildingDesc = {
 		productArmy : "archer",
 		earnGold : 0,
 		type : "castle"
+	},
+
+	goldMine : {
+		img : "goldMine.png",
+		productArmy : null,
+		earnGold : 50,
+		type : "goldMine"
+	},
+
+	grayve : {
+		img : "rip.png",
+		productArmy : null,
+		earnGold : 0,
+		type : "grayve"	
 	}
 
 };

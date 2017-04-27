@@ -49,20 +49,33 @@ Field = {
 			if(Field.getObject(x1,y1)[0].type != "water" && z != 3)
 			{
 				var building = Building.makeBuilding("barracks");
-				this.insertObject(building, x1, y1);	
-				
+				this.insertObject(building, x1, y1);					
 			}
 
 
 			if(Field.getObject(x1,y1)[0].type == "grass" && z == 3)
 			{
 				var building = Building.makeBuilding("castle");
-				this.insertObject(building, x1, y1);	
+				this.insertObject(building, x1, y1);				
+			}						
+		}
 
-				 //castles++;
+		for(var i = 0; i < 100; i++)
+		{
+			var x1 = Math.floor((Math.random() * 24));
+			var y1 = Math.floor((Math.random() * 15));
+			var z = Math.floor((Math.random() * 4));
+		
+			if(Field.getObject(x1,y1)[0].type == "mountain" && z != 3)
+			{
+				if(Field.getObject(x1,y1).length == 1)
+				{
+					var building = Building.makeBuilding("goldMine");				
+					this.insertObject(building, x1, y1);				
+				}
 			}
 		}
-		
+
 	}
 };
 

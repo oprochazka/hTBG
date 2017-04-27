@@ -1,41 +1,52 @@
 <!DOCTYPE html>
 <html>
-    <head>
+    <head>        
         <meta charset="utf-8">
-        <title>WebSockets - Simple chat</title>
+        <link rel="stylesheet" type="text/css" href="./css/style.css">
 
-        <style>
-        * { font-family:tahoma; font-size:16px; padding:0px; margin:0px; }
-        p { line-height:18px; }
-        div { margin-left:auto; margin-right:auto;}
-        #content { padding:5px; background:#ddd; border-radius:5px; overflow-y: scroll;
-                   border:1px solid #CCC; margin-top:10px; height: 160px; }
-        #input { border-radius:2px; border:1px solid #ccc;
-                 margin-top:10px; padding:5px; width:400px;  }
-        #status { width:88px; display:block; float:left; margin-top:15px; }
-        #canvasLayer1{ cursor: url('image/sword.cur'), auto; }
-        .endTurn { background-color: brown; font-size: 25pt; cursor: pointer;}
-        </style>
+        <title>Turn based game</title>
+
+   
     </head>
     <body>
-        <div id="players">
+        <div id="playerUI" class="playerUI">
+            <div id="nickName" class="nick-name">
+                Nick: 
+            </div>
+
+            <div class="army-stats">
+                <div class="header">
+                    Army stats:
+                </div>
+                <div id="armyStats" class="army-body">
+                    
+                </div>
+
+                <img id="armyStatsImg" class="army-stats-img">
+                    
+                </img>
+            </div>
+
+            <div class="playerStats">
+                Count army: <span id="countArmy"></span>
+                </br>
+                Count building: <span id="countBuilding"></span>
+                </br>
+                Turn: <span id="playerTurn"> </span>
+                </br>
+                Gold: <span id="playerGold"> </span>
+                </br>
+            </div>
+            <div id="endTurn" class="end-turn">
+              End Turn
+            </div>
+
+            <div id="players" class="online-players">
+                test
+            </div>
+
         </div>
 
-        <div id="playerUI">
-        	Count army: <span id="countArmy"></span>
-        	</br>
-        	Count building: <span id="countBuilding"></span>
-            </br>
-            Turn: <span id="playerTurn"> </span>
-            </br>
-            Gold: <span id="playerGold"> </span>
-            </br>
-        </div>
-
-
-       	<div id="endTurn" class="endTurn">
-       		End Turn
-       	</div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 
@@ -65,17 +76,13 @@
         <script src="./shared/playerShared.js"></script>
         <script src="./client/player.js"></script>
 
+		<div class="canvasWrapper">
+		  <canvas class="gameCanvas" id="canvasLayer1" width="1536" height="960" ></canvas>
 
-        
-		
+          
+        </div>
 
-
-		<div style="position: relative;">
-		 <canvas id="canvasLayer1" width="1600" height="1000" 
-		   style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
-		</div>
-
-        <script src="./client/canvasEngine.js"></script>
+      <script src="./client/canvasEngine.js"></script>
 
     </body>
 </html>

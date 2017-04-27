@@ -17,9 +17,9 @@ ArmyDesc ={
 		cost : 30,
 		initHealth : 1,
 		powerAttack : 3,
-		range : 10,
-		speed : 2,
-		initSpeed : 20,
+		range : 6,
+		speed : 6,
+		initSpeed : 6,
 		initFights : 2
 	},
 

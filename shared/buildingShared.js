@@ -33,14 +33,31 @@ BuildingShared = {
 	        	this.player = player;	        		        		        	
 	        },
 
-			newTurn : function(player)
-			{
+	        incomeGold : function()
+	        {
+	        	if(this.player)
+	        	{
+	        		this.player.gold += this.earnGold;
+	        	}
+	        },
 
+			newTurn : function(player)
+			{								
+				if(this.player)
+				{
+					this.incomeGold();
+				}
 			},
 
 			buildArmy : function()
 			{
 				var productArmy = this.productArmy;
+				
+				if(Field.getArmyObject(this.position.x, this.position.y))
+				{
+					return;
+				}
+					
 
 				if(productArmy)
 				{

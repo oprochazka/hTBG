@@ -1,0 +1,120 @@
+.canvasWrapper{
+	width: 1600;
+	height: 1000;
+}
+
+.gameCanvas{
+	cursor: url('image/sword.cur'), auto;
+	
+	left: 0; 
+	top: 0;
+	z-index: 0;	
+
+	border-style: solid;
+	border-size: 5px;
+	border-color: #9e9f39;
+
+	 
+}
+
+.playerUI{
+	background-color: white;
+	float:right;
+	width:220px;
+
+}
+
+.end-turn { 
+	background-color: brown; 
+	font-size: 25pt; 
+	cursor: pointer;
+	width: 200px;
+	
+	margin: auto;
+	margin-bottom: 5px;
+	margin-top: 5px;
+
+	border-style: solid;
+	border-size: 2px;
+	border-color: grey;
+
+	padding: 5px;
+	text-align: center;
+}
+
+.end-turn:hover{
+	background-color: #8a2e2e;
+}
+
+.army-stats{
+	background-color: #9e9f39;
+
+	padding: 5px;
+	border-style: solid;
+	border-size: 2px;
+	border-color: grey;
+
+	font-weight: bold;
+}
+
+.army-stats .army-body{
+	border-bottom-style: solid;
+	border-size: 2px;
+	border-color: grey;
+	padding-bottom: 2px;
+	margin-bottom: 7px;
+}
+
+.army-stats .header{
+	font-weight: bold;
+	border-bottom-style: solid;
+	border-size: 2px;
+	border-color: grey;
+	padding-bottom: 2px;
+	margin-bottom: 2px;
+
+}
+
+
+.army-stats .army-stats-img{
+
+	border-style:none;
+	margin: auto;
+	border: 0;
+}
+
+.playerStats{
+	background-color: #9e9f39;
+
+	padding: 5px;
+	border-style: solid;
+	border-size: 2px;
+	border-color: grey;
+
+	margin-top: 5px;
+	font-weight: bold;
+}
+
+.online-players{
+	padding: 5px;
+	border-style: solid;
+	border-size: 2px;
+	border-color: grey;
+
+	margin-top: 5px;
+
+	font-weight: bold;
+
+	background-color: black;
+}
+
+.nick-name{
+	background-color: #9e9f39;
+	padding: 5px;
+	border-style: solid;
+	border-size: 2px;
+	border-color: grey;
+	font-weight: bold;
+	margin-top: 5px;
+}
+

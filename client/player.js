@@ -4,18 +4,6 @@ Player = {
 		var playerShared = PlayerShared.makePlayerShared(name);
 
 		var player = {
-			removeArmy: function(army)
-			{
-				var field = this.army;
-				for(var i = 0; i < field.length; i++)
-				{
-					if(army == field[i])
-					{
-						field.splice(i, 1);
-					}
-				}
-			},
-
 			buildArmy : function(player, armyData)
 			{			
                 var army = Army.loadArmy(armyData);

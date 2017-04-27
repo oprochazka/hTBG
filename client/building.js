@@ -14,9 +14,11 @@ Building = {
 			{
 				var config = oldSetType.call(this, buildingDescType);
 				
-				this.img = "http://"+ GameEngine.server +"/asets/"+ config.img;
+				this.img = config.img;
 
-				this.square.setImage(this.img);
+				var img = "http://"+ GameEngine.server +"/asets/"+ config.img;
+
+				this.square.setImage(img);
 			},
 
 			render : function()
@@ -42,6 +44,7 @@ Building = {
 														
 					Client.sendActionMessage({type : "buildArmy", buildingId : this.id}, GameEngine.getControllPlayer());					
 				}
+				UIPlayer.setSelectedObject(this);
 			}
 		};
 

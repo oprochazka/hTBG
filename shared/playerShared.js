@@ -29,6 +29,18 @@ PlayerShared = {
 				return null;
 			},
 
+			removeArmy : function(army)
+			{
+				var armies = this.army;
+				for(var i = 0; i < armies.length; i++)
+				{
+					if(army == armies[i])
+					{
+						armies.splice(i, 1);
+					}
+				}
+			},
+
 			buildFreeArmy : function(name, x, y)
 			{
 				var army = Army.makeArmy(name);
@@ -84,8 +96,9 @@ PlayerShared = {
 				{
 					var building = this.building[i];	
 					if(building)
-					{
+					{						
 						building.refreshStats();
+						building.newTurn();
 					}
 				}
 			},

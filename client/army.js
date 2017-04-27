@@ -47,7 +47,7 @@ Army = {
 				var pos = Field.indexPosition(mousePos);
 
 				if(this.moveMap)
-				{
+				{					
 					var move = Army.findInMap(pos.x, pos.y, this.moveMap);
 					var range = Army.findInMap(pos.x, pos.y, this.rangeMap);
 					var armyObj = Field.getArmyObject(pos.x, pos.y);
@@ -81,7 +81,7 @@ Army = {
 			},
 
 			kill : function(fieldDef)
-			{
+			{							
 				this.fight(fieldDef);
 			},
 
@@ -98,18 +98,20 @@ Army = {
 					var maps = Army.indexMovement(this);				
 
 					var range = maps.rangeMap;
-					if(this.turnAttacks <= 0)
+					if(this.fights <= 0)
 					{
 						range = [];
 					}
 
 					Field.setMoveMap(maps.moveMap, range);
+
+					UIPlayer.setSelectedObject(this);
 				}
 			},		
 
 			attack : function(playerObj)
 			{			
-				if(this.turnAttacks <= 0)
+				if(this.fights <= 0)
 				{
 					return;
 				}

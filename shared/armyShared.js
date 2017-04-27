@@ -140,9 +140,10 @@ ArmyShared = {
 		army.initSpeed = config.initSpeed;
 		army.range = config.range;
 		army.initHealth = config.initHealth;
-		army.attackPower = config.attackPower;		
+		
 		army.initFights = config.initFights;
 		army.cost = config.cost;
+		army.powerAttack = config.powerAttack;
 	},	
 
 	makeArmyShared : function(armyDescType)
@@ -164,9 +165,8 @@ ArmyShared = {
 			initSpeed: 3,
 			type : null,
 			health : 3,
-			turnAttacks : 1,
-			initAttacks : 1,
 			cost : 50,
+			fights : 2,
 
 			setType : function(armyDescType)
 			{
@@ -185,7 +185,7 @@ ArmyShared = {
 			refreshStats : function()
 			{
 				this.speed = this.initSpeed;
-				this.turnAttacks = this.initAttacks;
+				this.fights = this.initFights;
 			},
 
 			setPlayer : function(player)
@@ -233,20 +233,26 @@ ArmyShared = {
 			{
 				var result = this.countFight(playerDef);
 
-				this.turnAttacks--;
+				this.fights--;
 
 				playerDef.setHealth(result);
 
 				if(result <= 0 )
 				{
-					Field.removeObject(playerDef, playerDef.position.x, playerDef.position.y);
+					//var building = Building.makeBuilding("grayve");
+					//Field.insertObject(building, playerDef.position.x, playerDef.position.y);	
+					if(playerDef.player)
+					{
+						playerDef.player.removeArmy(playerDef);
+						Field.removeObject(playerDef, playerDef.position.x, playerDef.position.y);					
+					}					
 				}
 
 				return result;
 			},
 
 			load : function(json)
-			{
+			{				
 				this.id = json.id;
 				this.count = json.count;			
 				this.defend = json.defend;
@@ -262,10 +268,12 @@ ArmyShared = {
 				}
 
 				this.initSpeed = json.initSpeed;
+				this.fights = json.fights;
 
 				this.position.x = json.position.x;
 				this.position.y = json.position.y;
 
+				this.powerAttack = json.powerAttack;
 				this.img = json.img;
 
 				this.setType(json.type);
@@ -284,9 +292,9 @@ ArmyShared = {
 					player : this.player && this.player.id,					
 					initSpeed: this.initSpeed,
 					type : this.type,
-					initAttacks : this.initAttacks,
-					turnAttacks : this.turnAttacks,
-					img : this.img
+					powerAttack : this.powerAttack,
+					img : this.img,
+					fights : this.fights
 				};
 
 				dumped = Object.assign(dumpedOld, dumped);

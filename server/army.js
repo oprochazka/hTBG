@@ -17,7 +17,9 @@ Army = {
 						if(!armyObj)
 						{													
 							this.moved(x, y, moveMap[i].speed);
-							Server.sendBroadcast(JSON.stringify({type : "moving", x : x, y : y, id : this.id, speed : this.speed}));							
+							Server.sendBroadcast(JSON.stringify({type : "moving", x : x, y : y, id : this.id, speed : this.speed}));		
+
+							return;					
 						}												
 					}
 				}
@@ -25,7 +27,7 @@ Army = {
 
 			attack : function(playerObj)
 			{
-				if(this.turnAttacks <= 0)
+				if(this.fights <= 0)
 				{
 					return;
 				}
@@ -35,10 +37,12 @@ Army = {
 				for(var i = 0; i < rangeMap.length; i++)
 				{
 					if(rangeMap[i].x == playerObj.position.x && rangeMap[i].y == playerObj.position.y && playerObj.player != GameEngine.currentPlayer)
-					{			
+					{									
 						var result = this.fight(playerObj);
 
 						Server.sendBroadcast(JSON.stringify({type : "attack", id : this.id, idDef : playerObj.id, hurt : result}));
+
+						return;
 					}
 				}
 			}			
