@@ -42,7 +42,7 @@ Field = {
 				var tile = null;
 
 				if(obj.name == "tile")
-				{
+				{					
 					tile = Tile.loadTile(obj);
 				}				
 				if(obj.name == "building")

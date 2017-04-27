@@ -1,5 +1,10 @@
 TileShared = { 
-	makeTileShared : function(name, img)
+	_setConfiguration : function(tile, tileConfig)
+	{
+		tile.configuration = tileConfig;
+	},
+
+	makeTileShared : function(tileDescName)
 	{	
 		var configuration = {
 			movement : 1,
@@ -8,11 +13,20 @@ TileShared = {
 			range : 4		
 		}		
 
-		return {				
+		var output = {				
 			configuration : configuration,
-			name : name,
+			name : "tile",
 			position : {x : 0, y : 0},
 			type : null,
+
+			setType: function(tileDescName)
+			{				
+				var config = TilesDesc[tileDescName];
+				TileShared._setConfiguration(this, config);
+				this.type = config.type;
+
+				return config;
+			},
 
 			insert : function(x, y)
 			{		
@@ -26,7 +40,6 @@ TileShared = {
 
 				Field.insertObject(this, x, y);		
 			},
-
 			
 			setMovement : function(movement)
 			{
@@ -57,7 +70,8 @@ TileShared = {
 	        	this.position = json.position;
 	        	this.type = json.type;
 	        	this.name = json.name;
-	        	this.configuration = this.configuration;
+	        	
+	        	this.setType(json.type);
 	        },
 
 	        dump : function()
@@ -72,5 +86,22 @@ TileShared = {
 	        	return dumped;
 	        }
 		};
+
+		if(tileDescName)
+		{
+			output.setType(tileDescName);
+		}
+
+		return output;
+	},
+
+	loadTile : function(json)
+	{
+		var tile = null;
+
+		tile = Tile.makeTile();
+		tile.load(json);
+
+		return tile;
 	}
 };

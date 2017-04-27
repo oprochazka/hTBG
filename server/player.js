@@ -12,6 +12,8 @@ Player = {
 
 		var sharedBuildArmy = playerShared.buildArmy;
 		var sharedBuildArcher = playerShared.buildArcher;
+		var sharedBuildKing = playerShared.buildKing;
+
 		var sharedaddBuilding = playerShared.addBuilding;
 
 		var player = {			
@@ -33,6 +35,13 @@ Player = {
 				var archer = sharedBuildArcher.call(this, x, y);
 
 				Server.sendBroadcast(JSON.stringify({type : "addArmy", data : archer.dump()}));
+			},
+
+			buildKing : function(x, y)
+			{
+				var king = sharedBuildKing.call(this, x, y);
+
+				Server.sendBroadcast(JSON.stringify({type : "addArmy", data : king.dump()}));
 			},
 
 			addBuilding: function(building)

@@ -27,13 +27,13 @@ Field = {
 				var tile = null;
 				switch(rand)
 				{
-					case 0: tile = Tile.makeWoodTile(); break;
-					case 1: tile = Tile.makeWaterTile(); break;
-					case 2: tile = Tile.makeMountainTile(); break;
-					case 3: tile = Tile.makeGrassTile(); break;
-					case 4: tile = Tile.makeGrassTile(); break;
-					case 5: tile = Tile.makeWoodTile(); break;
-					default: tile = Tile.makeWoodTile();
+					case 0: tile = Tile.makeTile("wood"); break;
+					case 1: tile = Tile.makeTile("water"); break;
+					case 2: tile = Tile.makeTile("mountain"); break;
+					case 3: tile = Tile.makeTile("grass"); break;
+					case 4: tile = Tile.makeTile("grass"); break;
+					case 5: tile = Tile.makeTile("wood"); break;
+					default: tile = Tile.makeTile("wood");
 				}	
 				
 				Field.insertObject(tile, x, y);
@@ -48,7 +48,7 @@ Field = {
 			
 			if(Field.getObject(x1,y1)[0].type != "water" && z != 3)
 			{
-				var building = Building.makeBarracksTile();
+				var building = Building.makeBuilding("barracks");
 				this.insertObject(building, x1, y1);	
 				
 			}
@@ -56,7 +56,7 @@ Field = {
 
 			if(Field.getObject(x1,y1)[0].type == "grass" && z == 3)
 			{
-				var building = Building.makeCastleTile();
+				var building = Building.makeBuilding("castle");
 				this.insertObject(building, x1, y1);	
 
 				 //castles++;

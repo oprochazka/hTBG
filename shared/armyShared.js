@@ -66,7 +66,12 @@ ArmyShared = {
 		{
 			return;					
 		}
-		tile = objs[0];		
+		tile = objs[0];	
+
+		if(tile.name != "tile")
+		{
+			return;
+		}	
 
 		var mov = tile.configuration.movement;
 		var range = tile.configuration.range;
@@ -94,6 +99,8 @@ ArmyShared = {
 		moveMap[0] = {x : army.position.x, y : army.position.y, speed : speed};
 		rangeMap[0] = {x : army.position.x, y : army.position.y, speed : range};
 
+		this.setSurrounding(army.position.x, army.position.y, rangeMap);		
+
 		var maxRange = speed;
 
 		if(range > maxRange)
@@ -120,19 +127,31 @@ ArmyShared = {
 		}
 		
 		army.moveMap = moveMap;
-		army.rangeMap = rangeMap;
-		this.setSurrounding(army.position.x, army.position.y, army.rangeMap);
+		army.rangeMap = rangeMap;		
 
 		return {moveMap : moveMap, rangeMap : rangeMap};
 	},
 
-	makeArmyShared : function(img)
+	_setArmyConfig : function(army, config)
 	{
-		var armyTile = Tile.makeTile("army", null);
+		army.type = config.type;
+		
+		army.initSpeed = config.initSpeed;
+		army.range = config.range;
+		army.initHealth = config.initHealth;
+		army.attackPower = config.attackPower;
+		army.cost = config.cost;
+		army.initFights = config.initFights;
+	},	
+
+	makeArmyShared : function(armyDescType)
+	{
+		var armyTile = Tile.makeTile();
 		var oldInsert = armyTile.insert;
 		var oldDumped = armyTile.dump;
 		
 		var army = {
+			name : "army",
 			count : 0,
 			attackPower : 2,
 			range : 1,
@@ -147,6 +166,15 @@ ArmyShared = {
 			turnAttacks : 1,
 			initAttacks : 1,
 			cost : 50,
+
+			setType : function(armyDescType)
+			{
+				var config = ArmyDesc[armyDescType];
+
+				ArmyShared._setArmyConfig(this, config);
+
+				return config;				
+			},
 
 			newTurn : function(player)
 			{
@@ -236,6 +264,10 @@ ArmyShared = {
 
 				this.position.x = json.position.x;
 				this.position.y = json.position.y;
+
+				this.img = json.img;
+
+				this.setType(json.type);
 			},
 
 			dump: function(json)
@@ -252,62 +284,30 @@ ArmyShared = {
 					initSpeed: this.initSpeed,
 					type : this.type,
 					initAttacks : this.initAttacks,
-					turnAttacks : this.turnAttacks
+					turnAttacks : this.turnAttacks,
+					img : this.img
 				};
 
 				dumped = Object.assign(dumpedOld, dumped);
 
 				return dumped;
 			}		
-		}		
+		};
 
+		var output=Object.assign(armyTile, army);
 
-		return	Object.assign(armyTile, army);
+		if(armyDescType)
+		{
+			output.setType(armyDescType);
+		}
+
+		return output;
 	},	
-
-	makeSoldier : function()
-	{
-		var out = this.makeArmy("http://"+ GameEngine.server +"/asets/army.png");		
-
-		out.type = "soldier";
-		out.initSpeed = 3;
-		out.range = 1;
-		out.health = 1;
-
-		return out;	
-	},
-
-	makeArcher : function()
-	{
-		var out = this.makeArmy("http://"+ GameEngine.server +"/asets/archer.png");		
-
-		out.type = "archer";
-
-		out.speed = 6;
-		out.initSpeed = 6;
-		out.range = 3;
-		out.health = 2;
-
-		return out;	
-	},
 
 	loadArmy : function(json)
 	{
-		if(json.type == "soldier")
-		{
-			var soldier = this.makeSoldier();
-			soldier.load(json);
-
-			return soldier;
-		}
-
-		if(json.type == "archer")
-		{
-			var soldier = this.makeArcher();
-			soldier.load(json);
-
-			return soldier;
-		}
-
+		var army = this.makeArmy();
+		army.load(json);
+		return army;
 	}
 };

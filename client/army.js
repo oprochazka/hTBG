@@ -5,9 +5,8 @@ Army = {
 		var armyShared = ArmyShared.makeArmyShared(img);	
 		var square = Draw.makeFillSquare(20, 20);	
 
-		var oldRender = armyShared.render;		
-
-		armyShared.square.setImage(img);	
+		var oldRender = armyShared.render;
+		var oldSetType = armyShared.setType;			
 		
 		var army = {	
 			moveMap : null,
@@ -27,7 +26,14 @@ Army = {
 				square.render();
 			},
 
+			setType : function(armyDescType)
+			{				
+				var config = oldSetType.call(this, armyDescType);
+				
+				army.img = "http://"+ GameEngine.server +"/asets/"+ config.img;
 
+				armyShared.square.setImage(army.img);
+			},
 
 			lostFocus: function(mousePos)
 			{				

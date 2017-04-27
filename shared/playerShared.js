@@ -12,9 +12,10 @@ PlayerShared = {
 
 			buildArmy : function(x, y)
 			{
-				var soldier = Army.makeSoldier(this);
+				var soldier = Army.makeArmy("soldier");
+				soldier.setPlayer(this);
 
-				if(this.payMoney(soldier.cost))
+				if(this.payMoney(ArmyDesc.soldier.cost))
 				{
 					soldier.setPlayer(this);
 
@@ -28,9 +29,21 @@ PlayerShared = {
 				return null;
 			},
 
+			buildKing : function(x, y)
+			{
+				var king = Army.makeArmy("king");
+				king.setPlayer(this);
+
+				this.army[this.army.length] = king;
+
+				king.insert(x,y);		
+
+				return king;		
+			},
+
 			buildArcher : function(x, y)
 			{
-				var archer = Army.makeArcher(this);
+				var archer = Army.makeArmy("archer");
 				archer.setPlayer(this);
 
 				this.army[this.army.length] = archer;

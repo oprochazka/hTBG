@@ -1,15 +1,24 @@
 Building = {
 
-	makeBuilding : function(image, player)
+	makeBuilding : function(buildingDescType)
 	{
-		var buildingTileShared = BuildingShared.makeBuildingShared(image, player);
+		var buildingTileShared = BuildingShared.makeBuildingShared(buildingDescType);
 
 		var oldRender = buildingTileShared.render;
 		var square = Draw.makeFillSquare(20, 20);
+		
+		var oldSetType = buildingTileShared.setType;	
 
-		buildingTileShared.square.setImage(image);	
+		var building =  {		
+			setType : function(buildingDescType)
+			{
+				var config = oldSetType.call(this, buildingDescType);
+				
+				this.img = "http://"+ GameEngine.server +"/asets/"+ config.img;
 
-		var building =  {			
+				this.square.setImage(this.img);
+			},
+
 			render : function()
 			{
 				oldRender.call(this);				
@@ -32,7 +41,7 @@ Building = {
 					}
 					var soldier = Army.makeSoldier(this);
 					
-					if(this.player.payMoney(soldier.cost))
+					if(this.player && this.player.payMoney(soldier.cost))
 					{
 						Client.sendActionMessage({type : "productBuilding", buildingId : this.id}, GameEngine.getControllPlayer());
 					}
@@ -41,20 +50,6 @@ Building = {
 		};
 
 		return Object.assign(buildingTileShared, building);		
-	},
-
-	makeBarracksTile : function()
-	{
-		var out = BuildingShared.makeBarracksShared();				
-
-		return out;	
-	},
-
-	makeCastleTile : function()
-	{
-		var out = BuildingShared.makeCastleShared();					
-
-		return out;	
 	}
 };
 

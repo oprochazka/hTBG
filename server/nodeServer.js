@@ -10,6 +10,11 @@ Server = {
         var webSocketServer = require('websocket').server;
         var http = require('http');
         var merge = require('merge'), original, cloned;
+
+        var tileShared = require("./../shared/tilesDesc.js");   
+        var buildingShared = require("./../shared/buildingDesc.js");   
+        var playerShared = require("./../shared/armyDesc.js");  
+
         var fieldShared = require("./../shared/fieldShared.js");
         var armyShared = require("./../shared/armyShared.js");
         var tileShared = require("./../shared/tileShared.js");

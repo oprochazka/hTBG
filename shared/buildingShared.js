@@ -1,14 +1,32 @@
 BuildingShared = {
-	makeBuildingShared : function(image, player)
+	_setConfiguration : function(building, config)
 	{
-		var buildingTile = Tile.makeTile("building", null);	
+		building.type = config.type;
+		building.productArmy = config.productArmy;
+		building.earnGold = config.earnGold;
+		building.img = config.img;
+	},
+
+	makeBuildingShared : function(buildingDescName)
+	{
+		var buildingTile = Tile.makeTile();	
 
 		var oldDumped = buildingTile.dump;
 		var oldLoad = buildingTile.load;
 
 		var building = {
+			name : "building",
 			production : 0,			
-			player : player,						
+			player : null,						
+
+			setType : function(buildingDescName)
+			{
+				var config = BuildingDesc[buildingDescName];
+
+				BuildingShared._setConfiguration(this, config);
+
+				return config;
+			},
 
 	        setPlayer : function(player)
 	        {
@@ -48,67 +66,48 @@ BuildingShared = {
 					id : this.id,
 					production : this.production,					
 					player : this.player && this.player.id,
-					type : this.type					
+					type : this.type,
+					earnGold : this.earnGold,
+					productArmy : this.productArmy
 				};
 
 				dumped = Object.assign(dumpedOld, dumped);
 
 				return dumped;
-			}	
+			},
+
+			load : function(json)
+			{
+				this.id = json.id;																
+
+				this.position.x = json.position.x;
+				this.position.y = json.position.y;
+
+				this.img = json.img;
+
+				this.type = json.type;
+	        	this.name = json.name;
+
+				this.setType(json.type);
+			},
 
 		};
 
-		return Object.assign(buildingTile, building);			
-	},
+		var output = Object.assign(buildingTile, building);			
 
-
-	makeBarracksShared : function()
-	{
-		var out = Building.makeBuilding("http://"+ GameEngine.server +"/asets/barracks.png");		
-
-		out.type = "barracks";
-		
-		out.earn = 10;
-
-		out.productArmy = function()
-		{			
-			if(Field.getArmyObject(out.position.x, out.position.y))
-			{
-				return;
-			}
-
-			out.player.buildArmy(out.position.x, out.position.y);			
+		if(buildingDescName)
+		{
+			output.setType(buildingDescName);
 		}
 
-		return out;	
-	},
-
-	makeCastleShared : function()
-	{
-		var out = Building.makeBuilding("http://"+ GameEngine.server +"/asets/castle.png");		
-
-		out.type = "castle";
-		
-		out.earn = 20;
-
-		return out;	
+		return output;
 	},
 
 	loadBuilding : function(json)
 	{
-		if(json.type == "barracks")
-		{
-			var building = this.makeBarracksTile();
-			building.load(json);				
+		var building = this.makeBuilding();
+		building.load(json);				
 
-			return building;
-		}
-		if(json.type == "castle")
-		{
-			var building = this.makeCastleTile();
-			building.load(json);				
-
-			return building;
-		}
+		return building;
 	}
 };
