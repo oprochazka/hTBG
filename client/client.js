@@ -106,19 +106,18 @@ Client = {
             if(json.type == "moving")
             {                
                 var field = Field.findById(json.id);
-                
+
                 if(field)
                 {                                 
                     field.moved(json.x, json.y, json.speed);
                 }                
             }
 
-            if(json.type == "addArmy")
-            {            
-                var obj = json.data;
-                var tile = Army.loadArmy(json.data);
-                
-                Field.insertObject(tile, obj.position.x, obj.position.y);                
+            if(json.type == "buildArmy")
+            {
+                var player = GameEngine.findPlayer(json.player.playerId);                            
+
+                player.buildArmy(json.player, json.data);         
             }
 
             if(json.type == "clameBuilding")

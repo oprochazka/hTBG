@@ -136,12 +136,13 @@ ArmyShared = {
 	{
 		army.type = config.type;
 		
+		army.img = config.img;
 		army.initSpeed = config.initSpeed;
 		army.range = config.range;
 		army.initHealth = config.initHealth;
-		army.attackPower = config.attackPower;
-		army.cost = config.cost;
+		army.attackPower = config.attackPower;		
 		army.initFights = config.initFights;
+		army.cost = config.cost;
 	},	
 
 	makeArmyShared : function(armyDescType)

@@ -30,7 +30,6 @@ Army = {
 					return;
 				}
 
-
 				var rangeMap = Army.indexMovement(this).rangeMap;
 
 				for(var i = 0; i < rangeMap.length; i++)

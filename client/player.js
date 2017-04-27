@@ -16,6 +16,15 @@ Player = {
 				}
 			},
 
+			buildArmy : function(player, armyData)
+			{			
+                var army = Army.loadArmy(armyData);
+                
+                this.gold = player.gold;
+
+             	Field.insertObject(army, armyData.position.x, armyData.position.y);
+			},
+
 			setArmy : function(army)
 			{
 				this.army[this.army.length] = army;

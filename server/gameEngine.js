@@ -87,15 +87,15 @@ GameEngine = {
 				{
 					if(!Field.getArmyObject(x,y))
 					{			
-						return player.buildKing(x, y);		
+						return player.buildFreeArmy("king", x, y);		
 					}
 				}
 			}
 		}
 		else
 		{
-			player.buildKing(x, y);	
-			player.buildArcher(x, y);		
+			player.buildFreeArmy("king", x, y);	
+			player.buildFreeArmy("archer", x, y);		
 		}
 
 		if(!this.currentPlayer)

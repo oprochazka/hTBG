@@ -80,13 +80,13 @@ Server = {
             }
         }
 
-        if(json.type == "productBuilding")
+        if(json.type == "buildArmy")
         {        
             var building = Field.findById(json.buildingId);            
 
-            if(building)
+            if(building && building.name == "building")
             {                 
-                building.productArmy();
+                building.buildArmy();
             }
         }
 

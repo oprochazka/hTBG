@@ -38,20 +38,14 @@ BuildingShared = {
 
 			},
 
-			load: function(json)
+			buildArmy : function()
 			{
-				oldLoad.call(this,json);
+				var productArmy = this.productArmy;
 
-				if(json.player)
-				{					
-					this.player = GameEngine.findPlayer(json.player);
-					this.player.addBuilding(this);
+				if(productArmy)
+				{
+					this.player.buildArmy(productArmy, this.position.x, this.position.y);
 				}
-			},
-
-			productArmy : function()
-			{
-
 			},
 
 			refreshStats : function()
@@ -89,7 +83,13 @@ BuildingShared = {
 	        	this.name = json.name;
 
 				this.setType(json.type);
-			},
+
+				if(json.player)
+				{					
+					this.player = GameEngine.findPlayer(json.player);
+					this.player.addBuilding(this);
+				}
+			}
 
 		};
 

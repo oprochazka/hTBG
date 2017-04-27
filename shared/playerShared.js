@@ -10,47 +10,35 @@ PlayerShared = {
 			statusPlay : false,
 			gold : 1000,
 
-			buildArmy : function(x, y)
+			buildArmy : function(name, x, y)
 			{
-				var soldier = Army.makeArmy("soldier");
-				soldier.setPlayer(this);
+				var army = Army.makeArmy(name);
+				army.setPlayer(this);
 
-				if(this.payMoney(ArmyDesc.soldier.cost))
+				if(this.payMoney((ArmyDesc[name]).cost))
 				{
-					soldier.setPlayer(this);
+					army.setPlayer(this);
 
-					this.army[this.army.length] = soldier;
+					this.army[this.army.length] = army;
 
-					soldier.insert(x,y);
+					army.insert(x,y);
 					
-					return soldier;		
+					return army;		
 				}
 
 				return null;
 			},
 
-			buildKing : function(x, y)
+			buildFreeArmy : function(name, x, y)
 			{
-				var king = Army.makeArmy("king");
-				king.setPlayer(this);
+				var army = Army.makeArmy(name);
+				army.setPlayer(this);			
 
-				this.army[this.army.length] = king;
+				this.army[this.army.length] = army;
 
-				king.insert(x,y);		
-
-				return king;		
-			},
-
-			buildArcher : function(x, y)
-			{
-				var archer = Army.makeArmy("archer");
-				archer.setPlayer(this);
-
-				this.army[this.army.length] = archer;
-
-				archer.insert(x,y);		
-
-				return archer;		
+				army.insert(x,y);
+				
+				return army;		
 			},
 
 			payMoney : function(money)

@@ -39,12 +39,8 @@ Building = {
 					{
 						return;
 					}
-					var soldier = Army.makeSoldier(this);
-					
-					if(this.player && this.player.payMoney(soldier.cost))
-					{
-						Client.sendActionMessage({type : "productBuilding", buildingId : this.id}, GameEngine.getControllPlayer());
-					}
+														
+					Client.sendActionMessage({type : "buildArmy", buildingId : this.id}, GameEngine.getControllPlayer());					
 				}
 			}
 		};

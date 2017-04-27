@@ -11,37 +11,33 @@ Player = {
 		var tile = null;
 
 		var sharedBuildArmy = playerShared.buildArmy;
-		var sharedBuildArcher = playerShared.buildArcher;
-		var sharedBuildKing = playerShared.buildKing;
-
+		var sharedBuildFreeArmy = playerShared.buildFreeArmy;	
 		var sharedaddBuilding = playerShared.addBuilding;
 
 		var player = {			
 			id : GameEngine.generateId(),						
 			color: color,			
 
-			buildArmy : function(x, y)
+			buildArmy : function(name, x, y)
 			{
-				var soldier = sharedBuildArmy.call(this, x, y);
-
-				if(soldier)
+				var army = sharedBuildArmy.call(this, name, x, y);
+	
+				if(army)
 				{
-					Server.sendBroadcast(JSON.stringify({type : "addArmy", data : soldier.dump()}));
+					Server.sendBroadcast(JSON.stringify(
+						{type : "buildArmy", player : {playerId : this.id, gold : this.gold}, data : army.dump()}));
 				}
 			},
 
-			buildArcher : function(x, y)
+			buildFreeArmy : function(name, x, y)
 			{
-				var archer = sharedBuildArcher.call(this, x, y);
+				var army = sharedBuildFreeArmy.call(this,name, x, y);
 
-				Server.sendBroadcast(JSON.stringify({type : "addArmy", data : archer.dump()}));
-			},
-
-			buildKing : function(x, y)
-			{
-				var king = sharedBuildKing.call(this, x, y);
-
-				Server.sendBroadcast(JSON.stringify({type : "addArmy", data : king.dump()}));
+				if(army)
+				{
+					Server.sendBroadcast(JSON.stringify(
+						{type : "buildArmy", player : {playerId : this.id, gold : this.gold}, data : army.dump()}));
+				}
 			},
 
 			addBuilding: function(building)
