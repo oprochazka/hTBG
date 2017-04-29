@@ -17,7 +17,7 @@ BuildingShared = {
 		var building = {
 			name : "building",
 			production : 0,			
-			player : null,						
+			player : null,								
 
 			setType : function(buildingDescName)
 			{
@@ -52,14 +52,14 @@ BuildingShared = {
 			buildArmy : function()
 			{
 				var productArmy = this.productArmy;
-				
+
 				if(Field.getArmyObject(this.position.x, this.position.y))
 				{
 					return;
 				}
 					
 
-				if(productArmy)
+				if(productArmy && this.player && this.player.inTurn)
 				{
 					this.player.buildArmy(productArmy, this.position.x, this.position.y);
 				}

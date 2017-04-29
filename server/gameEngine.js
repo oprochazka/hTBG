@@ -25,9 +25,12 @@ GameEngine = {
 
 	nextTurn : function(player)
 	{		
-
 		if(!this.currentPlayer || this.currentPlayer.id == player)
 		{				
+			if(this.currentPlayer)
+			{
+				this.currentPlayer.inTurn = false;
+			}
 			this.currentPlayer = this.Players[this.iPlayer%this.Players.length];			
 
 			this.currentPlayer.newTurn();
@@ -111,6 +114,17 @@ GameEngine = {
 		for(var i = 0; i < this.Players.length; i++)
 		{
 			if(this.Players[i].id == id)
+			{
+				return this.Players[i];
+			}
+		}
+	},
+
+	getControllPlayer : function()
+	{
+		for(var i = 0; i < this.Players.length; i++)
+		{
+			if(this.Players[i].controll)
 			{
 				return this.Players[i];
 			}

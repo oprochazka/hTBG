@@ -8,7 +8,8 @@ PlayerShared = {
 			color : null,			
 			building : [],
 			statusPlay : false,
-			gold : 1000,
+			gold : 50,
+			inTurn : false,
 
 			buildArmy : function(name, x, y)
 			{
@@ -113,6 +114,8 @@ PlayerShared = {
 				this.statusPlay = true;
 
 				this.refreshStats();
+
+				this.inTurn = true;
 			},
 
 			dump: function()

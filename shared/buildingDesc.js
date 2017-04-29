@@ -16,7 +16,7 @@ BuildingDesc = {
 	goldMine : {
 		img : "goldMine.png",
 		productArmy : null,
-		earnGold : 50,
+		earnGold : 10,
 		type : "goldMine"
 	},
 

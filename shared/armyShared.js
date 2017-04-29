@@ -144,6 +144,8 @@ ArmyShared = {
 		army.initFights = config.initFights;
 		army.cost = config.cost;
 		army.powerAttack = config.powerAttack;
+		army.health = config.initHealth;
+
 	},	
 
 	makeArmyShared : function(armyDescType)
@@ -254,6 +256,8 @@ ArmyShared = {
 			load : function(json)
 			{				
 				this.id = json.id;
+				this.setType(json.type);
+
 				this.count = json.count;			
 				this.defend = json.defend;
 				this.speed = json.speed;
@@ -275,8 +279,9 @@ ArmyShared = {
 
 				this.powerAttack = json.powerAttack;
 				this.img = json.img;
+				this.health = json.health;
 
-				this.setType(json.type);
+
 			},
 
 			dump: function(json)
@@ -294,7 +299,8 @@ ArmyShared = {
 					type : this.type,
 					powerAttack : this.powerAttack,
 					img : this.img,
-					fights : this.fights
+					fights : this.fights,
+					health : this.health
 				};
 
 				dumped = Object.assign(dumpedOld, dumped);

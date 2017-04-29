@@ -14,7 +14,7 @@ ArmyDesc ={
 	archer : {
 		img : "archer.png",
 		type : "archer",
-		cost : 30,
+		cost : 50,
 		initHealth : 1,
 		powerAttack : 3,
 		range : 6,
@@ -27,12 +27,12 @@ ArmyDesc ={
 		img : "king.png",
 		type : "king",
 		cost : 0,
-		initHealth : 5,
+		initHealth : 8,
 		powerAttack : 4,
 		range : 1,
 		speed : 3,
 		initSpeed : 3,
-		initFights : 2
+		initFights : 4
 	}
 
 
