@@ -9,15 +9,15 @@ UIPlayer = {
 	armyStats : document.getElementById('armyStats'),
 	nickName : document.getElementById('nickName'),
 	armyStatsImg : document.getElementById('armyStatsImg'),
+	endTurnAudio : document.getElementById('endTurnAudio'),
+	yourTurn : document.getElementById('yourTurn'),
 
 	selectedObject : null,
 
 	init : function()
 	{
 		this.endTurn.addEventListener('click', function(evt) {	     	
-
-	     	Client.sendActionMessage({type : "nextTurn", player : GameEngine.getControllPlayer().id}, GameEngine.getControllPlayer());
-
+			GameEngine.sendNextTurn();	     	
     	}, false);
 
 	},
@@ -29,26 +29,7 @@ UIPlayer = {
 
 	setSelectedObject: function(object)
 	{
-		this.armyStats.innerHTML = "";
-		
-		if(object.name == "army")
-		{
-			this.armyStats.innerHTML = this._getRow("Attack", object.powerAttack);
-			this.armyStats.innerHTML += this._getRow("Movement", object.speed);
-			this.armyStats.innerHTML += this._getRow("Range", object.range); 
-			this.armyStats.innerHTML += this._getRow("Health", object.health); 
-			this.armyStats.innerHTML += this._getRow("Fights", object.fights); 
-
-			armyStatsImg.src= "http://"+ GameEngine.server +"/asets/"+object.img;
-		}
-
-		if(object.name == "building")
-		{			
-			this.armyStats.innerHTML = this._getRow("Product", object.productArmy || "---");
-			this.armyStats.innerHTML += this._getRow("Earn money", object.earnGold || "0");
-
-			armyStatsImg.src= "http://"+ GameEngine.server +"/asets/"+object.img;	
-		}
+		UIDynamic.setSelectedObject(object);
 	},
 
 	refreshUi: function(player)
@@ -64,11 +45,25 @@ UIPlayer = {
 		
 		this.building.innerHTML = player.building.length;
 		this.army.innerHTML = player.army.length;
+		this.yourTurn.style = "display: none";
 
 		if(GameEngine.turnPlayer)
 		{
-			this.playerTurn.innerHTML =  "<span style='color: "+ GameEngine.turnPlayer.color +";' >" + GameEngine.turnPlayer.name + "</span>";			
+			this.playerTurn.innerHTML =  "<span>" + GameEngine.turnPlayer.name + "</span>";				
 		}
+		if(GameEngine.turnPlayer == GameEngine.getControllPlayer())
+		{
+			this.yourTurn.style = "display: block";
+		}
+
 		this.playerGold.innerHTML =  GameEngine.getControllPlayer().gold;	
-	}
+	},
+
+	/*nextTurn: function(player)
+	{
+		if(player == GameEngine.getControllPlayer())
+		{
+			endTurnAudio.play();
+		}
+	}*/
 };

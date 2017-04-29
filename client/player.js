@@ -2,6 +2,10 @@ Player = {
 	makePlayer : function(name)
 	{
 		var playerShared = PlayerShared.makePlayerShared(name);
+		var oldNewTurn = playerShared.newTurn;		
+
+		var nextTurnAudio = new Audio("./sound/endTurn.mp3");
+
 
 		var player = {
 			buildArmy : function(player, armyData)
@@ -11,7 +15,7 @@ Player = {
                 this.gold = player.gold;
 
              	Field.insertObject(army, armyData.position.x, armyData.position.y);
-			},
+			},		
 
 			setArmy : function(army)
 			{
@@ -35,6 +39,16 @@ Player = {
 				this.color = json.color;
 				this.gold = json.gold;
 
+			},
+
+			newTurn: function()
+			{
+				oldNewTurn.call(this);
+
+				if(this.inTurn && this == GameEngine.getControllPlayer())
+				{
+					nextTurnAudio.play();
+				}
 			}
 
 		};

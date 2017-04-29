@@ -1,6 +1,6 @@
 GameEngine = {
 	Players : [],
-	ip : "localhost",
+	ip : "192.168.0.3",
 	port : "8080",
 	server : null,
 	yourName : null,
@@ -17,8 +17,9 @@ GameEngine = {
 
 	sendNextTurn: function()
 	{
-		this.player.inTurn = false;
-		Client.sendActionMessage({type : "nextTurn", player : this.getControllPlayer().id}, this.getControllPlayer());
+		var player = this.getControllPlayer();
+		player.inTurn = false;
+		Client.sendActionMessage({type : "nextTurn", player : player.id}, player);
 	},
 
 	getControllPlayer : function()

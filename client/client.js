@@ -83,7 +83,7 @@ Client = {
 
             if(json.type == "field")
             {
-                GameEngine.startGame(json.data);
+                GameEngine.startGame(json);
             }
 
             

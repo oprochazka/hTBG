@@ -12,8 +12,8 @@ GameEngine = {
 	time : 0,
 	currentPlayer : null,
 	iPlayer : 0,
-	tileW : 24,
-	tileH : 15,
+	tileW : 31,
+	tileH : 20,
 	allMove : false,
 
 	startServer : function()

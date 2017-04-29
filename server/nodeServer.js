@@ -73,7 +73,7 @@ Server = {
         {        
             var field = Field.findById(json.id);
             var fieldDef = Field.findById(json.idDef);
-            
+
             if(field && fieldDef)
             {                 
                 field.attack(fieldDef);
@@ -122,7 +122,7 @@ Server = {
                         }
 
                         connection.sendUTF(JSON.stringify( {type : "players", data : GameEngine.dumpPlayers()}));
-                        connection.sendUTF(JSON.stringify( {type : "field", data : Field.dumpField()}));
+                        connection.sendUTF(JSON.stringify(Field.dumpField()));
                         GameEngine.addPlayer(json.name, json.password);
 
                         return;

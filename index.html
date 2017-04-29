@@ -10,6 +10,10 @@
     </head>
     <body>
         <div id="playerUI" class="playerUI">
+            <div id="yourTurn" class="your-turn">
+                That is your turn!!!!! 
+            </div>
+
             <div id="nickName" class="nick-name">
                 Nick: 
             </div>
@@ -25,6 +29,10 @@
                 <img id="armyStatsImg" class="army-stats-img">
                     
                 </img>
+
+                <div id="buyItems" class="buy-items">
+                  
+                </div>
             </div>
 
             <div class="playerStats">
@@ -55,9 +63,12 @@
         <script src="./shared/armyDesc.js"></script>        
 
         <script src="./client/client.js"></script>
+        <script src="./client/uiDynamic.js"></script>
         <script src="./client/uiPlayer.js"></script>
         
         <script src="./client/draw.js"></script>
+
+        <script src="./client/slideWindow.js"></script>
 
         <script src="./shared/fieldShared.js"></script>
         <script src="./client/field.js"></script>
@@ -78,8 +89,6 @@
 
 		<div class="canvasWrapper">
 		  <canvas class="gameCanvas" id="canvasLayer1" width="1536" height="960" ></canvas>
-
-          
         </div>
 
       <script src="./client/canvasEngine.js"></script>

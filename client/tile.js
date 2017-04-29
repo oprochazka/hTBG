@@ -17,7 +17,7 @@ Tile = {
 
 		var tile = {			
 			square : square,			
-			name : name,
+			name : name,			
 
 			getPosition : function()
 			{
@@ -56,6 +56,11 @@ Tile = {
 		  	setPosition : function (x,y)
 	        {
 	          this.square.setPosition(x, y)
+	        },
+
+	        setDrawPosition: function(x, y)
+	        {
+	        	this.square.setPosition(x, y);
 	        }
 		};
 

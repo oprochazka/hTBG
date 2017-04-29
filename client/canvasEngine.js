@@ -18,6 +18,7 @@ function initialization()
 
   canvas.onselectstart = function () { return false; } // ie
   canvas.onmousedown = function () { return false; }
+
   Draw.initModule(canvas);
   Field.initModule(canvas, 64, 64);
   Client.initModule();
@@ -41,6 +42,8 @@ function initialization()
      var mousePos = getMousePos(canvas, evt);
      Field.onClick(mousePos, evt, "right");
   }, false);
+
+
 
     UIPlayer.init();
    

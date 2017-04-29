@@ -156,17 +156,20 @@ FieldShared = {
 	},
 
 	dumpField : function()
-	{
-		var dumped = [];
+	{		
+		var data = [];
+
 		for(var i = 0; i < this.tileField.length; i++)
 		{
 			var objs = this.tileField[i];
-			dumped[dumped.length] = [];
+			data[data.length] = [];
 			for(var z = 0; z < objs.length; z++)
 			{
-				dumped[i][z] = objs[z].dump();
+				data[i][z] = objs[z].dump();
 			}
 		}
+
+		var dumped = {type : "field", tilesW : this.tilesW, tilesH : this.tilesH, data : data};
 
 		return dumped;
 	}

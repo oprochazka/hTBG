@@ -65,6 +65,11 @@ Draw = {
           
         }
 
+        square.setDrawPosition= function(x, y)
+        {
+          square.setPosition(x, y);
+        };
+
         square.drawImage = function()
         {
             var context = Draw.canvas.getContext('2d');
@@ -115,6 +120,11 @@ Draw = {
           color : "rgba(15, 0, 15, 0.7)",
           focused : false
         };
+
+        square.setDrawPosition= function(x, y)
+        {
+          square.setPosition(x, y);
+        }
 
         square.move = function (x,y)
         {

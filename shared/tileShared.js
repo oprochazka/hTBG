@@ -71,6 +71,7 @@ TileShared = {
 	        	this.type = json.type;
 	        	this.name = json.name;
 	        	
+
 	        	this.setType(json.type);
 	        },
 

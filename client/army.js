@@ -6,11 +6,24 @@ Army = {
 		var square = Draw.makeFillSquare(20, 20);	
 
 		var oldRender = armyShared.render;
-		var oldSetType = armyShared.setType;			
+		var oldSetType = armyShared.setType;	
+		var oldMoved = armyShared.moved;
+
+		var hurtAudio = new Audio("./sound/hurt.mp3");	
+		var fightAudio = new Audio("./sound/fight.mp3");
+		var marchAudio = new Audio("./sound/march.mp3");
 		
 		var army = {	
 			moveMap : null,
 			
+			moved : function(x, y, decreaseSpeed)
+			{
+				oldMoved.call(this,x,y, decreaseSpeed);
+				if(GameEngine.getControllPlayer() == this.player)
+				{				
+					marchAudio.play();
+				}
+			},
 
 			render : function()
 			{				
@@ -35,22 +48,20 @@ Army = {
 				armyShared.square.setImage(army.img);
 			},
 
-			lostFocus: function(mousePos)
+			lostFocus: function(position)
 			{				
 				if(!this.player.controll)
 				{
 					this.moveMap = null;
 					this.rangeMap = null;
 					return;
-				}
-
-				var pos = Field.indexPosition(mousePos);
+				}				
 
 				if(this.moveMap)
 				{					
-					var move = Army.findInMap(pos.x, pos.y, this.moveMap);
-					var range = Army.findInMap(pos.x, pos.y, this.rangeMap);
-					var armyObj = Field.getArmyObject(pos.x, pos.y);
+					var move = Army.findInMap(position.x, position.y, this.moveMap);
+					var range = Army.findInMap(position.x, position.y, this.rangeMap);
+					var armyObj = Field.getArmyObject(position.x, position.y);
 
 					if(range)
 					{						
@@ -62,7 +73,7 @@ Army = {
 						{
 							if(move)
 							{
-								this.moving(pos.x, pos.y);	
+								this.moving(position.x, position.y);	
 							}
 						}
 					}
@@ -71,7 +82,7 @@ Army = {
 					{
 						if(!armyObj)
 						{
-							this.moving(pos.x, pos.y);								
+							this.moving(position.x, position.y);								
 						}			
 					}														
 				}
@@ -81,8 +92,18 @@ Army = {
 			},
 
 			kill : function(fieldDef)
-			{							
-				this.fight(fieldDef);
+			{						
+				if(GameEngine.getControllPlayer() == fieldDef.player)
+				{
+					hurtAudio.play();
+				}
+
+				this.fight(fieldDef);			
+
+				if(GameEngine.getControllPlayer() == this.player)
+				{
+					fightAudio.play();
+				}
 			},
 
 			moving : function(x, y)

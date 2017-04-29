@@ -16,6 +16,8 @@ Field = {
 	moveMap : null,
 	rangeMap : null,
 
+	slideWindow : null,
+
 	initModule: function(canvas, squareW, squareH)
 	{
 		this.squareW = squareW;
@@ -25,16 +27,19 @@ Field = {
 
 		Tile.initModule(this.squareW, this.squareH);
 
-
-		this.tilesW = 40;
-		this.tilesH = 40;		
+		this.slideWindow = SlideWindow.makeSlideWindow();
 	},
 
 	loadField : function(json)
 	{
-		for(var i = 0; i < json.length; i++)
+		var fields = json.data;
+		this.tilesW = json.tilesW;
+		this.tilesH = json.tilesH;		
+
+
+		for(var i = 0; i < fields.length; i++)
 		{
-			var objs = json[i];
+			var objs = fields[i];
 			for(var z = 0; z < objs.length; z++)
 			{
 				var obj = objs[z];
@@ -78,20 +83,7 @@ Field = {
 		Draw.canvas = this.canvas;				
 		Draw.clearScreen();
 
-		for(var i = 0; i < this.tileField.length; i++)
-		{			
-			var field = this.tileField[i];
-
-			if(!field)
-			{
-				continue;
-			}
-
-			for(var z = 0; z < field.length; z++)
-			{
-				this.tileField[i][z].render();
-			}
-		}
+		this.slideWindow.render();
 
 		if(this.cursor)
 		{
@@ -105,8 +97,8 @@ Field = {
 	},
 
   	refreshMouse : function(mousePos, evt) {        
-    	var xOffset = 0;
-    	var yOffset = 0;
+    	var xOffset = this.slideWindow.x;
+    	var yOffset = this.slideWindow.y;
 
 		if(this.cursor)
 		{
@@ -119,10 +111,10 @@ Field = {
 
 		var pos = this.indexPosition(mousePos);
 
-		this.cursor.destX = pos.x;
-		this.cursor.destY = pos.y;
+		this.cursor.destX = pos.x + xOffset;
+		this.cursor.destY = pos.y + yOffset;
 		
-		this.insertObject(this.cursor, pos.x, pos.y);
+		this.insertObject(this.cursor, pos.x + xOffset, pos.y + yOffset);
   	},
 
   	setMoveMap: function(moveMap, rangeMap)
@@ -206,8 +198,16 @@ Field = {
   	},
 
   	onClick: function(mousePos, evt, key) {
-  		var xOffset = 0;
-    	var yOffset = 0;
+  		var xOffset = this.slideWindow.x;
+    	var yOffset = this.slideWindow.y;
+
+		var position = this.indexPosition(mousePos);
+		var posX = position.x;
+		var posY = position.y;
+
+		var positionOrigin = {x : position.x, y : position.y};
+
+		position = {x : posX + xOffset, y : posY + yOffset};
 
 		this.clearMoveMap();
 
@@ -218,10 +218,9 @@ Field = {
 
 
 		this.clickedSquare = Draw.makeSquare(Field.squareW,Field.squareH);
-		this.clickedSquare.setColor("#FF0F0F");
+		this.clickedSquare.setColor("#FF0F0F");		
 
-		var pos = this.indexPosition(mousePos);
-		var object = this.getObject(pos.x, pos.y);
+		var object = this.getObject(position.x, position.y);
 
 		if(this.focusedTile)
 		{
@@ -231,7 +230,7 @@ Field = {
 				var obj = this.focusedTile[i];
 				if(obj.lostFocus)
 				{
-					obj.lostFocus(mousePos, object, key);
+					obj.lostFocus(position, object, key);
 				}
 			}
 		}
@@ -240,16 +239,16 @@ Field = {
 		{
 			for(var i=0; i < object.length; i++)
 			{
-				object[i].onClick(mousePos, key);				
+				object[i].onClick(position, key);				
 			}
 		}
 
 		this.focusedTile = object;
 
-		this.clickedSquare.destX = pos.x;
-		this.clickedSquare.destY = pos.y;
+		this.clickedSquare.destX = position.x;
+		this.clickedSquare.destY = position.y;
 		
-		this.insertObject(this.clickedSquare, pos.x, pos.y);
+		this.insertObject(this.clickedSquare, position.x, position.y);
   	},
 
   	insertObject : function(object, x, y)
