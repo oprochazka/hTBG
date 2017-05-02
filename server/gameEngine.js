@@ -1,3 +1,4 @@
+require("./textureMap.js");
 require("./tile.js");
 require("./army.js");
 require("./building.js");
@@ -16,9 +17,22 @@ GameEngine = {
 	tileH : 20,
 	allMove : false,
 
-	startServer : function()
+	startServerMap : function(path)
 	{
-		Field.makeField(this.tileW, this.tileH);		
+		TextureMap.loadTexture(path);
+	},
+
+	startServer : function(w, h, mapArray)
+	{
+		if(mapArray)
+		{
+			Field.makeFieldByMap(w, h, mapArray);
+		}
+		else
+		{
+			Field.makeField(this.tileW, this.tileH);	
+		}
+
 
 		setInterval(this.onIter, 5000);
 	},

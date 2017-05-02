@@ -2,13 +2,17 @@ Object.assign = require('object-assign')
 
 Server = {
     history : [],
-    clients : [],    
+    clients : [],
+    getPixel : null,    
 
     initModule : function()
     {        
         var webSocketsServerPort = 1337;
         var webSocketServer = require('websocket').server;
         var http = require('http');
+
+        GetPixel = require("get-pixels");
+
         var merge = require('merge'), original, cloned;
 
         var tileShared = require("./../shared/tilesDesc.js");   
@@ -20,7 +24,7 @@ Server = {
         var tileShared = require("./../shared/tileShared.js");
         var playerShared = require("./../shared/buildingShared.js");
         var playerShared = require("./../shared/playerShared.js");        
-
+            
 
         var gameEngine = require("./gameEngine.js");       
         
@@ -38,9 +42,15 @@ Server = {
 
         this._onAccepting();
 
-        GameEngine.startServer();
+        //GameEngine.startServer();
+        //TextureMap.loadTexture("./../maps/map1.png");
+        GameEngine.startServerMap("./../maps/map1.png")
     },
 
+    testing : function()
+    {
+       
+    },
 
     sendBroadcast : function(msg)
     {

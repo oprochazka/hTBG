@@ -35,7 +35,7 @@ SlideWindow = {
 
 				for(var x = initX; x < (this.w + this.x) && x < Field.tilesW; x++)
 				{
-					for(var y = initY; y < (this.h + this.y) && y < Field.tilesW; y++)
+					for(var y = initY; y < (this.h + this.y) && y < Field.tilesH; y++)
 					{
 						var objects = Field.getObject(x, y);
 						if(!objects)
@@ -84,8 +84,16 @@ SlideWindow = {
 				{
 					y++;
 				}
-
 				this.move(x, y);
+				if(this.x < 0 || (this.x + this.w) > Field.tilesW + 1 )
+				{
+					this.move(-x, 0);
+				}
+				if(this.y < 0 || (this.y + this.h) > Field.tilesH + 6 )
+				{
+					this.move(0, -y);
+				}
+		//		debugger;
 			}			
 
 		};
