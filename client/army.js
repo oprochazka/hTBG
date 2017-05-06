@@ -15,6 +15,7 @@ Army = {
 		
 		var army = {	
 			moveMap : null,
+			option : null,
 			
 			moved : function(x, y, decreaseSpeed)
 			{
@@ -36,6 +37,11 @@ Army = {
 					square.setColor(this.player.color);
 				}
 
+				if(this.option)
+				{
+					this.option.render();
+				}
+
 				square.render();
 			},
 
@@ -48,35 +54,18 @@ Army = {
 				armyShared.square.setImage(army.img);
 			},
 
-			lostFocus: function(position)
-			{				
+			lostFocus: function(position, object, key, lastMouseKey)
+			{			
 				if(!this.player.controll)
 				{
 					this.moveMap = null;
 					this.rangeMap = null;
 					return;
-				}				
-
-				if(this.moveMap)
-				{					
+				}					
+				var armyObj = Field.getArmyObject(position.x, position.y);
+				if(lastMouseKey == "left" && this.moveMap)
+				{
 					var move = Army.findInMap(position.x, position.y, this.moveMap);
-					var range = Army.findInMap(position.x, position.y, this.rangeMap);
-					var armyObj = Field.getArmyObject(position.x, position.y);
-
-					if(range)
-					{						
-						if(armyObj && !armyObj.player.controll)
-						{
-							this.attack(armyObj);
-						}
-						else
-						{
-							if(move)
-							{
-								this.moving(position.x, position.y);	
-							}
-						}
-					}
 
 					if(move)
 					{
@@ -84,7 +73,19 @@ Army = {
 						{
 							this.moving(position.x, position.y);								
 						}			
-					}														
+					}		
+				}
+				if(lastMouseKey == "right" && this.moveMap)
+				{					
+					var range = Army.findInMap(position.x, position.y, this.rangeMap);					
+
+					if(range)
+					{						
+						if(armyObj && !armyObj.player.controll)
+						{
+							this.attack(armyObj);
+						}		
+					}										
 				}
 
 				this.moveMap = null;
@@ -113,8 +114,16 @@ Army = {
 			},
 
 			onClick : function(pos, key)
-			{					
+			{		
 				if(key == "left")
+				{
+					var maps = Army.indexMovement(this);				
+				
+					Field.setMoveMap(maps.moveMap, []);
+
+					UIPlayer.setSelectedObject(this);
+				}
+				if(key == "right")
 				{
 					var maps = Army.indexMovement(this);				
 
@@ -124,7 +133,7 @@ Army = {
 						range = [];
 					}
 
-					Field.setMoveMap(maps.moveMap, range);
+					Field.setMoveMap([], range);
 
 					UIPlayer.setSelectedObject(this);
 				}

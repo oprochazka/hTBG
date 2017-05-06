@@ -40,7 +40,7 @@ Field = {
 			var y1 = Math.floor((Math.random() * this.tilesH));
 			var z = Math.floor((Math.random() * 4));
 			
-			if(Field.getObject(x1,y1)[0].type != "water" && z != 3)
+			if(Field.getObject(x1,y1)[0].type != "water" && z == 2)
 			{
 				var building = Building.makeBuilding("barracks");
 				this.insertObject(building, x1, y1);					
@@ -52,6 +52,12 @@ Field = {
 				var building = Building.makeBuilding("castle");
 				this.insertObject(building, x1, y1);				
 			}						
+
+			if(Field.getObject(x1,y1)[0].type == "grass" && z == 1)
+			{
+				var building = Building.makeBuilding("stable");
+				this.insertObject(building, x1, y1);				
+			}
 		}
 
 		for(var i = 0; i < 100; i++)

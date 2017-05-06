@@ -155,7 +155,7 @@ Draw = {
 
         square.render = function()
         {
-          var context = Draw.canvas.getContext('2d')
+          var context = Draw.canvas.getContext('2d');
 
           context.beginPath();
 
@@ -169,6 +169,51 @@ Draw = {
 
         return square;
     },
+
+    makeText : function()
+    {
+      var out = {
+        x : 0,
+        y : 0,
+        text : "",
+        color : "rgba(0, 0, 0, 1)",
+        font : "30px Arial",
+
+        move : function(x, y)
+        {
+          this.x += x;
+          this.y += y;
+        },
+
+        setPosition : function(x, y)
+        {
+          this.x = x;
+          this.y = y;
+        },
+
+        render : function()
+        {
+          var context = Draw.canvas.getContext('2d');
+          context.font = this.font;
+          context.fillStyle=this.color;        
+          
+          context.fillText(this.text,this.x,this.y);
+          
+        },
+
+        setText : function(text)
+        {
+          this.text = text;
+        },
+        setColor : function(color)
+        {
+          this.color = color;
+        } 
+      };
+
+      return out;
+    },
+
 
     clearScreen : function()
     {

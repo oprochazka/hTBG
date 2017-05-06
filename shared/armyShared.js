@@ -145,6 +145,7 @@ ArmyShared = {
 		army.cost = config.cost;
 		army.powerAttack = config.powerAttack;
 		army.health = config.initHealth;
+		army.speed = config.initSpeed;
 
 	},	
 
@@ -157,7 +158,7 @@ ArmyShared = {
 		var army = {
 			name : "army",
 			count : 0,
-			attackPower : 2,
+			powerAttack : 2,
 			range : 1,
 			defend : 0,
 			speed : 3,
@@ -228,7 +229,7 @@ ArmyShared = {
 
 			countFight : function(playerDef)
 			{
-				return playerDef.health - this.attackPower;
+				return playerDef.health - this.powerAttack;
 			},
 
 			fight : function(playerDef)

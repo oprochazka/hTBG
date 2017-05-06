@@ -230,7 +230,7 @@ Field = {
 				var obj = this.focusedTile[i];
 				if(obj.lostFocus)
 				{
-					obj.lostFocus(position, object, key);
+					obj.lostFocus(position, this.object,key, this.lastMouseKey);
 				}
 			}
 		}
@@ -247,6 +247,8 @@ Field = {
 
 		this.clickedSquare.destX = position.x;
 		this.clickedSquare.destY = position.y;
+
+		this.lastMouseKey = key;
 		
 		this.insertObject(this.clickedSquare, position.x, position.y);
   	},

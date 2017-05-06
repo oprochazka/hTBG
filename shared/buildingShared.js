@@ -58,6 +58,7 @@ BuildingShared = {
 					return;
 				}
 					
+				console.log(this.productArmy, this.type);
 
 				if(productArmy && this.player && this.player.inTurn)
 				{

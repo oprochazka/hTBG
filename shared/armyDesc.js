@@ -8,7 +8,7 @@ ArmyDesc ={
 		range : 1,
 		speed : 3,
 		initSpeed : 3,
-		initFights : 1
+		initFights : 2
 	},
 
 	archer : {
@@ -20,7 +20,7 @@ ArmyDesc ={
 		range : 6,
 		speed : 6,
 		initSpeed : 6,
-		initFights : 2
+		initFights : 1
 	},
 
 	king : {
@@ -33,6 +33,18 @@ ArmyDesc ={
 		speed : 3,
 		initSpeed : 3,
 		initFights : 4
+	},
+
+	horseman : {
+		img : "horseman.png",
+		type : "horseman",
+		cost : 60,
+		initHealth : 2,
+		powerAttack : 1,
+		range : 1,
+		speed : 10,
+		initSpeed : 10,
+		initFights : 1
 	}
 
 

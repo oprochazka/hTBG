@@ -112,7 +112,8 @@ GameEngine = {
 		else
 		{
 			player.buildFreeArmy("king", x, y);	
-			player.buildFreeArmy("archer", x, y);		
+			player.buildFreeArmy("archer", x, y);	
+			player.buildFreeArmy("horseman", x + 1, y);				
 		}
 
 		if(!this.currentPlayer)

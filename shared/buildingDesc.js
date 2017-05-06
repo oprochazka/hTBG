@@ -19,7 +19,20 @@ BuildingDesc = {
 		earnGold : 10,
 		type : "goldMine"
 	},
-
+	stable : {
+		img : "stable.png",
+		productArmy : "horseman",
+		earnGold : 0,
+		type : "stable"	
+	},
+	wall : {
+		img : "wall.png",
+		productArmy : null,
+		earnGold : 0,
+		type : "wall",
+		health : 2,
+		border : true	
+	},
 	grayve : {
 		img : "rip.png",
 		productArmy : null,
