@@ -45,6 +45,19 @@ ArmyDesc ={
 		speed : 10,
 		initSpeed : 10,
 		initFights : 1
+	},
+
+	builder : {
+		img : "builder.png",
+		type : "builder",
+		productBuilding : ["wall"],
+		cost : 50,
+		initHealth : 1,
+		powerAttack : 1,
+		range : 1,
+		speed : 4,
+		initSpeed : 4,
+		initFights : 1
 	}
 
 

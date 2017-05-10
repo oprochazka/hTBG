@@ -24,18 +24,18 @@ UIDynamic = {
 			armyStatsImg.src= "http://"+ GameEngine.server +"/asets/"+object.img;
 		}
 
-		if(object.name == "building")
+	/*	if(object.name == "building")
 		{			
 			this.armyStats.innerHTML = this._getRow("Product", object.productArmy || "---");
 			this.armyStats.innerHTML += this._getRow("Earn money", object.earnGold || "0");
 
 			armyStatsImg.src= "http://"+ GameEngine.server +"/asets/"+object.img;	
 
-			/*if(object.productArmy)
+			if(object.productArmy)
 			{
 				this.buyItems.addChild(this.addProduct(ArmyDesc[object.productArmy]));				
-			}*/
-		}
+			}
+		}*/
 	},
 
 	addProduct: function(product)

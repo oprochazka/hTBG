@@ -6,7 +6,7 @@ Army = {
 		var army = {						
 			moving: function(x, y)
 			{
-				var moveMap = Army.indexMovement(this).moveMap;
+				var moveMap = this.indexMovement().moveMap;
 
 				for(var i = 0; i < moveMap.length; i++)
 				{
@@ -32,7 +32,7 @@ Army = {
 					return;
 				}
 
-				var rangeMap = Army.indexMovement(this).rangeMap;
+				var rangeMap = this.indexMovement().rangeMap;
 
 				for(var i = 0; i < rangeMap.length; i++)
 				{

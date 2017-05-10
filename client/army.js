@@ -65,7 +65,7 @@ Army = {
 				var armyObj = Field.getArmyObject(position.x, position.y);
 				if(lastMouseKey == "left" && this.moveMap)
 				{
-					var move = Army.findInMap(position.x, position.y, this.moveMap);
+					var move = this.findInMap(position.x, position.y, this.moveMap);
 
 					if(move)
 					{
@@ -77,7 +77,7 @@ Army = {
 				}
 				if(lastMouseKey == "right" && this.moveMap)
 				{					
-					var range = Army.findInMap(position.x, position.y, this.rangeMap);					
+					var range = this.findInMap(position.x, position.y, this.rangeMap);					
 
 					if(range)
 					{						
@@ -115,17 +115,17 @@ Army = {
 
 			onClick : function(pos, key)
 			{		
+				Field.canvasUi.setType(this);
 				if(key == "left")
 				{
-					var maps = Army.indexMovement(this);				
-				
-					Field.setMoveMap(maps.moveMap, []);
-
+					var maps = this.indexMovement();				
+					Field.setMoveMap({color : null, map: maps.moveMap });
+			
 					UIPlayer.setSelectedObject(this);
 				}
 				if(key == "right")
 				{
-					var maps = Army.indexMovement(this);				
+					var maps = this.indexMovement();				
 
 					var range = maps.rangeMap;
 					if(this.fights <= 0)
@@ -133,7 +133,7 @@ Army = {
 						range = [];
 					}
 
-					Field.setMoveMap([], range);
+					Field.setMoveMap({color : "rgba(10, 110, 10, 0.4)", map: range});
 
 					UIPlayer.setSelectedObject(this);
 				}

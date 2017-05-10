@@ -138,6 +138,12 @@ Draw = {
           square.y = y;
         }
 
+        square.setSize = function(w, h)
+        {
+          square.w = w;
+          square.h = h;
+        }
+
         square.setColor = function(hex)
         {
             square.color=hex;
@@ -175,6 +181,8 @@ Draw = {
       var out = {
         x : 0,
         y : 0,
+        w : 0,
+        h : 0,
         text : "",
         color : "rgba(0, 0, 0, 1)",
         font : "30px Arial",
@@ -197,6 +205,11 @@ Draw = {
           context.font = this.font;
           context.fillStyle=this.color;        
           
+          var size = context.measureText(this.text);
+
+          this.w = size.width;
+          this.h = size.height;
+
           context.fillText(this.text,this.x,this.y);
           
         },
@@ -204,6 +217,15 @@ Draw = {
         setText : function(text)
         {
           this.text = text;
+
+          var context = Draw.canvas.getContext('2d');
+          context.font = this.font;
+          context.fillStyle=this.color;        
+          
+          var size = context.measureText(this.text);
+
+          this.w = size.width;
+          this.h = size.height;
         },
         setColor : function(color)
         {

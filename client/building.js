@@ -33,17 +33,19 @@ Building = {
 					square.render();
 				}				
 			},
+			onProductArmy : function(army)
+			{
+				if(Field.getArmyObject(this.position.x, this.position.y))
+				{
+					return;
+				}
+													
+				Client.sendActionMessage({type : "buildArmy", buildingId : this.id, productArmy : army}, GameEngine.getControllPlayer());	
+			},
+
 			onClick : function(mousePos, key)
 			{
-				if(key == "right")
-				{
-					if(Field.getArmyObject(this.position.x, this.position.y))
-					{
-						return;
-					}
-														
-					Client.sendActionMessage({type : "buildArmy", buildingId : this.id}, GameEngine.getControllPlayer());					
-				}
+				Field.canvasUi.setType(this);
 				UIPlayer.setSelectedObject(this);
 			}
 		};

@@ -1,154 +1,4 @@
 ArmyShared = {
-	findInMap : function(x, y, mapObj)
-	{
-		for(var i =0; i < mapObj.length; i++)
-		{
-			var map = mapObj[i];
-
-			if(x == map.x && y == map.y)
-			{		
-				return mapObj[i];		
-			}
-		}
-	},
-
-	_countFar : function(x, y, moveMap, movement)
-	{
-		var speed = 0;		
-
-		for(var i = 0; i < moveMap.length; i++)
-		{
-			map = moveMap[i];
-
-			if(Math.abs(map.x-x) == 1 && map.y-y == 0)
-			{
-				if( map.speed > speed )
-				{
-					speed = map.speed;
-				}
-			}
-			if(map.x-x == 0 && Math.abs(map.y-y) == 1)
-			{
-				if( map.speed > speed )
-				{
-					speed = map.speed;
-				}	
-			}
-		}
-
-		var lessSpeed = speed - movement;
-
-		if(lessSpeed < 0)
-		{
-			return false;
-		}
-		var map = {x : x, y : y, speed : lessSpeed};
-		for(var i = 0; i < moveMap.length; i++)
-		{
-			if(moveMap[i].x == map.x && moveMap[i].y == map.y)
-			{
-				if(map.speed <= moveMap[i].speed)
-				{
-					return;
-				}
-			}
-
-		}
-
-		moveMap[moveMap.length] = map;
-	},
-
-	compare : function(x, y, moveMap, rangeMap)
-	{	
-		var objs = Field.getObject(x, y);
-
-		if(!objs || !objs[0])
-		{
-			return;					
-		}
-		tile = objs[0];	
-
-		if(tile.name != "tile")
-		{
-			return;
-		}	
-
-		var mov = tile.configuration.movement;
-		var range = tile.configuration.range;
-
-		this._countFar(x, y, moveMap, mov);
-		this._countFar(x, y, rangeMap, range);
-	},
-
-	setSurrounding : function(x, y, map)
-	{
-		map[map.length] = {x : x - 1, y : y, speed : 0};
-		map[map.length] = {x : x + 1, y : y,  speed : 0};
-		map[map.length] = {x : x, y : y + 1, speed : 0};
-		map[map.length] = {x : x, y : y - 1, speed : 0};
-	},
-
-	indexMovement : function(army)
-	{
-		var speed = army.speed;
-		var range = army.range;
-
-		var moveMap = [];
-		var rangeMap = [];
-
-		moveMap[0] = {x : army.position.x, y : army.position.y, speed : speed};
-		rangeMap[0] = {x : army.position.x, y : army.position.y, speed : range};
-
-		this.setSurrounding(army.position.x, army.position.y, rangeMap);		
-
-		var maxRange = speed;
-
-		if(range > maxRange)
-		{
-			maxRange = range;
-		}
-
-		for(var y = 0; y <= maxRange; y++)
-		{
-			for(var x = 0; x <= maxRange; x++)
-			{
-				var pX = army.position.x + x;
-				var pY = army.position.y + y;
-
-				var mX = army.position.x - x;
-				var mY = army.position.y - y;
-
-				var map = this.compare(pX, pY, moveMap, rangeMap);
-				map= this.compare(pX, mY, moveMap, rangeMap);
-				map = this.compare(mX, pY, moveMap, rangeMap);
-				map = this.compare(mX, mY, moveMap, rangeMap);
-				
-			}	
-		}
-		
-		army.moveMap = moveMap;
-		army.rangeMap = rangeMap;		
-
-		return {moveMap : moveMap, rangeMap : rangeMap};
-	},
-
-	_setArmyConfig : function(army, config)
-	{
-		army.type = config.type;
-		
-		army.img = config.img;
-		army.initSpeed = config.initSpeed;
-		army.range = config.range;
-		army.initHealth = config.initHealth;
-		
-		army.initFights = config.initFights;
-		army.cost = config.cost;
-		army.powerAttack = config.powerAttack;
-		army.health = config.initHealth;
-		army.speed = config.initSpeed;
-
-	},	
-
 	makeArmyShared : function(armyDescType)
 	{
 		var armyTile = Tile.makeTile();
@@ -171,14 +21,163 @@ ArmyShared = {
 			cost : 50,
 			fights : 2,
 
+			findInMap : function(x, y, mapObj)
+			{
+				for(var i =0; i < mapObj.length; i++)
+				{
+					var map = mapObj[i];
+
+					if(x == map.x && y == map.y)
+					{		
+						return mapObj[i];		
+					}
+				}
+			},
+
+			_countFar : function(x, y, moveMap, movement)
+			{
+				var speed = 0;		
+
+				for(var i = 0; i < moveMap.length; i++)
+				{
+					map = moveMap[i];
+
+					if(Math.abs(map.x-x) == 1 && map.y-y == 0)
+					{
+						if( map.speed > speed )
+						{
+							speed = map.speed;
+						}
+					}
+					if(map.x-x == 0 && Math.abs(map.y-y) == 1)
+					{
+						if( map.speed > speed )
+						{
+							speed = map.speed;
+						}	
+					}
+				}
+
+				var lessSpeed = speed - movement;
+
+				if(lessSpeed < 0)
+				{
+					return false;
+				}
+				var map = {x : x, y : y, speed : lessSpeed};
+				for(var i = 0; i < moveMap.length; i++)
+				{
+					if(moveMap[i].x == map.x && moveMap[i].y == map.y)
+					{
+						if(map.speed <= moveMap[i].speed)
+						{
+							return;
+						}
+					}
+
+				}
+
+				moveMap[moveMap.length] = map;
+			},
+
+			compare : function(x, y, moveMap, rangeMap)
+			{	
+				var objs = Field.getObject(x, y);
+
+				if(!objs || !objs[0])
+				{
+					return;					
+				}
+				tile = objs[0];	
+
+				if(tile.name != "tile")
+				{
+					return;
+				}	
+
+				var mov = tile.configuration.movement;
+				var range = tile.configuration.range;
+
+				this._countFar(x, y, moveMap, mov);
+				this._countFar(x, y, rangeMap, range);
+			},
+
+			setSurrounding : function(x, y, map)
+			{
+				map[map.length] = {x : x - 1, y : y, speed : 0};
+				map[map.length] = {x : x + 1, y : y,  speed : 0};
+				map[map.length] = {x : x, y : y + 1, speed : 0};
+				map[map.length] = {x : x, y : y - 1, speed : 0};
+			},
+
+			indexMovement : function()
+			{
+				var speed = this.speed;
+				var range = this.range;
+
+				var moveMap = [];
+				var rangeMap = [];
+
+				moveMap[0] = {x : this.position.x, y : this.position.y, speed : speed};
+				rangeMap[0] = {x : this.position.x, y : this.position.y, speed : range};
+
+				this.setSurrounding(this.position.x, this.position.y, rangeMap);		
+
+				var maxRange = speed;
+
+				if(range > maxRange)
+				{
+					maxRange = range;
+				}
+
+				for(var y = 0; y <= maxRange; y++)
+				{
+					for(var x = 0; x <= maxRange; x++)
+					{
+						var pX = this.position.x + x;
+						var pY = this.position.y + y;
+
+						var mX = this.position.x - x;
+						var mY = this.position.y - y;
+
+						var map = this.compare(pX, pY, moveMap, rangeMap);
+						map= this.compare(pX, mY, moveMap, rangeMap);
+						map = this.compare(mX, pY, moveMap, rangeMap);
+						map = this.compare(mX, mY, moveMap, rangeMap);
+						
+					}	
+				}
+				
+				this.moveMap = moveMap;
+				this.rangeMap = rangeMap;		
+
+				return {moveMap : moveMap, rangeMap : rangeMap};
+			},
+
 			setType : function(armyDescType)
 			{
 				var config = ArmyDesc[armyDescType];
 
-				ArmyShared._setArmyConfig(this, config);
+				this._setArmyConfig(config);
 
 				return config;				
 			},
+
+			_setArmyConfig : function(config)
+			{
+				this.type = config.type;
+				
+				this.img = config.img;
+				this.initSpeed = config.initSpeed;
+				this.range = config.range;
+				this.initHealth = config.initHealth;
+				
+				this.initFights = config.initFights;
+				this.cost = config.cost;
+				this.powerAttack = config.powerAttack;
+				this.health = config.initHealth;
+				this.speed = config.initSpeed;		
+			},	
 
 			newTurn : function(player)
 			{

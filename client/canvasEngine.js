@@ -1,6 +1,8 @@
 var testSquare;
 var first = true;
 
+var canvasW = 1536;
+var canvasH = 960;
 
 function getMousePos (canvas, evt) {
     var rect = canvas.getBoundingClientRect();
@@ -17,53 +19,74 @@ function initialization()
   $('body').on('contextmenu', '#canvasLayer1', function(e){ return false; });
 
   canvas.onselectstart = function () { return false; } // ie
-  canvas.onmousedown = function () { return false; }
+  canvas.onmousedown = function () { return false; }  
 
   Draw.initModule(canvas);
-  Field.initModule(canvas, 64, 64);
+
+  CanvasUi.initModule();
+  Field.initModule(canvas, 64, 64, CanvasUi.canvasUi);
   Client.initModule();
+  
 
 
   canvas.addEventListener('mousemove', function(evt) {
       var mousePos = getMousePos(canvas, evt);
       
-      Field.refreshMouse(mousePos, evt);
+      if(mousePos.y < 960 - CanvasUi.canvasUi.position.h)
+      {
+        Field.refreshMouse(mousePos, evt);
+      }
+      else
+      {
+        CanvasUi.canvasUi.refreshMouse(mousePos, evt);
+      }
 
     }, false);
 
   canvas.addEventListener('click', function(evt) {
       var mousePos = getMousePos(canvas, evt );
-      
-      Field.onClick(mousePos, evt, "left");
+
+      if(mousePos.y < 960 - CanvasUi.canvasUi.position.h)
+      {
+        Field.onClick(mousePos, evt, "left");
+      }
+       else
+      {
+        CanvasUi.canvasUi.onClick(mousePos, evt, "left");
+      }
 
     }, false);
 
   canvas.addEventListener('contextmenu', function (evt){
      var mousePos = getMousePos(canvas, evt);
-     Field.onClick(mousePos, evt, "right");
+      if(mousePos.y < 960 - CanvasUi.canvasUi.position.h)
+      {
+        Field.onClick(mousePos, evt, "right");
+      }
+      else
+      {
+        CanvasUi.canvasUi.onClick(mousePos, evt, "right");
+      }
   }, false);
 
 
 
-    UIPlayer.init();
-   
-  //Field.move(10, 10);
-
-   // GameEngine.startGame();
+  UIPlayer.init();
 }
-
-
 
 function gameLoop () 
 {
+
     if(first)
     {
        initialization();
+      
     }
 
     window.requestAnimationFrame(gameLoop);        
 
     Field.render();
+    CanvasUi.canvasUi.render();
 
     first = false;
     var player = GameEngine.getControllPlayer();

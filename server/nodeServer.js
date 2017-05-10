@@ -15,18 +15,23 @@ Server = {
 
         var merge = require('merge'), original, cloned;
 
-        var tileShared = require("./../shared/tilesDesc.js");   
-        var buildingShared = require("./../shared/buildingDesc.js");   
-        var playerShared = require("./../shared/armyDesc.js");  
+        require("./../shared/tilesDesc.js");   
+        require("./../shared/buildingDesc.js");   
+        require("./../shared/armyDesc.js");  
+        
+        //require("./../shared/builderDesc.js");        
+        
+        require("./../shared/builderShared.js");        
 
-        var fieldShared = require("./../shared/fieldShared.js");
-        var armyShared = require("./../shared/armyShared.js");
-        var tileShared = require("./../shared/tileShared.js");
-        var playerShared = require("./../shared/buildingShared.js");
-        var playerShared = require("./../shared/playerShared.js");        
-            
+        require("./../shared/fieldShared.js");
+        require("./../shared/armyShared.js");
+        require("./../shared/tileShared.js");
+        require("./../shared/buildingShared.js");
+        require("./../shared/playerShared.js");     
+        require("./../shared/objectDesc.js");        
+        
 
-        var gameEngine = require("./gameEngine.js");       
+        require("./gameEngine.js");       
         
 
         var server = http.createServer(function(request, response) {
@@ -96,7 +101,7 @@ Server = {
 
             if(building && building.name == "building")
             {                 
-                building.buildArmy();
+                building.buildArmy(json.productArmy);
             }
         }
 

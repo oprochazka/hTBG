@@ -49,21 +49,18 @@ BuildingShared = {
 				}
 			},
 
-			buildArmy : function()
+			buildArmy : function(productArmy)
 			{
-				var productArmy = this.productArmy;
-
 				if(Field.getArmyObject(this.position.x, this.position.y))
 				{
 					return;
 				}
 					
-				console.log(this.productArmy, this.type);
-
 				if(productArmy && this.player && this.player.inTurn)
 				{
 					this.player.buildArmy(productArmy, this.position.x, this.position.y);
 				}
+				
 			},
 
 			refreshStats : function()
