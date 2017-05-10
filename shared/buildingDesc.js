@@ -1,48 +1,55 @@
 BuildingDesc = {
 	barracks : {
 		img : "barracks.png",
-		productArmy : ["soldier", "builder"],
+		productObject : ["soldier", "builder"],
 		earnGold : 0,
 		cost : 0,
-		type : "barracks"
+		type : "barracks",
+		name : "building"
 	},
 
 	castle : {
 		img : "castle.png",
-		productArmy : ["archer"],
+		productObject : ["archer"],
 		earnGold : 0,
 		cost : 0,
-		type : "castle"
+		type : "castle",
+		name : "building"
 	},
 
 	goldMine : {
 		img : "goldMine.png",
-		productArmy : [],
+		productObject : [],
 		earnGold : 10,
 		cost : 0,
-		type : "goldMine"
+		type : "goldMine",
+		name : "building"
 	},
 	stable : {
 		img : "stable.png",
-		productArmy : ["horseman"],
+		productObject : ["horseman"],
 		earnGold : 0,
 		cost : 0,
-		type : "stable"	
+		type : "stable",
+		name : "building"
 	},
 	wall : {
 		img : "wall.png",
-		productArmy : [],
+		productObject : [],
 		earnGold : 0,
 		cost : 20,
 		type : "wall",
 		health : 2,
-		border : true	
+		border : true,
+		name : "building",
+		modifyMove : 1000
 	},
 	grayve : {
 		img : "rip.png",
-		productArmy : [],
+		productObject : [],
 		earnGold : 0,		
-		type : "grayve"	
+		type : "grayve",
+		name : "building"	
 	}
 
 };

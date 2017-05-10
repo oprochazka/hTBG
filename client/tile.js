@@ -1,17 +1,16 @@
-Tile = {
-	tileSizeW : 0,
-	tileSizeH : 0,
-
+Tile = {	
 	initModule : function(tileSizeW, tileSizeH)
 	{
-		this.tileSizeW = tileSizeW;
-		this.tileSizeH = tileSizeH;
+	
 	},
 
 	makeTile : function(tileDescName)
 	{		
+		var tileSizeW = Field.squareW;
+		var tileSizeH = Field.squareH;
+
 		var tileShared = TileShared.makeTileShared(tileDescName);
-		var square = Draw.makeSquare(this.tileSizeW, this.tileSizeH);
+		var square = Draw.makeSquare(tileSizeW, tileSizeH);
 
 		var oldSetType = tileShared.setType;	
 
@@ -28,6 +27,7 @@ Tile = {
 			{				
 				var config = oldSetType.call(this, armyDescType);
 				
+				this.name = config.name;
 				this.img = "http://"+ GameEngine.server +"/asets/"+ config.img;
 
 				this.square.setImage(this.img);

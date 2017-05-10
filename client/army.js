@@ -16,6 +16,7 @@ Army = {
 		var army = {	
 			moveMap : null,
 			option : null,
+			flag : null,
 			
 			moved : function(x, y, decreaseSpeed)
 			{
@@ -63,7 +64,7 @@ Army = {
 					return;
 				}					
 				var armyObj = Field.getArmyObject(position.x, position.y);
-				if(lastMouseKey == "left" && this.moveMap)
+				if(this.flag == "move" && this.moveMap)
 				{
 					var move = this.findInMap(position.x, position.y, this.moveMap);
 
@@ -75,7 +76,7 @@ Army = {
 						}			
 					}		
 				}
-				if(lastMouseKey == "right" && this.moveMap)
+				if(this.flag == "attack" && this.moveMap)
 				{					
 					var range = this.findInMap(position.x, position.y, this.rangeMap);					
 
@@ -90,6 +91,7 @@ Army = {
 
 				this.moveMap = null;
 				this.rangeMap = null;
+				this.flag = null;
 			},
 
 			kill : function(fieldDef)
@@ -118,6 +120,7 @@ Army = {
 				Field.canvasUi.setType(this);
 				if(key == "left")
 				{
+					this.flag = "move";
 					var maps = this.indexMovement();				
 					Field.setMoveMap({color : null, map: maps.moveMap });
 			
@@ -125,6 +128,7 @@ Army = {
 				}
 				if(key == "right")
 				{
+					this.flag = "attack";
 					var maps = this.indexMovement();				
 
 					var range = maps.rangeMap;

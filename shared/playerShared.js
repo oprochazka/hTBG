@@ -11,22 +11,27 @@ PlayerShared = {
 			gold : 50,
 			inTurn : false,
 
-			buildArmy : function(name, x, y)
+			buildObject : function(name, x, y)
 			{
-				var army = Army.makeArmy(name);
-				army.setPlayer(this);
-
-				if(this.payMoney((ArmyDesc[name]).cost))
+				var constructor = ObjectDesc.getConstructor(name);
+				var object = constructor(name);
+				object.setPlayer(this);
+				
+				if(this.payMoney((ObjectDesc.getConfiguration(name)).cost))
 				{
-					army.setPlayer(this);
+					object.insert(x,y);
+					console.log(object.name);
+					if(object.name == "building")
+					{
+						this.building[this.building.length] = object;
+					}
+					if(object.name == "army")
+					{
+						this.army[this.army.length] = object;
+					}
 
-					this.army[this.army.length] = army;
-
-					army.insert(x,y);
-					
-					return army;		
+					return object;		
 				}
-
 				return null;
 			},
 
@@ -40,11 +45,12 @@ PlayerShared = {
 						armies.splice(i, 1);
 					}
 				}
-			},
+			},			
 
 			buildFreeArmy : function(name, x, y)
 			{
-				var army = Army.makeArmy(name);
+				var constructor = ObjectDesc.getConstructor(name);
+				var army = constructor(name);
 				army.setPlayer(this);			
 
 				this.army[this.army.length] = army;

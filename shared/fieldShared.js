@@ -103,7 +103,7 @@ FieldShared = {
 
 		for(var x = 0; x < objects.length; x++)
 		{			
-			if(objects[x].name == "army")
+			if(objects[x].name == "army" || objects[x].name == "builder")
 			{
 				return objects[x];
 			}				

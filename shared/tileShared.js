@@ -1,9 +1,4 @@
 TileShared = { 
-	_setConfiguration : function(tile, tileConfig)
-	{
-		tile.configuration = tileConfig;
-	},
-
 	makeTileShared : function(tileDescName)
 	{	
 		var configuration = {
@@ -22,10 +17,15 @@ TileShared = {
 			setType: function(tileDescName)
 			{				
 				var config = TilesDesc[tileDescName];
-				TileShared._setConfiguration(this, config);
+				this._setConfiguration(this, config);
 				this.type = config.type;
 
 				return config;
+			},
+
+			_setConfiguration : function(tile, tileConfig)
+			{
+				tile.configuration = tileConfig;
 			},
 
 			insert : function(x, y)
@@ -94,15 +94,5 @@ TileShared = {
 		}
 
 		return output;
-	},
-
-	loadTile : function(json)
-	{
-		var tile = null;
-
-		tile = Tile.makeTile();
-		tile.load(json);
-
-		return tile;
 	}
 };

@@ -1,11 +1,4 @@
 BuildingShared = {
-	_setConfiguration : function(building, config)
-	{
-		building.type = config.type;
-		building.productArmy = config.productArmy;
-		building.earnGold = config.earnGold;
-		building.img = config.img;
-	},
 
 	makeBuildingShared : function(buildingDescName)
 	{
@@ -13,17 +6,41 @@ BuildingShared = {
 
 		var oldDumped = buildingTile.dump;
 		var oldLoad = buildingTile.load;
+		var oldInsert = buildingTile.insert;
 
 		var building = {
 			name : "building",
 			production : 0,			
-			player : null,								
+			player : null,	
+			modifyMove : null,
+			modifyRange : null,							
+
+			_setConfiguration : function(building, config)
+			{
+				building.type = config.type;
+				building.productObject = config.productObject;
+				building.earnGold = config.earnGold;
+				building.img = config.img;
+				this.modifyMove = config.modifyMove;
+				this.modifyRange = config.modifyRange;
+			},
+
+			insert: function(x, y)
+			{			
+				var buildingObj = Field.getBuildingObject(x, y);						
+				var armyObj = Field.getArmyObject(x, y);						
+
+				if(!buildingObj && !armyObj)
+				{
+					oldInsert.call(this, x, y);
+				}
+			},
 
 			setType : function(buildingDescName)
 			{
-				var config = BuildingDesc[buildingDescName];
+				var config = ObjectDesc.getConfiguration(buildingDescName);
 
-				BuildingShared._setConfiguration(this, config);
+				this._setConfiguration(this, config);
 
 				return config;
 			},
@@ -49,8 +66,8 @@ BuildingShared = {
 				}
 			},
 
-			buildArmy : function(productArmy)
-			{
+			buildObject : function(productArmy)
+			{				
 				if(Field.getArmyObject(this.position.x, this.position.y))
 				{
 					return;
@@ -58,7 +75,7 @@ BuildingShared = {
 					
 				if(productArmy && this.player && this.player.inTurn)
 				{
-					this.player.buildArmy(productArmy, this.position.x, this.position.y);
+					this.player.buildObject(productArmy, this.position.x, this.position.y);
 				}
 				
 			},
@@ -77,7 +94,7 @@ BuildingShared = {
 					player : this.player && this.player.id,
 					type : this.type,
 					earnGold : this.earnGold,
-					productArmy : this.productArmy
+					productObject : this.productObject
 				};
 
 				dumped = Object.assign(dumpedOld, dumped);
@@ -116,13 +133,5 @@ BuildingShared = {
 		}
 
 		return output;
-	},
-
-	loadBuilding : function(json)
-	{
-		var building = this.makeBuilding();
-		building.load(json);				
-
-		return building;
 	}
 };

@@ -113,11 +113,11 @@ Client = {
                 }                
             }
 
-            if(json.type == "buildArmy")
+            if(json.type == "buildObject")
             {
                 var player = GameEngine.findPlayer(json.player.playerId);                            
 
-                player.buildArmy(json.player, json.data);         
+                player.buildObject(json.player, json.data);         
             }
 
             if(json.type == "clameBuilding")

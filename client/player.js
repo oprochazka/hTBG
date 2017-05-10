@@ -8,14 +8,27 @@ Player = {
 
 
 		var player = {
-			buildArmy : function(player, armyData)
-			{			
-                var army = Army.loadArmy(armyData);
+			buildObject : function(player, armyData)
+			{							                
+				var constructor = ObjectDesc.getConstructor(armyData.type);
+				var army = constructor();
+				army.load(armyData);		
                 
                 this.gold = player.gold;
 
              	Field.insertObject(army, armyData.position.x, armyData.position.y);
-			},		
+			},	
+
+			/*buildBuilding : function(player, buildingData)
+			{							                
+				var constructor = ObjectDesc.getConstructor(buildingData.type);
+				var building = constructor();
+				building.load(buildingData);		
+                
+                this.gold = player.gold;
+
+             	Field.insertObject(building, buildingData.position.x, buildingData.position.y);
+			},	*/
 
 			setArmy : function(army)
 			{

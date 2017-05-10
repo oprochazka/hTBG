@@ -1,6 +1,6 @@
 GameEngine = {
 	Players : [],
-	ip : "192.168.0.3",
+	ip : "localhost",
 	port : "8080",
 	server : null,
 	yourName : null,

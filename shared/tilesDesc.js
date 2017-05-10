@@ -5,7 +5,8 @@ TilesDesc = {
 		movement : 1,
 		fire : 0,
 		defend : 0,
-		range : 2	
+		range : 2,
+		name : "tile"
 	},
 
 	water : {
@@ -14,7 +15,8 @@ TilesDesc = {
 		movement : 3,
 		fire : 0,
 		defend : 0,
-		range : 1	
+		range : 1,
+		name : "tile"
 	},
 
 	wood : {
@@ -23,7 +25,8 @@ TilesDesc = {
 		movement : 2,
 		fire : 0,
 		defend : 0,
-		range : 3	
+		range : 3,
+		name : "tile"	
 	},
 
 	mountain : {
@@ -32,7 +35,8 @@ TilesDesc = {
 		movement : 3,
 		fire : 0,
 		defend : 0,
-		range : 4	
+		range : 4,
+		name : "tile"	
 	}
 
 };

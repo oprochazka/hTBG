@@ -1,10 +1,13 @@
 ObjectDesc = {
 	getConfiguration : function(type, name)
 	{
-		var desc = ObjectDesc[name];
-		if(desc)
+		if(name)
 		{
-			return desc[type];
+			var desc = ObjectDesc[name];
+			if(desc)
+			{
+				return desc[type];
+			}
 		}
 		else
 		{
@@ -18,10 +21,49 @@ ObjectDesc = {
 			{
 				return out;
 			}
+			out = BuilderDesc[type]
+			if(out)
+			{
+				return out;
+			}
+
+			out = TilesDesc[type]
+			if(out)
+			{
+				return out;
+			}
+		}
+
+	},
+
+	getConstructor : function(type)
+	{
+		var config = this.getConfiguration(type);		
+
+		if(config.name == "army")
+		{			
+			if(config.type == "builder")
+			{			
+				return Builder.makeBuilder;
+			}
+
+			return Army.makeArmy;		
+		}
+
+		if(config.name == "building")
+		{
+			return Building.makeBuilding;
+		}
+
+		if(config.name == "tile")
+		{
+			return Tile.makeTile;
 		}
 
 	},
 
 	army : ArmyDesc,
-	building : BuildingDesc	
+	building : BuildingDesc,
+	builder : BuilderDesc,
+	tilesDesc : TilesDesc
 };

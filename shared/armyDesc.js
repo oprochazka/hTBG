@@ -8,7 +8,8 @@ ArmyDesc ={
 		range : 1,
 		speed : 3,
 		initSpeed : 3,
-		initFights : 2
+		initFights : 2,
+		name : "army"
 	},
 
 	archer : {
@@ -20,7 +21,8 @@ ArmyDesc ={
 		range : 6,
 		speed : 6,
 		initSpeed : 6,
-		initFights : 1
+		initFights : 1,
+		name : "army"
 	},
 
 	king : {
@@ -32,7 +34,8 @@ ArmyDesc ={
 		range : 1,
 		speed : 3,
 		initSpeed : 3,
-		initFights : 4
+		initFights : 4,
+		name : "army"
 	},
 
 	horseman : {
@@ -44,21 +47,21 @@ ArmyDesc ={
 		range : 1,
 		speed : 10,
 		initSpeed : 10,
-		initFights : 1
+		initFights : 1,
+		name : "army"
 	},
 
 	builder : {
 		img : "builder.png",
 		type : "builder",
-		productBuilding : ["wall"],
+		productObject : ["wall", "stable", "horseman"],
 		cost : 50,
 		initHealth : 1,
 		powerAttack : 1,
 		range : 1,
 		speed : 4,
 		initSpeed : 4,
-		initFights : 1
+		initFights : 1,
+		name : "army"
 	}
-
-
 };

@@ -33,6 +33,7 @@ Building = {
 					square.render();
 				}				
 			},
+			
 			onProductArmy : function(army)
 			{
 				if(Field.getArmyObject(this.position.x, this.position.y))
@@ -40,7 +41,7 @@ Building = {
 					return;
 				}
 													
-				Client.sendActionMessage({type : "buildArmy", buildingId : this.id, productArmy : army}, GameEngine.getControllPlayer());	
+				Client.sendActionMessage({type : "buildObject", id : this.id, productObject : army}, GameEngine.getControllPlayer());	
 			},
 
 			onClick : function(mousePos, key)

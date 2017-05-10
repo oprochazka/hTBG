@@ -2,6 +2,7 @@ require("./textureMap.js");
 require("./tile.js");
 require("./army.js");
 require("./building.js");
+require("./builder.js");
 require("./player.js");
 require("./field.js");
 

@@ -14,20 +14,34 @@ Player = {
 		var sharedBuildFreeArmy = playerShared.buildFreeArmy;	
 		var sharedaddBuilding = playerShared.addBuilding;
 
+
+		var sharedBuildObject = playerShared.buildObject;
+
 		var player = {			
 			id : GameEngine.generateId(),						
 			color: color,			
 
-			buildArmy : function(name, x, y)
+			buildObject : function(name, x, y)
 			{
-				var army = sharedBuildArmy.call(this, name, x, y);
+				var object = sharedBuildObject.call(this, name, x, y);
 	
-				if(army)
+				if(object)
 				{
 					Server.sendBroadcast(JSON.stringify(
-						{type : "buildArmy", player : {playerId : this.id, gold : this.gold}, data : army.dump()}));
+						{type : "buildObject", player : {playerId : this.id, gold : this.gold}, data : object.dump()}));
 				}
 			},
+
+			/*buildBuilding : function(name, x, y)
+			{
+				var building = sharedBuildObject.call(this, name, x, y);
+	
+				if(building)
+				{
+					Server.sendBroadcast(JSON.stringify(
+						{type : "buildBuilding", player : {playerId : this.id, gold : this.gold}, data : building.dump()}));
+				}
+			},*/
 
 			buildFreeArmy : function(name, x, y)
 			{
@@ -36,7 +50,7 @@ Player = {
 				if(army)
 				{
 					Server.sendBroadcast(JSON.stringify(
-						{type : "buildArmy", player : {playerId : this.id, gold : this.gold}, data : army.dump()}));
+						{type : "buildObject", player : {playerId : this.id, gold : this.gold}, data : army.dump()}));
 				}
 			},
 

@@ -42,7 +42,7 @@ ContextOption = {
 				var textConfig = [];
 				if(clickedObject.name == "building")
 				{
-					config = BuildingDesc[clickedObject.type];
+					config = ObjectDesc.getConfiguration(clickedObject.type);
 
 					textConfig = [
 						{key : "Production", value : config.earnGold + " G"}
@@ -50,7 +50,7 @@ ContextOption = {
 				}
 				if(clickedObject.name == "army")
 				{
-					config = ArmyDesc[clickedObject.type];
+					config = ObjectDesc.getConfiguration(clickedObject.type);
 					textConfig = [
 						{key : "Health", value : clickedObject.health},
 						{key : "Fights", value : clickedObject.fights},
@@ -209,6 +209,34 @@ ContextOption = {
 			onClickObject : null,
 			isPlayerObject : false,
 
+			onBuildingObj : function(clickedObject)
+			{
+				var config = ObjectDesc.getConfiguration(clickedObject.type);
+
+				for(var i = 0; i < config.productObject.length; i++)
+				{
+					var army = config.productObject[i];										
+				
+					this.setProductArmy(army, clickedObject);
+				}
+
+				return config;
+			},
+
+			onBuilderObj : function(clickedObject)
+			{
+				var config = ObjectDesc.getConfiguration(clickedObject.type);
+
+				for(var i = 0; i < config.productObject.length; i++)
+				{
+					var build = config.productObject[i];										
+				
+					this.setProductBuilding(build, clickedObject);
+				}
+
+				return config;
+			},
+
 			setObject : function(clickedObject)
 			{
 				this.object = clickedObject;
@@ -217,19 +245,12 @@ ContextOption = {
 
 				if(clickedObject.name == "building")
 				{
-					config = BuildingDesc[clickedObject.type];
-
-					for(var i = 0; i < config.productArmy.length; i++)
-					{
-						var army = config.productArmy[i];										
-					
-						this.setProductArmy(army, clickedObject);
-					}
+					config = this.onBuildingObj(clickedObject);
 				}
 				
-				if(clickedObject.name == "army")
+				if(clickedObject.type == "builder")
 				{
-					config = ArmyDesc[clickedObject.type];
+					config = this.onBuilderObj(clickedObject);
 				}
 
 				var item = ContextOption.makeContextDescription();
@@ -289,9 +310,33 @@ ContextOption = {
 				}
 			},
 
+			_setProduct : function(product, onClick)
+			{
+				var img = "http://"+ GameEngine.server +"/asets/"+ product.img;
+
+				var item = ContextOption.makeContextItem(img, product.cost + "G");			
+
+				this.items[this.items.length] = item;
+				item.move(this.position.w + margin, 0);				
+					
+				if(onClick)
+				{
+					item.onClick = onClick;
+				}
+
+				this.position.w = item.position.x + item.position.w;
+
+				if(!this.isPlayerObject)
+				{
+					item.greyBackground();
+				}	
+
+				return item;
+			},
+
 			setProductArmy: function(army, clickedObject)
 			{					
-				var element = ArmyDesc[army];
+				var element = ObjectDesc.getConfiguration(army);
 
 				if(element)
 				{					
@@ -300,25 +345,22 @@ ContextOption = {
 						clickedObject.onProductArmy(army);
 					};
 
-					var armyImg = "http://"+ GameEngine.server +"/asets/"+ element.img;
+					this._setProduct(element, onClick);
+				}
+			},
 
-					var item = ContextOption.makeContextItem(armyImg, element.cost + "G");
+			setProductBuilding: function(building, clickedObject)
+			{					
+				var element = ObjectDesc.getConfiguration(building);
 
-					if(onClick)
+				if(element)
+				{
+					var onClick = function(mousePos, button)
 					{
-						item.onClick = onClick;
-					}
+						clickedObject.onProductBuilding(building);
+					};
 
-					this.items[this.items.length] = item;
-					item.move(this.position.w + margin, 0);
-
-					this.position.w = item.position.x + item.position.w;
-
-					if(!this.isPlayerObject)
-					{
-						item.greyBackground();
-					}	
-	
+					this._setProduct(element, onClick)
 				}
 			},
 			setBuildOption : function()

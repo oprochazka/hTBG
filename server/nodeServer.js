@@ -19,7 +19,7 @@ Server = {
         require("./../shared/buildingDesc.js");   
         require("./../shared/armyDesc.js");  
         
-        //require("./../shared/builderDesc.js");        
+        require("./../shared/builderDesc.js");        
         
         require("./../shared/builderShared.js");        
 
@@ -27,11 +27,11 @@ Server = {
         require("./../shared/armyShared.js");
         require("./../shared/tileShared.js");
         require("./../shared/buildingShared.js");
-        require("./../shared/playerShared.js");     
-        require("./../shared/objectDesc.js");        
-        
+        require("./../shared/playerShared.js");                             
 
         require("./gameEngine.js");       
+
+        require("./../shared/objectDesc.js");
         
 
         var server = http.createServer(function(request, response) {
@@ -76,7 +76,7 @@ Server = {
 
        if(json.type == "moving")
         {        
-            var field = Field.findById(json.id);
+            var field = Field.findById(json.id);            
 
             if(field)
             {                 
@@ -95,7 +95,7 @@ Server = {
             }
         }
 
-        if(json.type == "buildArmy")
+    /*   if(json.type == "buildArmy")
         {        
             var building = Field.findById(json.buildingId);            
 
@@ -103,6 +103,17 @@ Server = {
             {                 
                 building.buildArmy(json.productArmy);
             }
+        }*/
+
+        if(json.type == "buildObject")
+        {        
+            var builder = Field.findById(json.id);            
+            console.log("producting", builder);
+            if(builder)
+            {                 
+                builder.buildObject(json.productObject, json.x, json.y);
+            }
+
         }
 
         if(json.type == "nextTurn")

@@ -95,11 +95,29 @@ ArmyShared = {
 					return;
 				}	
 
+				var modificatorMove = 0;
+				var modificatorRange = 0;
+
+				for(var i = 0; i < objs.length; i++)
+				{
+					if(objs[i].name == "building")
+					{
+						if(objs[i].modifyMove)
+						{
+							modificatorMove = objs[i].modifyMove;
+						}
+						if(objs[i].modifyRange)
+						{
+							modificatorRange = objs[i].modifyRange;
+						}
+					}
+				}
+
 				var mov = tile.configuration.movement;
 				var range = tile.configuration.range;
 
-				this._countFar(x, y, moveMap, mov);
-				this._countFar(x, y, rangeMap, range);
+				this._countFar(x, y, moveMap, mov + modificatorMove);
+				this._countFar(x, y, rangeMap, range + modificatorRange);
 			},
 
 			setSurrounding : function(x, y, map)
@@ -109,6 +127,18 @@ ArmyShared = {
 				map[map.length] = {x : x, y : y + 1, speed : 0};
 				map[map.length] = {x : x, y : y - 1, speed : 0};
 			},
+
+			checkMapObject : function(map, position)
+			{							
+				for(var i = 0; i < map.length; i++)
+				{
+					if(map[i].x == position.x && map[i].y == position.y)
+					{									
+						return true;
+					}
+				}
+				return false;
+			},			
 
 			indexMovement : function()
 			{
@@ -156,7 +186,7 @@ ArmyShared = {
 
 			setType : function(armyDescType)
 			{
-				var config = ArmyDesc[armyDescType];
+				var config = ObjectDesc.getConfiguration(armyDescType);
 
 				this._setArmyConfig(config);
 
@@ -317,12 +347,5 @@ ArmyShared = {
 		}
 
 		return output;
-	},	
-
-	loadArmy : function(json)
-	{
-		var army = this.makeArmy();
-		army.load(json);
-		return army;
 	}
 };

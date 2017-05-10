@@ -48,18 +48,10 @@ Field = {
 
 				var tile = null;
 
-				if(obj.name == "tile")
-				{					
-					tile = Tile.loadTile(obj);
-				}				
-				if(obj.name == "building")
-				{
-					tile = Building.loadBuilding(obj);
-				}
-				if(obj.name == "army")
-				{
-					tile = Army.loadArmy(obj);
-				}
+				var constructor = ObjectDesc.getConstructor(obj.type);
+
+				var tile = constructor();
+				tile.load(obj);					
 
 				this.insertObject(tile, obj.position.x, obj.position.y);	
 			}
