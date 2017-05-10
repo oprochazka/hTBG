@@ -42,7 +42,8 @@ BuildingDesc = {
 		health : 2,
 		border : true,
 		name : "building",
-		modifyMove : 1000
+		modifyMove : 1000,
+		forbidenTiles : ["water"]
 	},
 	grayve : {
 		img : "rip.png",

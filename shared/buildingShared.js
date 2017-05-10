@@ -23,6 +23,7 @@ BuildingShared = {
 				building.img = config.img;
 				this.modifyMove = config.modifyMove;
 				this.modifyRange = config.modifyRange;
+				this.forbidenTiles = config.forbidenTiles;
 			},
 
 			insert: function(x, y)

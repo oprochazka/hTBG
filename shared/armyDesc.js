@@ -35,7 +35,7 @@ ArmyDesc ={
 		speed : 3,
 		initSpeed : 3,
 		initFights : 4,
-		name : "army"
+		name : "army",		
 	},
 
 	horseman : {
@@ -48,13 +48,35 @@ ArmyDesc ={
 		speed : 10,
 		initSpeed : 10,
 		initFights : 1,
-		name : "army"
+		name : "army",
+		modificators : [
+			{type: "water", move: 1000}
+		]
+	},
+
+	ship : {
+		img : "ship.png",
+		type : "ship",
+		cost : 50,
+		initHealth : 4,
+		powerAttack : 3,
+		range : 10,
+		speed : 10,
+		initSpeed : 15,
+		initFights : 1,
+		name : "army",
+		modificators : [
+			{type: "grass", move: 1000},
+			{type: "wood", move: 1000},
+			{type: "mountain", move: 1000}			
+		],
+		forbidenTiles : ["grass", "wood", "mountain"]
 	},
 
 	builder : {
 		img : "builder.png",
 		type : "builder",
-		productObject : ["wall", "stable", "horseman"],
+		productObject : ["wall", "stable", "ship"],
 		cost : 50,
 		initHealth : 1,
 		powerAttack : 1,

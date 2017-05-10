@@ -3,7 +3,8 @@ TextureMap = {
 		{r : 0, g : 0, b : 0, type : "mountain"},
 		{r : 100, g : 0, b : 0, type : "water"},
 		{r : 0, g : 100, b : 0, type : "grass"},
-		{r : 100, g : 0, b : 100, type : "wood"}
+		{r : 100, g : 0, b : 100, type : "wood"},
+    {r : 100, g : 100, b : 100, type : "swamp"}
 	],
 
 	loadTexture : function(path)

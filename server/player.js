@@ -19,7 +19,7 @@ Player = {
 
 		var player = {			
 			id : GameEngine.generateId(),						
-			color: color,			
+			color: color,						
 
 			buildObject : function(name, x, y)
 			{

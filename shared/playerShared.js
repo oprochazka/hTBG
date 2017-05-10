@@ -20,7 +20,7 @@ PlayerShared = {
 				if(this.payMoney((ObjectDesc.getConfiguration(name)).cost))
 				{
 					object.insert(x,y);
-					console.log(object.name);
+					
 					if(object.name == "building")
 					{
 						this.building[this.building.length] = object;
@@ -110,9 +110,19 @@ PlayerShared = {
 				}
 			},
 
+			lostGame : function()
+			{
+				console.log("lost game ", this.name);
+			},
+
 			setControll: function(isControll)
 			{
 				this.controll = isControll;
+			},
+
+			setColor : function(color)
+			{
+				this.color = color;
 			},
 
 			newTurn: function()

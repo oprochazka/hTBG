@@ -80,24 +80,10 @@ ArmyShared = {
 				moveMap[moveMap.length] = map;
 			},
 
-			compare : function(x, y, moveMap, rangeMap)
-			{	
-				var objs = Field.getObject(x, y);
-
-				if(!objs || !objs[0])
-				{
-					return;					
-				}
-				tile = objs[0];	
-
-				if(tile.name != "tile")
-				{
-					return;
-				}	
-
+			_buildingModificator : function(objs)
+			{
 				var modificatorMove = 0;
 				var modificatorRange = 0;
-
 				for(var i = 0; i < objs.length; i++)
 				{
 					if(objs[i].name == "building")
@@ -113,11 +99,58 @@ ArmyShared = {
 					}
 				}
 
+				return {move : modificatorMove, range : modificatorRange};
+			},
+
+			_armyModificator : function(tile)
+			{
+				if(this.modificators)
+				{
+					for(var i = 0; i < this.modificators.length; i++)
+					{
+						var obj = this.modificators[i];
+						if(tile.type == obj.type)
+						{
+							var move = 0;
+							var range = 0;
+							if(obj.move)
+							{
+								move = obj.move;
+							}
+							if(obj.range)
+							{
+								range = obj.range;
+							}
+							return {move : move, range : range};
+						}
+					}
+				}
+				return {move : 0, range : 0};		
+			},
+
+			compare : function(x, y, moveMap, rangeMap)
+			{	
+				var objs = Field.getObject(x, y);
+
+				if(!objs || !objs[0])
+				{
+					return;					
+				}
+				tile = objs[0];	
+
+				if(tile.name != "tile")
+				{
+					return;
+				}	
+				
+				var buildModif = this._buildingModificator(objs);
+				var armyModif = this._armyModificator(tile);
+
 				var mov = tile.configuration.movement;
 				var range = tile.configuration.range;
 
-				this._countFar(x, y, moveMap, mov + modificatorMove);
-				this._countFar(x, y, rangeMap, range + modificatorRange);
+				this._countFar(x, y, moveMap, mov + buildModif.move + armyModif.move);
+				this._countFar(x, y, rangeMap, range + buildModif.range + armyModif.range);
 			},
 
 			setSurrounding : function(x, y, map)
@@ -188,7 +221,7 @@ ArmyShared = {
 			{
 				var config = ObjectDesc.getConfiguration(armyDescType);
 
-				this._setArmyConfig(config);
+				this._setArmyConfig(config);				
 
 				return config;				
 			},
@@ -207,6 +240,11 @@ ArmyShared = {
 				this.powerAttack = config.powerAttack;
 				this.health = config.initHealth;
 				this.speed = config.initSpeed;		
+
+				this.modificators = config.modificators;
+				this.forbidenTiles = config.forbidenTiles;
+
+				this.fights = config.initFights;
 			},	
 
 			newTurn : function(player)
@@ -275,6 +313,11 @@ ArmyShared = {
 					//Field.insertObject(building, playerDef.position.x, playerDef.position.y);	
 					if(playerDef.player)
 					{
+						if(playerDef.type == "king")
+						{
+							playerDef.player.lostGame();
+						}
+
 						playerDef.player.removeArmy(playerDef);
 						Field.removeObject(playerDef, playerDef.position.x, playerDef.position.y);					
 					}					

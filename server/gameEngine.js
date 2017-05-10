@@ -18,6 +18,8 @@ GameEngine = {
 	tileH : 20,
 	allMove : false,
 
+	colors : ["#9a1c0e", "#0e0e9a", "#970e9a", "#0d882d", "#e1b60b"],
+
 	startServerMap : function(path)
 	{
 		TextureMap.loadTexture(path);
@@ -86,7 +88,14 @@ GameEngine = {
 			}
 		}
 
-		var player = Player.makePlayer(name);		
+		if(this.Players.length == 5)
+		{
+			return;
+		}
+
+		var player = Player.makePlayer(name);	
+
+		player.setColor(GameEngine.colors[GameEngine.Players.length]);
 
 		player.password = password;
 

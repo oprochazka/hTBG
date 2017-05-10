@@ -13,7 +13,7 @@ Builder = {
 				this.flag = "build";
 				this.chosen = product;
 
-				var map = this.buildingPosition();
+				var map = this.buildingPosition(product);
 
 				Field.setMoveMap({color : null, map: map});
 			},

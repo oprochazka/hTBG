@@ -37,6 +37,16 @@ TilesDesc = {
 		defend : 0,
 		range : 4,
 		name : "tile"	
+	},
+
+	swamp : {
+		img : "swamp.png",
+		type : "swamp",
+		movement : 3,
+		fire : 0,
+		defend : 0,
+		range : 4,
+		name : "tile"	
 	}
 
 };
