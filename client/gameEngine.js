@@ -1,7 +1,7 @@
 GameEngine = {
 	Players : [],
-	ip : "localhost",
-	port : "8080",
+	ip : Configure.ip,
+	port : Configure.port,
 	server : null,
 	yourName : null,	
 	allMove : false,	

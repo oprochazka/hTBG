@@ -11,7 +11,7 @@ Client = {
             return;
         }
 
-        this.connection = new WebSocket('ws://'+ GameEngine.ip +':1337');
+        this.connection = new WebSocket('ws://'+ GameEngine.ip +':' + Configure.gamePort);
 
         this._onOpenConnection();
         this._onError();
