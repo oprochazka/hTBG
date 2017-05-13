@@ -46,6 +46,7 @@ BuildingShared = {
 				}
 
 				this.health = this.initHealth;
+				this.forbidenTiles = config.forbidenTiles;
 			},
 
 			insert: function(x, y)

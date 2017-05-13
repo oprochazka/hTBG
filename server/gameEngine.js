@@ -16,21 +16,24 @@ GameEngine = {
 	tileH : 20,
 	allMove : false,
 	gameManager : null,
+	playerPositions : null,
 
 	colors : ["#9a1c0e", "#0e0e9a", "#970e9a", "#0d882d", "#e1b60b"],
 
-	startServerMap : function(path)
+	startServerMap : function(path, pathDesc)
 	{
 		this.gameManager = GameManager.makeGameManager();
 
-		TextureMap.loadTexture(path);
+		TextureMap.loadTexture(path, pathDesc);
 	},
 
-	startServer : function(w, h, mapArray)
+	startServer : function(w, h, mapArray, players)
 	{
+		console.log(mapArray);
 		if(mapArray)
 		{
 			Field.makeFieldByMap(w, h, mapArray);
+			this.playerPositions = players;
 		}
 		else
 		{
@@ -91,34 +94,17 @@ GameEngine = {
 
 		player.setColor(GameEngine.colors[players.length]);
 
+		var playerPosition = Field.get2DFromIndex(this.playerPositions[players.length]);
+
 		player.password = password;
 
 		GameEngine.gameManager.addPlayer(player);
 
 		Server.sendBroadcast(JSON.stringify({type : "addPlayer", player : player.dump()}));
 
-		var x = Math.floor((Math.random() * this.tileW));
-		var y = Math.floor((Math.random() * this.tileH));
+		player.buildObject("king", playerPosition.x, playerPosition.y);	
+		player.buildObject("builder", playerPosition.x + 1, playerPosition.y);	
 
-		if(Field.getArmyObject(x,y))
-		{
-			for(var y = 0; y < this.tileH; y++)
-			{
-				for(var x = 0; x < this.tileW; x++)	
-				{
-					if(!Field.getArmyObject(x,y))
-					{			
-						return player.buildObject("king", x, y);		
-					}
-				}
-			}
-		}
-		else
-		{
-			player.buildObject("king", x, y);	
-			player.buildObject("archer", x + 2, y);	
-			player.buildObject("horseman", x + 1, y);				
-		}
 
 		if(!this.gameManager.getCurrentPlayer())
 		{			

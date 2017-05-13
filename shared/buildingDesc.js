@@ -3,38 +3,53 @@ BuildingDesc = {
 		img : "barracks.png",
 		productObject : ["soldier", "builder"],
 		earnGold : 0,
-		cost : 0,
+		cost : 80,
 		type : "barracks",
 		name : "building",
-		initProductUnits : 1
+		initProductUnits : 1,
+		forbidenTiles : ["water", "swamp", "mountain", "wood"]
 	},
 
 	castle : {
 		img : "castle.png",
 		productObject : ["archer"],
 		earnGold : 0,
-		cost : 0,
+		cost : 110,
 		type : "castle",
 		name : "building",
-		initProductUnits : 1
+		initProductUnits : 1,
+		forbidenTiles : ["water", "swamp", "mountain", "wood"]
 	},
 
 	goldMine : {
 		img : "goldMine.png",
 		productObject : [],
-		earnGold : 10,
+		earnGold : 30,
 		cost : 0,
 		type : "goldMine",
-		name : "building"
+		name : "building",
+		forbidenTiles : ["water", "swamp", "wood", "grass"]
 	},
+
+	woodCut : {
+		img : "woodCut.png",
+		productObject : [],
+		earnGold : 10,
+		cost : 50,
+		type : "woodCut",
+		name : "building",
+		forbidenTiles : ["grass", "water", "swamp", "mountain"]
+	},
+
 	stable : {
 		img : "stable.png",
 		productObject : ["horseman"],
 		earnGold : 0,
-		cost : 0,
+		cost : 100,
 		type : "stable",
 		name : "building",
-		initProductUnits : 1
+		initProductUnits : 1,
+		forbidenTiles : ["water", "swamp", "mountain", "wood"]
 	},
 	wall : {
 		img : "wall.png",

@@ -46,7 +46,8 @@ BuilderShared = {
 				for(var x = 0; x < map.length; x++)
 				{
 					var tiles = Field.getObject(map[x].x, map[x].y);
-					var tile = tiles[0];
+
+					var tile = tiles && tiles[0];
 
 					if(tile)
 					{

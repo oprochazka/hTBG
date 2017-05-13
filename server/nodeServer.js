@@ -50,7 +50,7 @@ Server = {
 
         //GameEngine.startServer();
         //TextureMap.loadTexture("./../maps/map1.png");
-        GameEngine.startServerMap("./../maps/map1.png")
+        GameEngine.startServerMap("./../maps/map1.png", "./../maps/map1Desc.png")
     },
 
     testing : function()

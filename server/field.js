@@ -31,35 +31,6 @@ Field = {
 			FieldShared.insertObject(obj, pos.x, pos.y);			
 		}
 
-		var castles = 0;
-		var barracks = 0;
-
-		for(var i = 0; i < 20; i++)
-		{
-			var x1 = Math.floor((Math.random() * this.tilesW));
-			var y1 = Math.floor((Math.random() * this.tilesH));
-			var z = Math.floor((Math.random() * 4));
-			
-			if(Field.getObject(x1,y1)[0].type != "water" && z == 2)
-			{
-				var building = Building.makeBuilding("barracks");
-				this.insertObject(building, x1, y1);					
-			}
-
-
-			if(Field.getObject(x1,y1)[0].type == "grass" && z == 3)
-			{
-				var building = Building.makeBuilding("castle");
-				this.insertObject(building, x1, y1);				
-			}						
-
-			if(Field.getObject(x1,y1)[0].type == "grass" && z == 1)
-			{
-				var building = Building.makeBuilding("stable");
-				this.insertObject(building, x1, y1);				
-			}
-		}
-
 		for(var i = 0; i < 100; i++)
 		{
 			var x1 = Math.floor((Math.random() *  this.tilesW));

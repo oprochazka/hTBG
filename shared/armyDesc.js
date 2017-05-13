@@ -77,7 +77,7 @@ ArmyDesc ={
 	builder : {
 		img : "builder.png",
 		type : "builder",
-		productObject : ["wall", "stable", "ship", "ram"],
+		productObject : ["wall", "stable", "ship", "ram", "woodCut", "castle", "barracks"],
 		cost : 50,
 		initHealth : 1,
 		powerAttack : 1,
