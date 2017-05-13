@@ -1,7 +1,7 @@
 ArmyShared = {
 	makeArmyShared : function(armyDescType)
 	{
-		var armyTile = Tile.makeTile();
+		var armyTile = PlayerEntity.makePlayerEntity();
 		var oldInsert = armyTile.insert;
 		var oldDumped = armyTile.dump;
 		
@@ -211,6 +211,9 @@ ArmyShared = {
 					}	
 				}
 				
+				moveMap.splice(0, 1);
+				rangeMap.splice(0, 1);
+
 				this.moveMap = moveMap;
 				this.rangeMap = rangeMap;		
 
@@ -245,11 +248,12 @@ ArmyShared = {
 				this.forbidenTiles = config.forbidenTiles;
 
 				this.fights = config.initFights;
+				this.buildAttack = config.buildAttack;
 			},	
 
 			newTurn : function(player)
 			{
-				this.speed = this.initSpeed;							
+				this.refreshStats();							
 			},
 
 			refreshStats : function()
@@ -276,7 +280,7 @@ ArmyShared = {
 
 				if(buildingObj && buildingObj.player != this.player)
 				{
-					var player = GameEngine.findPlayer(this.player);	
+					var player = GameEngine.gameManager.findPlayer(this.player);	
 					
 					this.player.addBuilding(buildingObj);
 				}
@@ -289,42 +293,50 @@ ArmyShared = {
 				this.insert(x, y);
 			},
 
-			setHealth : function(health)
+			hurt : function(hurt)
 			{
-				this.health = health;
-			},
+				this.setHealth(hurt);
 
-			countFight : function(playerDef)
-			{
-				return playerDef.health - this.powerAttack;
-			},
-
-			fight : function(playerDef)
-			{
-				var result = this.countFight(playerDef);
-
-				this.fights--;
-
-				playerDef.setHealth(result);
-
-				if(result <= 0 )
+				if(hurt <= 0 )
 				{
-					//var building = Building.makeBuilding("grayve");
-					//Field.insertObject(building, playerDef.position.x, playerDef.position.y);	
-					if(playerDef.player)
+					if(this.player)
 					{
-						if(playerDef.type == "king")
+						if(this.type == "king")
 						{
-							playerDef.player.lostGame();
+							this.player.onDefeat();
 						}
-
-						playerDef.player.removeArmy(playerDef);
-						Field.removeObject(playerDef, playerDef.position.x, playerDef.position.y);					
+						this.setKilled();
 					}					
 				}
-
-				return result;
 			},
+
+			setKilled : function()
+			{					
+				this.player.removeArmy(this);
+				Field.removeObject(this, this.position.x, this.position.y);			
+			},
+
+			attack : function(playerObj)
+			{
+				if(this.fights <= 0)
+				{
+					return null;
+				}
+
+				var rangeMap = this.indexMovement().rangeMap;
+
+				for(var i = 0; i < rangeMap.length; i++)
+				{
+					if(rangeMap[i].x == playerObj.position.x && rangeMap[i].y == playerObj.position.y && playerObj.player != this.player)
+					{									
+						var result = this.fight(playerObj);
+
+						return result;
+					}
+				}
+
+				return null;
+			},			
 
 			load : function(json)
 			{				
@@ -335,13 +347,11 @@ ArmyShared = {
 				this.defend = json.defend;
 				this.speed = json.speed;
 				
-				for(var i = 0; i < GameEngine.Players.length; i++)
+				this.player = GameEngine.gameManager.findPlayer(json.player);
+
+				if(this.player)
 				{
-					if(GameEngine.Players[i].id == json.player)
-					{
-						this.player = GameEngine.Players[i];
-						this.player.setArmy(this);						
-					}
+					this.player.setArmy(this);
 				}
 
 				this.initSpeed = json.initSpeed;
@@ -353,13 +363,11 @@ ArmyShared = {
 				this.powerAttack = json.powerAttack;
 				this.img = json.img;
 				this.health = json.health;
-
-
 			},
 
-			dump: function(json)
+			dump: function()
 			{
-				var dumpedOld = oldDumped.call(this,json);
+				var dumpedOld = oldDumped.call(this);
 
 				var dumped = {
 					id : this.id,

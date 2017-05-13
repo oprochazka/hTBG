@@ -1,27 +1,28 @@
 require("./textureMap.js");
 require("./tile.js");
+require("./playerEntity.js");
 require("./army.js");
 require("./building.js");
 require("./builder.js");
 require("./player.js");
 require("./field.js");
+require("./gameManager");
 
 GameEngine = {
 	id : 0,
-	Players : [],
 	x : 0,
-	y : 0,
-	time : 0,
-	currentPlayer : null,
-	iPlayer : 0,
+	y : 0,	
 	tileW : 31,
 	tileH : 20,
 	allMove : false,
+	gameManager : null,
 
 	colors : ["#9a1c0e", "#0e0e9a", "#970e9a", "#0d882d", "#e1b60b"],
 
 	startServerMap : function(path)
 	{
+		this.gameManager = GameManager.makeGameManager();
+
 		TextureMap.loadTexture(path);
 	},
 
@@ -35,36 +36,27 @@ GameEngine = {
 		{
 			Field.makeField(this.tileW, this.tileH);	
 		}
-
-
-		setInterval(this.onIter, 5000);
+		
 	},
 
 	nextTurn : function(player)
 	{		
-		if(!this.currentPlayer || this.currentPlayer.id == player)
-		{				
-			if(this.currentPlayer)
-			{
-				this.currentPlayer.inTurn = false;
-			}
-			this.currentPlayer = this.Players[this.iPlayer%this.Players.length];			
-
-			this.currentPlayer.newTurn();
-
-			Server.sendBroadcast(JSON.stringify({type : "newTurn", "playerId" : this.currentPlayer.id}));
-
-			this.iPlayer++;			
-		}		
+		var result = this.gameManager.nextTurn(player);
+		if(result)
+		{
+			Server.sendBroadcast(JSON.stringify({type : "newTurn", "playerId" : result.id}));
+		}
 	},
 
 	checkPassword : function(name, password)
 	{
-		for(var i = 0; i < this.Players.length; i++)
+		var players = this.gameManager.getPlayers();
+
+		for(var i = 0; i < players.length; i++)
 		{
-			if(this.Players[i].name == name)
+			if(players[i].name == name)
 			{
-				if(this.Players[i].password == password)
+				if(players[i].password == password)
 				{
 					return true;
 				}
@@ -80,26 +72,28 @@ GameEngine = {
 
 	addPlayer : function(name, password)
 	{
-		for(var i = 0; i < this.Players.length; i++)
+		var players = this.gameManager.getPlayers();
+
+		for(var i = 0; i < players.length; i++)
 		{
-			if(this.Players[i].name == name)
+			if(players[i].name == name)
 			{
 				return;
 			}
 		}
 
-		if(this.Players.length == 5)
+		if(players.length == 5)
 		{
 			return;
 		}
 
 		var player = Player.makePlayer(name);	
 
-		player.setColor(GameEngine.colors[GameEngine.Players.length]);
+		player.setColor(GameEngine.colors[players.length]);
 
 		player.password = password;
 
-		this.Players[this.Players.length] = player;
+		GameEngine.gameManager.addPlayer(player);
 
 		Server.sendBroadcast(JSON.stringify({type : "addPlayer", player : player.dump()}));
 
@@ -114,83 +108,28 @@ GameEngine = {
 				{
 					if(!Field.getArmyObject(x,y))
 					{			
-						return player.buildFreeArmy("king", x, y);		
+						return player.buildObject("king", x, y);		
 					}
 				}
 			}
 		}
 		else
 		{
-			player.buildFreeArmy("king", x, y);	
-			player.buildFreeArmy("archer", x, y);	
-			player.buildFreeArmy("horseman", x + 1, y);				
+			player.buildObject("king", x, y);	
+			player.buildObject("archer", x + 2, y);	
+			player.buildObject("horseman", x + 1, y);				
 		}
 
-		if(!this.currentPlayer)
+		if(!this.gameManager.getCurrentPlayer())
 		{			
 			this.nextTurn(player);
-		}
-
-		console.log(this.currentPlayer);
-	},
-
-	findPlayer : function(id)
-	{
-		for(var i = 0; i < this.Players.length; i++)
-		{
-			if(this.Players[i].id == id)
-			{
-				return this.Players[i];
-			}
-		}
-	},
-
-	getControllPlayer : function()
-	{
-		for(var i = 0; i < this.Players.length; i++)
-		{
-			if(this.Players[i].controll)
-			{
-				return this.Players[i];
-			}
-		}
+		}		
 	},
 
 	generateId : function()
 	{
 		return this.id++;
-	},
-
-	dumpPlayers : function()
-	{
-		var dumped = [];
-		for(var i =0; i < this.Players.length; i++)
-		{
-			dumped[dumped.length] = this.Players[i].dump();
-		}
-
-		return dumped;
-	},
-
-	onIter : function () {
-		this.time += 500;
-
-		/*for(var i = 0; i < GameEngine.Players.length; i++)
-		{
-			var p = GameEngine.Players[i];
-
-			for(var x = 0; x < p.building.length; x++)
-			{		
-				var id = p.building[x];
-				var build = Field.findById(id);
-
-				build.productArmy();
-			}
-		}*/
-
 	}
-
-
 }
 
 return GameEngine;

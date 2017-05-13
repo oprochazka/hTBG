@@ -45,7 +45,8 @@ ContextOption = {
 					config = ObjectDesc.getConfiguration(clickedObject.type);
 
 					textConfig = [
-						{key : "Production", value : config.earnGold + " G"}
+						{key : "Production", value : config.earnGold + " G"},
+						{key : "Health", value : clickedObject.health}
 					];
 				}
 				if(clickedObject.name == "army")
@@ -240,7 +241,7 @@ ContextOption = {
 			setObject : function(clickedObject)
 			{
 				this.object = clickedObject;
-				this.isPlayerObject = (clickedObject.player && clickedObject.player == GameEngine.getControllPlayer());				
+				this.isPlayerObject = (clickedObject.player && clickedObject.player == GameEngine.gameManager.getControllPlayer());				
 				var config = null;
 
 				if(clickedObject.name == "building")

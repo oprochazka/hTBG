@@ -20,15 +20,16 @@ Server = {
         require("./../shared/armyDesc.js");  
         
         require("./../shared/builderDesc.js");        
-        
-        require("./../shared/builderShared.js");        
 
+        require("./../shared/playerEntityShared.js");
+        require("./../shared/builderShared.js");                
         require("./../shared/fieldShared.js");
         require("./../shared/armyShared.js");
         require("./../shared/tileShared.js");
         require("./../shared/buildingShared.js");
         require("./../shared/playerShared.js");                             
 
+        require("./../shared/gameManagerShared.js");       
         require("./gameEngine.js");       
 
         require("./../shared/objectDesc.js");
@@ -68,9 +69,8 @@ Server = {
     _onActionMsg : function(json)
     {        
 
-        if((json.sender != GameEngine.currentPlayer.id) && !GameEngine.allMove)
-        {
-            console.log("failed request", json, json.sender, GameEngine.currentPlayer.id );
+        if((json.sender != GameEngine.gameManager.getCurrentPlayer().id) && !GameEngine.allMove)
+        {            
             return;
         }        
 
@@ -94,16 +94,6 @@ Server = {
                 field.attack(fieldDef);
             }
         }
-
-    /*   if(json.type == "buildArmy")
-        {        
-            var building = Field.findById(json.buildingId);            
-
-            if(building && building.name == "building")
-            {                 
-                building.buildArmy(json.productArmy);
-            }
-        }*/
 
         if(json.type == "buildObject")
         {        
@@ -147,7 +137,7 @@ Server = {
                             return;
                         }
 
-                        connection.sendUTF(JSON.stringify( {type : "players", data : GameEngine.dumpPlayers()}));
+                        connection.sendUTF(JSON.stringify( {type : "players", data : GameEngine.gameManager.dumpPlayers()}));
                         connection.sendUTF(JSON.stringify(Field.dumpField()));
                         GameEngine.addPlayer(json.name, json.password);
 

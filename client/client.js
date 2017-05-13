@@ -28,7 +28,7 @@ Client = {
 
     sendActionMessage : function(msg, player)
     {        
-        if(GameEngine.getControllPlayer() == player || GameEngine.allMove)
+        if(GameEngine.gameManager.getControllPlayer() == player || GameEngine.allMove)
         {
             msg.sender = player.id;
             this.sendMessage(msg);
@@ -78,7 +78,7 @@ Client = {
 
             if(json.type == "players")
             {            
-                GameEngine.loadPlayers(json.data);
+                GameEngine.gameManager.loadPlayers(json.data);
             }
 
             if(json.type == "field")
@@ -99,7 +99,7 @@ Client = {
 
                 if(field && fieldDef)
                 {                 
-                    field.kill(fieldDef);
+                    field.onAttack(fieldDef);
                 }
             }
 
@@ -109,20 +109,20 @@ Client = {
 
                 if(field)
                 {                                 
-                    field.moved(json.x, json.y, json.speed);
+                    field.onMove(json.x, json.y, json.speed);
                 }                
             }
 
             if(json.type == "buildObject")
             {
-                var player = GameEngine.findPlayer(json.player.playerId);                            
+                var player = GameEngine.gameManager.findPlayer(json.player.playerId);                            
 
                 player.buildObject(json.player, json.data);         
             }
 
             if(json.type == "clameBuilding")
             {
-                var player = GameEngine.findPlayer(json.playerId);
+                var player = GameEngine.gameManager.findPlayer(json.playerId);
                 var building = Field.findById(json.buildingId);
                 player.addBuilding(building);            
             }

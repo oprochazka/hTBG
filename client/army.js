@@ -12,16 +12,17 @@ Army = {
 		var hurtAudio = new Audio("./sound/hurt.mp3");	
 		var fightAudio = new Audio("./sound/fight.mp3");
 		var marchAudio = new Audio("./sound/march.mp3");
+		var destroyAudio = new Audio("./sound/destroy.mp3");
 		
 		var army = {	
 			moveMap : null,
 			option : null,
 			flag : null,
 			
-			moved : function(x, y, decreaseSpeed)
+			onMove : function(x, y, decreaseSpeed)
 			{
 				oldMoved.call(this,x,y, decreaseSpeed);
-				if(GameEngine.getControllPlayer() == this.player)
+				if(GameEngine.gameManager.getControllPlayer() == this.player)
 				{				
 					marchAudio.play();
 				}
@@ -64,6 +65,7 @@ Army = {
 					return;
 				}					
 				var armyObj = Field.getArmyObject(position.x, position.y);
+				var buildingObj = Field.getBuildingObject(position.x, position.y);
 				if(this.flag == "move" && this.moveMap)
 				{
 					var move = this.findInMap(position.x, position.y, this.moveMap);
@@ -81,7 +83,14 @@ Army = {
 					var range = this.findInMap(position.x, position.y, this.rangeMap);					
 
 					if(range)
-					{						
+					{				
+						if(this.buildAttack)
+						{
+							if(buildingObj && (!buildingObj.player || !buildingObj.player.controll))
+							{
+								this.attack(buildingObj);
+							}
+						}
 						if(armyObj && !armyObj.player.controll)
 						{
 							this.attack(armyObj);
@@ -94,16 +103,23 @@ Army = {
 				this.flag = null;
 			},
 
-			kill : function(fieldDef)
-			{						
-				if(GameEngine.getControllPlayer() == fieldDef.player)
-				{
-					hurtAudio.play();
-				}
-
+			onAttack: function(fieldDef)
+			{				
 				this.fight(fieldDef);			
 
-				if(GameEngine.getControllPlayer() == this.player)
+				if(GameEngine.gameManager.getControllPlayer() == fieldDef.player)
+				{
+					if(fieldDef.name == "building")
+					{
+						destroyAudio.play();
+					}
+					else
+					{
+						hurtAudio.play();
+					}
+				}
+
+				if(GameEngine.gameManager.getControllPlayer() == this.player)
 				{
 					fightAudio.play();
 				}

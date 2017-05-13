@@ -184,8 +184,8 @@ Draw = {
         w : 0,
         h : 0,
         text : "",
-        color : "rgba(0, 0, 0, 1)",
-        font : "30px Arial",
+        color : "rgba(255, 255, 255, 1)",
+        font : "20px Arial",
 
         move : function(x, y)
         {
@@ -197,6 +197,11 @@ Draw = {
         {
           this.x = x;
           this.y = y;
+        },
+
+        setFont : function(font)
+        {
+          this.font = font;
         },
 
         render : function()

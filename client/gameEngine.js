@@ -3,54 +3,37 @@ GameEngine = {
 	ip : "localhost",
 	port : "8080",
 	server : null,
-	yourName : null,
-	controllPlayer : null,
-	allMove : false,
-	turnPlayer : null,
+	yourName : null,	
+	allMove : false,	
+	gameManager : null,
+	flagEnd : false,
+
+	initModule : function()
+	{
+		this.gameManager = GameManager.makeGameManager();
+		this.server = this.ip+ ":" +this.port;
+	},
 
 	startGame : function(json)
-	{
-		this.server = this.ip+ ":" +this.port;
-
+	{	
 		Field.loadField(json);
 	},
 
 	sendNextTurn: function()
 	{
-		var player = this.getControllPlayer();
+		var player = this.gameManager.getControllPlayer();
 		player.inTurn = false;
 		Client.sendActionMessage({type : "nextTurn", player : player.id}, player);
 	},
 
-	getControllPlayer : function()
-	{
-		for(var i = 0; i < this.Players.length; i++)
-		{
-			if(this.Players[i].controll)
-			{
-				return this.Players[i];
-			}
-		}
-	},
-
 	newTurn: function(playerId)
 	{
-		var turnPlayer = this.findPlayer(playerId);
-
-		this.turnPlayer = turnPlayer;
-
-		turnPlayer.newTurn();
+		this.gameManager.newTurn(playerId);
 	},
 
-	findPlayer : function(id)
+	endGame : function()
 	{
-		for(var i = 0; i < this.Players.length; i++)
-		{
-			if(this.Players[i].id == id)
-			{
-				return this.Players[i];
-			}
-		}
+		this.flagEnd = CanvasUi.makeEndGame();
 	},
 
 	addPlayer : function(name, password)
@@ -63,28 +46,6 @@ GameEngine = {
 
 	addServerPlayer : function(json)
 	{
-		
-		var player = Player.makePlayer(json.name);
-
-		player.load(json);
-
-		this.Players[this.Players.length] = player;
-	},
-
-
-	loadPlayers : function(json)
-	{	
-		for(var i = 0; i < json.length; i++)
-		{
-			var obj = json[i];
-
-			var player = Player.makePlayer(obj.name);
-
-			player.load(obj);
-
-			this.Players[this.Players.length] = player;			
-		}			
-
+		this.gameManager.addServerPlayer(json);
 	}
-
 }

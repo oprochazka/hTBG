@@ -126,22 +126,14 @@ Field = {
   		{  			
   			var mapItem = mapObj[i];  			
   			var tile = Draw.makeFillSquare(this.squareW, this.squareH);
-  			var playerObj = this.getArmyObject(mapItem.x, mapItem.y);
+  			var playerObj = this.getArmyObject(mapItem.x, mapItem.y) || this.getBuildingObject(mapItem.x, mapItem.y);
 
   			if(map.color)
   			{
   				tile.setColor(map.color);	
-  			}
-
-  			if(playerObj && playerObj.player.controll)
-  			{
-				if(map.color)
-	  			{
-	  				tile.setColor(map.color);	
-	  			}
-			}			
+  			}			
 			
-			if(playerObj && !playerObj.player.controll )
+			if(playerObj && (!playerObj.player || !playerObj.player.controll))
 			{
 				tile.setColor("rgba(150, 0, 0, 0.7)");
 			}
@@ -162,6 +154,11 @@ Field = {
   			var map = mapObj[i];
 
   			var tile = Field.getObject(map.x, map.y);
+
+  			if(!tile)
+  			{
+  				continue;
+  			}
 
   			for(var x = 0; x < tile.length; x++)
   			{  				

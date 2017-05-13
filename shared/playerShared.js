@@ -8,13 +8,16 @@ PlayerShared = {
 			color : null,			
 			building : [],
 			statusPlay : false,
-			gold : 50,
+			gold : 300,
 			inTurn : false,
+			defeat : false,
 
 			buildObject : function(name, x, y)
 			{
 				var constructor = ObjectDesc.getConstructor(name);
-				var object = constructor(name);
+				var object = constructor();
+				object.setType(name);
+
 				object.setPlayer(this);
 				
 				if(this.payMoney((ObjectDesc.getConfiguration(name)).cost))
@@ -45,20 +48,19 @@ PlayerShared = {
 						armies.splice(i, 1);
 					}
 				}
-			},			
+			},		
 
-			buildFreeArmy : function(name, x, y)
+			removeBuilding : function(building)
 			{
-				var constructor = ObjectDesc.getConstructor(name);
-				var army = constructor(name);
-				army.setPlayer(this);			
-
-				this.army[this.army.length] = army;
-
-				army.insert(x,y);
-				
-				return army;		
-			},
+				var building = this.building;
+				for(var i = 0; i < building.length; i++)
+				{
+					if(building == building[i])
+					{
+						building.splice(i, 1);
+					}
+				}
+			},	
 
 			payMoney : function(money)
 			{
@@ -95,7 +97,7 @@ PlayerShared = {
 					var army = this.army[i];
 					if(army)
 					{
-						army.refreshStats();
+						army.newTurn();
 					}
 				}
 
@@ -103,16 +105,16 @@ PlayerShared = {
 				{
 					var building = this.building[i];	
 					if(building)
-					{						
-						building.refreshStats();
+					{												
 						building.newTurn();
 					}
 				}
 			},
 
-			lostGame : function()
+			onDefeat : function()
 			{
-				console.log("lost game ", this.name);
+				console.log("lost game ", this.name);				
+				this.defeat = true;
 			},
 
 			setControll: function(isControll)
@@ -154,7 +156,8 @@ PlayerShared = {
 					color : this.color,
 					building : serializeBuilding,
 					statusPlay : this.statusPlay,
-					gold : this.gold
+					gold : this.gold,
+					defeat : this.defeat
 				}
 			}
 		}

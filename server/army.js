@@ -3,6 +3,8 @@ Army = {
 	{
 		var armyShared = ArmyShared.makeArmyShared(img, null);		
 		
+		var oldAttack = armyShared.attack;
+
 		var army = {						
 			moving: function(x, y)
 			{
@@ -27,23 +29,11 @@ Army = {
 
 			attack : function(playerObj)
 			{
-				if(this.fights <= 0)
+				var result = oldAttack.call(this, playerObj);
+								
+				if(result != null)
 				{
-					return;
-				}
-
-				var rangeMap = this.indexMovement().rangeMap;
-
-				for(var i = 0; i < rangeMap.length; i++)
-				{
-					if(rangeMap[i].x == playerObj.position.x && rangeMap[i].y == playerObj.position.y && playerObj.player != GameEngine.currentPlayer)
-					{									
-						var result = this.fight(playerObj);
-
-						Server.sendBroadcast(JSON.stringify({type : "attack", id : this.id, idDef : playerObj.id, hurt : result}));
-
-						return;
-					}
+					Server.sendBroadcast(JSON.stringify({type : "attack", id : this.id, idDef : playerObj.id, hurt : result}));
 				}
 			}			
 		}		

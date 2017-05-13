@@ -64,6 +64,7 @@ ArmyDesc ={
 		speed : 10,
 		initSpeed : 15,
 		initFights : 1,
+		buildAttack : 5,
 		name : "army",
 		modificators : [
 			{type: "grass", move: 1000},
@@ -76,7 +77,7 @@ ArmyDesc ={
 	builder : {
 		img : "builder.png",
 		type : "builder",
-		productObject : ["wall", "stable", "ship"],
+		productObject : ["wall", "stable", "ship", "ram"],
 		cost : 50,
 		initHealth : 1,
 		powerAttack : 1,
@@ -84,6 +85,21 @@ ArmyDesc ={
 		speed : 4,
 		initSpeed : 4,
 		initFights : 1,
+		initBuilds : 1,
 		name : "army"
+	},
+
+	ram : {
+		type : "ram",
+		name : "army",
+		img : "ram.png",
+		cost : 40,
+		initHealth : 3,
+		powerAttack : 1,
+		buildAttack : 5,
+		range : 1,
+		speed : 4,
+		initSpeed : 4,
+		initFights : 1		
 	}
 };

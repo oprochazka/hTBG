@@ -5,7 +5,8 @@ BuildingDesc = {
 		earnGold : 0,
 		cost : 0,
 		type : "barracks",
-		name : "building"
+		name : "building",
+		initProductUnits : 1
 	},
 
 	castle : {
@@ -14,7 +15,8 @@ BuildingDesc = {
 		earnGold : 0,
 		cost : 0,
 		type : "castle",
-		name : "building"
+		name : "building",
+		initProductUnits : 1
 	},
 
 	goldMine : {
@@ -31,7 +33,8 @@ BuildingDesc = {
 		earnGold : 0,
 		cost : 0,
 		type : "stable",
-		name : "building"
+		name : "building",
+		initProductUnits : 1
 	},
 	wall : {
 		img : "wall.png",
@@ -39,11 +42,20 @@ BuildingDesc = {
 		earnGold : 0,
 		cost : 20,
 		type : "wall",
-		health : 2,
+		initHealth : 20,
 		border : true,
 		name : "building",
 		modifyMove : 1000,
 		forbidenTiles : ["water"]
+		
+	},
+	stepWall : {
+		boost : [
+			{key : "range", value : 2},
+			{key : "water" , value : -2},
+			{key : "ship" , value : 1000}
+
+		]
 	},
 	grayve : {
 		img : "rip.png",

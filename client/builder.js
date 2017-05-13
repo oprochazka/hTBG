@@ -4,7 +4,7 @@ Builder = {
 		var builderShared = BuilderShared.makeBuilderShared(armyDescType);
 
 		var oldLostFocus = builderShared.lostFocus;
-
+		
 		var out = {
 			onProductBuilding :function(product)
 			{
@@ -23,10 +23,9 @@ Builder = {
 				if(this.flag == "build")
 				{
 					if(this.map && this.checkMapObject(this.map, position))
-					{
-					
+					{												
 						Client.sendActionMessage({type : "buildObject", 
-							id : this.id, productObject : this.chosen, x : position.x, y : position.y}, GameEngine.getControllPlayer());	
+							id : this.id, productObject : this.chosen, x : position.x, y : position.y}, GameEngine.gameManager.getControllPlayer());	
 					}
 				}
 

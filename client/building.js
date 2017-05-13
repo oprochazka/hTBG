@@ -33,15 +33,20 @@ Building = {
 					square.render();
 				}				
 			},
-			
+
 			onProductArmy : function(army)
 			{
-				if(Field.getArmyObject(this.position.x, this.position.y))
+				if(Field.getArmyObject(this.position.x, this.position.y) || this.productUnits <= 0)
 				{
 					return;
-				}
+				}				
 													
-				Client.sendActionMessage({type : "buildObject", id : this.id, productObject : army}, GameEngine.getControllPlayer());	
+				Client.sendActionMessage({type : "buildObject", id : this.id, productObject : army}, GameEngine.gameManager.getControllPlayer());	
+			},
+
+			onAttack: function(fieldDef)
+			{
+				this.fight(fieldDef);			
 			},
 
 			onClick : function(mousePos, key)

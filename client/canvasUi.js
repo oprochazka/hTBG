@@ -101,10 +101,16 @@ CanvasUi = {
 		return out;
 	},
 
-
-
-	setBarracks : function(config)
+	makeEndGame : function()
 	{
+		var text = Draw.makeText();
 
+		text.setText("You have been defeated");
+		text.setFont("80px Arial");
+		text.setColor("rgb(255,0,255");
+
+		text.move(100, 100);
+
+		return text;
 	}
 };

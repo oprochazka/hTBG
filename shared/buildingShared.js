@@ -2,18 +2,30 @@ BuildingShared = {
 
 	makeBuildingShared : function(buildingDescName)
 	{
-		var buildingTile = Tile.makeTile();	
+		var buildingTile = PlayerEntity.makePlayerEntity();
 
 		var oldDumped = buildingTile.dump;
 		var oldLoad = buildingTile.load;
 		var oldInsert = buildingTile.insert;
+		var oldSetKilled = buildingTile.setKilled;
 
 		var building = {
 			name : "building",
 			production : 0,			
 			player : null,	
 			modifyMove : null,
-			modifyRange : null,							
+			modifyRange : null,
+			productUnits : 1,					
+
+			setKilled : function()
+			{
+				oldSetKilled.call(this);
+
+				if(this.player)
+				{
+					this.player.removeBuilding(this);
+				}
+			},
 
 			_setConfiguration : function(building, config)
 			{
@@ -24,6 +36,16 @@ BuildingShared = {
 				this.modifyMove = config.modifyMove;
 				this.modifyRange = config.modifyRange;
 				this.forbidenTiles = config.forbidenTiles;
+				this.productUnits = config.initProductUnits;
+				this.initProductUnits = config.initProductUnits;
+				this.initHealth = config.initHealth;
+				
+				if(!config.initHealth)
+				{
+					this.initHealth = 1000;
+				}
+
+				this.health = this.initHealth;
 			},
 
 			insert: function(x, y)
@@ -65,6 +87,8 @@ BuildingShared = {
 				{
 					this.incomeGold();
 				}
+
+				this.refreshStats();
 			},
 
 			buildObject : function(productArmy)
@@ -73,9 +97,15 @@ BuildingShared = {
 				{
 					return;
 				}
-					
+				
+				if(this.productUnits <= 0)	
+				{
+					return;
+				}
+
 				if(productArmy && this.player && this.player.inTurn)
 				{
+					this.productUnits--;
 					this.player.buildObject(productArmy, this.position.x, this.position.y);
 				}
 				
@@ -83,6 +113,7 @@ BuildingShared = {
 
 			refreshStats : function()
 			{			
+				this.productUnits = this.initProductUnits;
 			},
 
 			dump: function(json)
@@ -95,7 +126,9 @@ BuildingShared = {
 					player : this.player && this.player.id,
 					type : this.type,
 					earnGold : this.earnGold,
-					productObject : this.productObject
+					productObject : this.productObject,					
+					productUnits : this.productUnits,
+					health : this.health
 				};
 
 				dumped = Object.assign(dumpedOld, dumped);
@@ -119,9 +152,12 @@ BuildingShared = {
 
 				if(json.player)
 				{					
-					this.player = GameEngine.findPlayer(json.player);
+					this.player = GameEngine.gameManager.findPlayer(json.player);
 					this.player.addBuilding(this);
 				}
+
+				this.productUnits = json.productUnits;
+				this.health = json.health;
 			}
 
 		};

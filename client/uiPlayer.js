@@ -36,9 +36,12 @@ UIPlayer = {
 	{
 		this.nickName.innerHTML = player.name;
 		this.players.innerHTML = "";
-		for(var i = 0; i < GameEngine.Players.length; i++)
+
+		var players = GameEngine.gameManager.getPlayers();
+
+		for(var i = 0; i < players.length; i++)
 		{
-			var obj = GameEngine.Players[i];
+			var obj = players[i];
 
 			this.players.innerHTML = this.players.innerHTML + " <div style='color: "+ obj.color +";' > " + i +" : " + obj.name + "</div>";	
 		}
@@ -47,23 +50,15 @@ UIPlayer = {
 		this.army.innerHTML = player.army.length;
 		this.yourTurn.style = "display: none";
 
-		if(GameEngine.turnPlayer)
+		if(GameEngine.gameManager.turnPlayer)
 		{
-			this.playerTurn.innerHTML =  "<span>" + GameEngine.turnPlayer.name + "</span>";				
+			this.playerTurn.innerHTML =  "<span>" + GameEngine.gameManager.turnPlayer.name + "</span>";				
 		}
-		if(GameEngine.turnPlayer == GameEngine.getControllPlayer())
+		if(GameEngine.gameManager.turnPlayer == GameEngine.gameManager.getControllPlayer())
 		{
 			this.yourTurn.style = "display: block";
 		}
 
-		this.playerGold.innerHTML =  GameEngine.getControllPlayer().gold;	
-	},
-
-	/*nextTurn: function(player)
-	{
-		if(player == GameEngine.getControllPlayer())
-		{
-			endTurnAudio.play();
-		}
-	}*/
+		this.playerGold.innerHTML =  GameEngine.gameManager.getControllPlayer().gold;	
+	}
 };

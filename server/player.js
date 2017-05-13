@@ -32,28 +32,6 @@ Player = {
 				}
 			},
 
-			/*buildBuilding : function(name, x, y)
-			{
-				var building = sharedBuildObject.call(this, name, x, y);
-	
-				if(building)
-				{
-					Server.sendBroadcast(JSON.stringify(
-						{type : "buildBuilding", player : {playerId : this.id, gold : this.gold}, data : building.dump()}));
-				}
-			},*/
-
-			buildFreeArmy : function(name, x, y)
-			{
-				var army = sharedBuildFreeArmy.call(this,name, x, y);
-
-				if(army)
-				{
-					Server.sendBroadcast(JSON.stringify(
-						{type : "buildObject", player : {playerId : this.id, gold : this.gold}, data : army.dump()}));
-				}
-			},
-
 			addBuilding: function(building)
 			{
 				sharedaddBuilding.call(this, building);

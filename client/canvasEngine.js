@@ -22,10 +22,11 @@ function initialization()
   canvas.onmousedown = function () { return false; }  
 
   Draw.initModule(canvas);
-
+  GameEngine.initModule();
   CanvasUi.initModule();
   Field.initModule(canvas, 64, 64, CanvasUi.canvasUi);
   Client.initModule();
+
   
 
 
@@ -74,6 +75,8 @@ function initialization()
   UIPlayer.init();
 }
 
+
+
 function gameLoop () 
 {
 
@@ -89,10 +92,15 @@ function gameLoop ()
     CanvasUi.canvasUi.render();
 
     first = false;
-    var player = GameEngine.getControllPlayer();
+    var player = GameEngine.gameManager.getControllPlayer();
     if(player)
     {
       UIPlayer.refreshUi(player);
+    }
+
+    if(GameEngine.flagEnd)
+    {
+      GameEngine.flagEnd.render();
     }
 }
 
