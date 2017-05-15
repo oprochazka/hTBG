@@ -9,10 +9,11 @@ TextureMap = {
 
   layer2 : [
     {r : 154, g : 28, b : 14, type : "player", order : 0},
-    {r : 13, g : 136, b : 45, type : "player", order : 1},
+    {r : 13, g : 136, b : 45, type : "player", order : 3},
     {r : 151, g : 14, b : 154, type : "player", order : 2},
-    {r : 14, g : 14, b : 154, type : "player", order : 3},
+    {r : 14, g : 14, b : 154, type : "player", order : 1},
     {r : 225, g : 182, b : 11, type : "player", order : 4},
+    {r : 250, g : 230, b : 20, type : "goldMine"}
   ],
 
 	loadTexture : function(path, pathDesc)
@@ -55,7 +56,8 @@ TextureMap = {
             return
           }          
 
-          var players = {};
+          var players = [];
+          var objects = [];
 
           for(var i = 0; i < pixels.data.length; i += 4)
           {           
@@ -67,16 +69,23 @@ TextureMap = {
             {
               var conf = TextureMap.layer2[z];
               if(conf.r == r && conf.g == g && conf.b == b)
-              {
-                players[conf.order] = i/4; 
+              {                
+                if(conf.type == "player")
+                {
+                  players[conf.order] = i/4; 
+                }                
+                if(conf.type == "goldMine")
+                {               
+                  objects[objects.length] = {type : "goldMine", position : i/4};
+                }
 
                 break;
-              }
+              }              
             }     
           }     
 
-
-          GameEngine.startServer(width, height, mapArray, players);
+          
+          GameEngine.startServer(width, height, mapArray, players, objects);
 
         });
   },

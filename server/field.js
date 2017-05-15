@@ -11,7 +11,7 @@ Field = {
 		
 	},
 
-	makeFieldByMap : function(w, h, mapArray)
+	makeFieldByMap : function(w, h, mapArray, objects)
 	{
 		console.log(w, h, mapArray.length);
 		this.tilesW = w;
@@ -31,19 +31,14 @@ Field = {
 			FieldShared.insertObject(obj, pos.x, pos.y);			
 		}
 
-		for(var i = 0; i < 100; i++)
+		for(var i = 0; i < objects.length; i++)
 		{
-			var x1 = Math.floor((Math.random() *  this.tilesW));
-			var y1 = Math.floor((Math.random() * this.tilesH));
-			var z = Math.floor((Math.random() * 4));
-		
-			if(Field.getObject(x1,y1)[0].type == "mountain" && z != 3)
+			if(objects[i].type == "goldMine")
 			{
-				if(Field.getObject(x1,y1).length == 1)
-				{
-					var building = Building.makeBuilding("goldMine");				
-					this.insertObject(building, x1, y1);				
-				}
+				var building = Building.makeBuilding();				
+				building.setType("goldMine");
+				var position = Field.get2DFromIndex(objects[i].position);
+				this.insertObject(building, position.x, position.y);				
 			}
 		}
 	},

@@ -27,12 +27,11 @@ GameEngine = {
 		TextureMap.loadTexture(path, pathDesc);
 	},
 
-	startServer : function(w, h, mapArray, players)
-	{
-		console.log(mapArray);
+	startServer : function(w, h, mapArray, players, objects)
+	{		
 		if(mapArray)
 		{
-			Field.makeFieldByMap(w, h, mapArray);
+			Field.makeFieldByMap(w, h, mapArray, objects);
 			this.playerPositions = players;
 		}
 		else

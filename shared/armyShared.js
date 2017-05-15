@@ -242,12 +242,12 @@ ArmyShared = {
 				this.cost = config.cost;
 				this.powerAttack = config.powerAttack;
 				this.health = config.initHealth;
-				this.speed = config.initSpeed;		
+				this.speed = 0;		
 
 				this.modificators = config.modificators;
 				this.forbidenTiles = config.forbidenTiles;
 
-				this.fights = config.initFights;
+				this.fights = 0;
 				this.buildAttack = config.buildAttack;
 			},	
 

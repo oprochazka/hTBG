@@ -15,7 +15,7 @@ BuilderShared = {
 			{
 				armyConfigOld.call(this, config);
 
-				this.builds = config.initBuilds;
+				this.builds = 0;
 				this.initBuilds = config.initBuilds;				
 
 				return config;				

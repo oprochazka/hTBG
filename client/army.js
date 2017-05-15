@@ -83,17 +83,17 @@ Army = {
 					var range = this.findInMap(position.x, position.y, this.rangeMap);					
 
 					if(range)
-					{				
-						if(this.buildAttack)
+					{										
+						if(armyObj && !armyObj.player.controll)
+						{
+							this.attack(armyObj);
+						}
+						else if(this.buildAttack)
 						{
 							if(buildingObj && (!buildingObj.player || !buildingObj.player.controll))
 							{
 								this.attack(buildingObj);
 							}
-						}
-						if(armyObj && !armyObj.player.controll)
-						{
-							this.attack(armyObj);
 						}		
 					}										
 				}

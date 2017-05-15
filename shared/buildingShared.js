@@ -36,7 +36,7 @@ BuildingShared = {
 				this.modifyMove = config.modifyMove;
 				this.modifyRange = config.modifyRange;
 				this.forbidenTiles = config.forbidenTiles;
-				this.productUnits = config.initProductUnits;
+				this.productUnits = 0;
 				this.initProductUnits = config.initProductUnits;
 				this.initHealth = config.initHealth;
 				
