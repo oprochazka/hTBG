@@ -78,6 +78,22 @@ ContextOption = {
 				}
 			},
 
+			mouseOut : function(mousePos, button)
+			{
+				this.toolTip.showToolTip = false;
+			},
+
+			mouseIn : function(mousePos, button)
+			{
+				if(this.toolTip)
+				{
+					this.toolTip.showToolTip = true;
+				}
+			},
+			refreshMouse : function(mousePos, button)
+			{
+
+			},
 			onClick : function(mousePos, button)
 			{
 
@@ -123,6 +139,8 @@ ContextOption = {
 		text.setText(textContent);		
 		text.move(0,squareH + textOffset);
 
+		var margin = 10;
+
 		var width = squareW;
 		var height = squareH + textOffset + 5;
 
@@ -134,6 +152,15 @@ ContextOption = {
 			position : {x : 0, y : 0, w : width, h : height},
 			clock : null,
 			animTime : 100,
+			toolTip : null,
+			showToolTip : false,
+
+			setConfig : function(product)
+			{
+				this.toolTip = ToolTip.makeToolTip();				
+				this.toolTip.setConfig(product);				
+				this.setToolTipPosition();
+			},
 
 			animate : function()
 			{
@@ -160,6 +187,16 @@ ContextOption = {
 				background.move(x, y);
 				this.position.x += x;
 				this.position.y += y;
+
+				this.setToolTipPosition();
+			},
+
+			setToolTipPosition : function()
+			{
+				if(this.toolTip)
+				{
+					this.toolTip.setPosition(this.position.x, this.position.y - this.toolTip.position.h - margin);
+				}
 			},
 
 			setPosition : function(x, y)
@@ -171,11 +208,26 @@ ContextOption = {
 
 				this.position.x = x;
 				this.position.y = y;
+
+				this.setToolTipPosition();
 			},
 
 			onClick : function(mousePos, button)
 			{
 
+			},
+
+			mouseOut : function(mousePos, button)
+			{
+				this.toolTip.showToolTip = false;
+			},
+
+			mouseIn : function(mousePos, button)
+			{
+				if(this.toolTip)
+				{
+					this.toolTip.showToolTip = true;					
+				}
 			},
 
 			render : function()
@@ -192,6 +244,11 @@ ContextOption = {
 					{
 						this.clear();
 					}
+				}
+
+				if(this.toolTip.showToolTip)
+				{									
+					this.toolTip.render();
 				}
 			}			
 		};
@@ -310,8 +367,43 @@ ContextOption = {
 					}
 				}
 			},
+			refreshMouse : function(mousePos)
+			{
+				for(var i = 0; i < this.items.length; i++)
+				{						
+					var object = this.items[i];
 
-			_setProduct : function(product, onClick)
+					if(Utils.intersecPointRect(mousePos, object.position))
+					{
+						if(object.mouseIn)
+						{
+							object.mouseIn();
+						}						
+					}
+					else
+					{
+						if(object.mouseOut)
+						{
+							object.mouseOut();
+						}
+					}
+				}
+			},
+
+			mouseOut : function(mousePos)
+			{
+				for(var i = 0; i < this.items.length; i++)
+				{						
+					var object = this.items[i];
+
+					if(object.mouseOut)
+					{
+						object.mouseOut();
+					}
+				}
+			},
+
+			_setProduct : function(product, onClick, clickedObject)
 			{
 				var img = "http://"+ GameEngine.server +"/asets/"+ product.img;
 
@@ -324,6 +416,8 @@ ContextOption = {
 				{
 					item.onClick = onClick;
 				}
+
+				item.setConfig(product);
 
 				this.position.w = item.position.x + item.position.w;
 
@@ -346,7 +440,7 @@ ContextOption = {
 						clickedObject.onProductArmy(army);
 					};
 
-					this._setProduct(element, onClick);
+					this._setProduct(element, onClick, clickedObject);
 				}
 			},
 
@@ -361,7 +455,7 @@ ContextOption = {
 						clickedObject.onProductBuilding(building);
 					};
 
-					this._setProduct(element, onClick)
+					this._setProduct(element, onClick, clickedObject)
 				}
 			},
 			setBuildOption : function()

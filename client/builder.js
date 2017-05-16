@@ -23,7 +23,12 @@ Builder = {
 				if(this.flag == "build")
 				{
 					if(this.map && this.checkMapObject(this.map, position))
-					{												
+					{	
+						if(this.build > 0 && this.player.isPayObject(army))
+						{	
+							this.build--;									
+						}
+
 						Client.sendActionMessage({type : "buildObject", 
 							id : this.id, productObject : this.chosen, x : position.x, y : position.y}, GameEngine.gameManager.getControllPlayer());	
 					}

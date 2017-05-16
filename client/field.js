@@ -17,7 +17,7 @@ Field = {
 	moveMap : null,
 	rangeMap : null,
 
-	slideWindow : null,
+	slideWindow : null,	
 
 	initModule: function(canvas, squareW, squareH, canvasUi)
 	{
@@ -29,7 +29,7 @@ Field = {
 
 		Tile.initModule(this.squareW, this.squareH);
 
-		this.slideWindow = SlideWindow.makeSlideWindow();
+		this.slideWindow = GameEngine.gameManager.slideWindow;
 	},
 
 	loadField : function(json)
@@ -176,6 +176,11 @@ Field = {
   		this.clearMap(this.moveMap);
 
   		this.moveMap = null;
+  	},
+
+  	focusObject : function(object)
+  	{
+		this.focusedTile = [object];
   	},
 
   	onClick: function(mousePos, evt, key) {

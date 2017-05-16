@@ -78,6 +78,14 @@ FieldShared = {
 		return {x : nX, y : nY}; 		
   	},
 
+  	drawPosition: function(x, y)
+  	{
+  		var nX = Math.floor(x * Field.squareW);
+  		var nY = Math.floor(y * Field.squareH);
+		
+		return {x : nX, y : nY}; 		
+  	},
+
   	getPlayerObject : function(x, y)
   	{
   		var objects = Field.getObject(x,y);

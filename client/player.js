@@ -28,9 +28,34 @@ Player = {
                 	buyArmy.play();	
                 }
 
-
              	Field.insertObject(playerEntity, data.position.x, data.position.y);
+
+             	GameEngine.gameManager.setActionCenterNCon(playerEntity);
 			},	
+
+			getPossibleOperation : function()
+			{
+				var out = [];
+
+				for(var i = 0; i < this.army.length; i++)
+				{
+					var army = this.army[i];
+					if(army.speed > 0 || army.fights > 0 || (army.builds && army.builds > 0))
+					{
+						out[out.length] = army;
+					}
+				}
+
+				for(var i = 0; i < this.building.length; i++)
+				{
+					if(this.building[i].productUnits && this.building[i].productUnits > 0)
+					{
+						out[out.length] = this.building[i];
+					}
+				}
+
+				return out;
+			},
 
 			setArmy : function(army)
 			{
@@ -59,8 +84,8 @@ Player = {
 				}
 				else
 				{
-					this.setControll(true);	
-				}								
+					this.setControll(true);					
+				}										
 
 				this.color = json.color;
 				this.gold = json.gold;
@@ -73,13 +98,25 @@ Player = {
 
 			},
 
+			getKing : function()
+			{
+				for(var i = 0; i < this.army.length; i++)
+				{
+					if(this.army[i].type == "king")
+					{
+						return this.army[i];
+					}						
+				}
+			},
+
 			newTurn: function()
 			{
 				oldNewTurn.call(this);
 
 				if(this.inTurn && this == GameEngine.gameManager.getControllPlayer())
 				{
-					nextTurnAudio.play();
+					nextTurnAudio.play();		
+					GameEngine.gameManager.setActionCenter(this.getKing());								
 				}
 			}
 

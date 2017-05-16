@@ -39,13 +39,17 @@ Building = {
 				if(Field.getArmyObject(this.position.x, this.position.y) || this.productUnits <= 0)
 				{
 					return;
-				}				
-													
+				}			
+				if(this.productUnits > 0 && this.player.isPayObject(army))
+				{	
+					this.productUnits--;									
+				}
+
 				Client.sendActionMessage({type : "buildObject", id : this.id, productObject : army}, GameEngine.gameManager.getControllPlayer());	
 			},
 
 			onAttack: function(fieldDef)
-			{
+			{				
 				this.fight(fieldDef);			
 			},
 

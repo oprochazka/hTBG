@@ -36,10 +36,11 @@ function initialization()
       if(mousePos.y < 960 - CanvasUi.canvasUi.position.h)
       {
         Field.refreshMouse(mousePos, evt);
+        CanvasUi.canvasUi.mouseOut(mousePos, evt);
       }
       else
       {
-        CanvasUi.canvasUi.refreshMouse(mousePos, evt);
+        CanvasUi.canvasUi.refreshMouse(mousePos, evt);        
       }
 
     }, false);

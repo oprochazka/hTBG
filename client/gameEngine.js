@@ -9,7 +9,7 @@ GameEngine = {
 	flagEnd : false,
 
 	initModule : function()
-	{
+	{		
 		this.gameManager = GameManager.makeGameManager();
 		this.server = this.ip+ ":" +this.port;
 	},

@@ -12,6 +12,55 @@ Draw = {
         context.lineTo( w, h);
     },
 
+    makeDrawLine : function(x, y, w, h)
+    {
+      var out = {
+        x : x || 0,
+        y : y || 0,
+        w : w || 0,
+        h : h || 0,
+        weight : 2,
+        color : "rgba(0, 0, 0, 1)",
+        setColor : function(hex)
+        {
+          this.color = hex;
+        },
+        move : function(x, y, w, h)
+        {
+          this.x += x;
+          this.y += y;
+          this.w = thix.x + this.w;
+          this.h = this.y + this.h;
+        },
+
+        setPosition : function(x, y, w, h)
+        {
+          this.x = x;
+          this.y = y;
+          this.w = w;
+          this.h = h;
+        },
+        
+        render : function()
+        {
+          var context = Draw.canvas.getContext('2d');
+
+          context.beginPath();
+
+          context.lineWidth = this.weight;
+          context.strokeStyle=this.color;
+
+          context.moveTo(x, y);
+          context.lineTo( w, h);
+
+          context.closePath();
+          context.stroke();
+        }
+
+      }
+      return out;
+    },
+
     makeSquare : function(w, h)
     {
         var square = { 
@@ -186,6 +235,7 @@ Draw = {
         text : "",
         color : "rgba(255, 255, 255, 1)",
         font : "20px Arial",
+        fontSize : 20,
 
         move : function(x, y)
         {

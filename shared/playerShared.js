@@ -62,6 +62,18 @@ PlayerShared = {
 				}
 			},	
 
+			isPayObject : function(object)
+			{
+				var result = this.gold - object.cost;
+
+				if(result < 0)
+				{
+					return false;
+				}
+
+				return true;
+			},
+
 			payMoney : function(money)
 			{
 				var result = this.gold - money;

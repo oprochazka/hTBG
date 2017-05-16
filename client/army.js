@@ -8,6 +8,7 @@ Army = {
 		var oldRender = armyShared.render;
 		var oldSetType = armyShared.setType;	
 		var oldMoved = armyShared.moved;
+		var oldLoad = armyShared.load;
 
 		var hurtAudio = new Audio("./sound/hurt.mp3");	
 		var fightAudio = new Audio("./sound/fight.mp3");
@@ -18,14 +19,30 @@ Army = {
 			moveMap : null,
 			option : null,
 			flag : null,
+			lastActionLine : null,
+
+			load : function(json)
+			{
+				oldLoad.call(this, json);
+
+                if(this.type == "king")
+                {
+                	if(this.player.controll)
+                	{
+                		GameEngine.gameManager.setActionCenter(this);
+                	}
+                }
+			},
 			
 			onMove : function(x, y, decreaseSpeed)
-			{
+			{				
 				oldMoved.call(this,x,y, decreaseSpeed);
 				if(GameEngine.gameManager.getControllPlayer() == this.player)
 				{				
 					marchAudio.play();
 				}
+
+				GameEngine.gameManager.setActionCenterNCon(this);
 			},
 
 			render : function()
@@ -45,6 +62,7 @@ Army = {
 				}
 
 				square.render();
+
 			},
 
 			setType : function(armyDescType)
@@ -116,13 +134,15 @@ Army = {
 					else
 					{
 						hurtAudio.play();
-					}
+					}					
+
+					GameEngine.gameManager.setActionCenterNCon(fieldDef);
 				}
 
 				if(GameEngine.gameManager.getControllPlayer() == this.player)
 				{
-					fightAudio.play();
-				}
+					fightAudio.play();					
+				}				
 			},
 
 			moving : function(x, y)
@@ -131,31 +151,42 @@ Army = {
 				Client.sendActionMessage(msg, this.player);
 			},
 
+			showAttack : function()
+			{
+				this.flag = "attack";
+				var maps = this.indexMovement();				
+
+				var range = maps.rangeMap;
+				if(this.fights <= 0)
+				{
+					range = [];
+				}
+
+				Field.setMoveMap({color : "rgba(10, 110, 10, 0.4)", map: range});
+
+				UIPlayer.setSelectedObject(this);
+			},
+
+			showMove : function()
+			{
+				this.flag = "move";
+				var maps = this.indexMovement();				
+				Field.setMoveMap({color : null, map: maps.moveMap });
+		
+				UIPlayer.setSelectedObject(this);	
+			},
+
+
 			onClick : function(pos, key)
 			{		
 				Field.canvasUi.setType(this);
 				if(key == "left")
 				{
-					this.flag = "move";
-					var maps = this.indexMovement();				
-					Field.setMoveMap({color : null, map: maps.moveMap });
-			
-					UIPlayer.setSelectedObject(this);
+					this.showMove();
 				}
 				if(key == "right")
 				{
-					this.flag = "attack";
-					var maps = this.indexMovement();				
-
-					var range = maps.rangeMap;
-					if(this.fights <= 0)
-					{
-						range = [];
-					}
-
-					Field.setMoveMap({color : "rgba(10, 110, 10, 0.4)", map: range});
-
-					UIPlayer.setSelectedObject(this);
+					this.showAttack();
 				}
 			},		
 

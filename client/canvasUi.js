@@ -74,9 +74,32 @@ CanvasUi = {
 				}
 			},
 
-			refreshMouse : function()
+			refreshMouse : function(mousePos)
 			{
+				for(var i = 0; i < this.objects.length; i++)
+				{
+					var object = this.objects[i];
 
+					if(Utils.intersecPointRect(mousePos, object.position))
+					{
+						if(object.refreshMouse)
+						{
+							object.refreshMouse(mousePos);					
+						}
+					}
+				}
+			},
+
+			mouseOut : function(mousePos)
+			{
+				for(var i = 0; i < this.objects.length; i++)
+				{
+					var object = this.objects[i];
+					if(object.mouseOut)
+					{
+						object.mouseOut(mousePos);					
+					}					
+				}
 			},
 
 

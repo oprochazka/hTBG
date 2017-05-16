@@ -4,8 +4,41 @@ SlideWindow = {
 		var slideWindow = {
 			x : 0,
 			y : 0,
-			w : 25,
-			h : 20,
+			w : 24,
+			h : 15,			
+
+			centerToPosition : function(x, y)
+			{		
+				var centerX = x - Math.floor(this.w/2);
+				var centerY = y - Math.floor(this.h/2);
+
+				var maxX = Field.tilesW - this.w;
+				var maxY = Field.tilesH - this.h;
+
+				if(centerX < 0)
+				{
+					centerX = 0;					
+				}
+
+				if(centerY < 0)
+				{
+					centerY = 0;
+				}
+
+				if(centerX > maxX)
+				{
+					centerX = maxX;
+				}
+
+				if(centerY > maxY)
+				{
+					centerY = maxY;
+				}
+
+
+				this.setPosition(centerX,centerY);
+
+			},
 
 			move : function(x, y)
 			{
@@ -84,24 +117,23 @@ SlideWindow = {
 				{
 					y++;
 				}
+				if(key == "x")
+				{
+
+				}
+
 				this.move(x, y);
-				if(this.x < 0 || (this.x + this.w) > Field.tilesW + 1 )
+				if(this.x < 0 || (this.x + this.w) > Field.tilesW)
 				{
 					this.move(-x, 0);
 				}
-				if(this.y < 0 || (this.y + this.h) > Field.tilesH + 6 )
+				if(this.y < 0 || (this.y + this.h) > Field.tilesH)
 				{
 					this.move(0, -y);
-				}
-		//		debugger;
+				}		
 			}			
 
 		};
-
-		window.addEventListener('keydown', function (evt){
-          	slideWindow.onKey(evt.key);
-  		}, false);
-
 		return slideWindow;
 	}
 };
