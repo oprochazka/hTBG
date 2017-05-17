@@ -80,7 +80,10 @@ ContextOption = {
 
 			mouseOut : function(mousePos, button)
 			{
-				this.toolTip.showToolTip = false;
+				if(this.toolTip)
+				{
+					this.toolTip.showToolTip = false;
+				}
 			},
 
 			mouseIn : function(mousePos, button)
@@ -219,15 +222,12 @@ ContextOption = {
 
 			mouseOut : function(mousePos, button)
 			{
-				this.toolTip.showToolTip = false;
+				this.showToolTip = false;
 			},
 
 			mouseIn : function(mousePos, button)
 			{
-				if(this.toolTip)
-				{
-					this.toolTip.showToolTip = true;					
-				}
+				this.showToolTip = true;					
 			},
 
 			render : function()
@@ -246,7 +246,7 @@ ContextOption = {
 					}
 				}
 
-				if(this.toolTip.showToolTip)
+				if(this.showToolTip)
 				{									
 					this.toolTip.render();
 				}
