@@ -108,7 +108,7 @@ Army = {
 						}
 						else if(this.buildAttack)
 						{
-							if(buildingObj && (!buildingObj.player || !buildingObj.player.controll))
+							if(buildingObj/* && (!buildingObj.player || !buildingObj.player.controll)*/)
 							{
 								this.attack(buildingObj);
 							}

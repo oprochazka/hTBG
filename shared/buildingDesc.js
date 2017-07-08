@@ -44,6 +44,17 @@ BuildingDesc = {
 		forbidenTiles : ["grass", "water", "swamp", "mountain"]
 	},
 
+	shipyard : {
+		img : "shipyard.png",
+		type : "shipyard",
+		name : "building",
+		productObject : ["ship"],
+		earnGold : 0,
+		cost : 150,
+		initHealth : 15,
+		forbidenTiles : ["grass", "wood", "swamp", "mountain"]
+	},
+
 	stable : {
 		img : "stable.png",
 		type : "stable",
@@ -65,9 +76,40 @@ BuildingDesc = {
 		initHealth : 20,
 		border : true,		
 		modifyMove : 1000,
+		modifyRange : 4,
 		forbidenTiles : ["water"]
 		
 	},
+	tower : {
+		img : "tower.png",
+		type : "tower",
+		name : "building",
+		productObject : [],
+		earnGold : 0,
+		cost : 80,		
+		initHealth : 20,	
+		modifyMove : 0,
+		forbidenTiles : ["water"],
+		boost : [
+			{action : "range", value : 8}
+		]
+	},
+
+	bridge : {
+		img : "bridge.png",
+		type : "bridge",
+		name : "building",
+		productObject : [],
+		earnGold : 0,
+		cost : 60,		
+		initHealth : 20,		
+		modifyMove : 0,
+		forbidenTiles : ["grass", "wood", "swamp", "mountain"],
+		boost : [
+			{action : "tileSpeed", tile : "water", value : -2}			
+		]
+	},
+
 	stepWall : {
 		boost : [
 			{key : "range", value : 2},

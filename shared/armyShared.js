@@ -34,6 +34,44 @@ ArmyShared = {
 				}
 			},
 
+			getRangeBoost : function(boosts)
+			{
+				var range = 0;
+
+				for(var i = 0; i < boosts.length; i++)
+				{
+					var boost = boosts[i];
+
+					if(boost.action && boost.action == "range")
+					{
+						range = boost.value;
+					}
+				}
+
+				return {range : range};
+			},
+
+			getTileBoost : function(building, tile)
+			{
+				var tileSpeed = 0;
+				var range = 0;
+
+				if(building && building.boost)
+				{
+					for(var i = 0; i < building.boost.length; i++)
+					{
+						var boost = building.boost[i];
+
+						if(boost.action && boost.action == "tileSpeed" && tile.type == boost.tile)
+						{
+							tileSpeed = boost.value;
+						}
+					}
+				}
+
+				return {tileSpeed : tileSpeed, tileRange : range};
+			},
+
 			_countFar : function(x, y, moveMap, movement)
 			{
 				var speed = 0;		
@@ -80,25 +118,22 @@ ArmyShared = {
 				moveMap[moveMap.length] = map;
 			},
 
-			_buildingModificator : function(objs)
+			_buildingModificator : function(building)
 			{
 				var modificatorMove = 0;
 				var modificatorRange = 0;
-				for(var i = 0; i < objs.length; i++)
+				if(building)
 				{
-					if(objs[i].name == "building")
+					if(building.modifyMove)
 					{
-						if(objs[i].modifyMove)
-						{
-							modificatorMove = objs[i].modifyMove;
-						}
-						if(objs[i].modifyRange)
-						{
-							modificatorRange = objs[i].modifyRange;
-						}
+						modificatorMove = building.modifyMove;
+					}
+					if(building.modifyRange)
+					{
+						modificatorRange = building.modifyRange;
 					}
 				}
-
+				
 				return {move : modificatorMove, range : modificatorRange};
 			},
 
@@ -131,6 +166,7 @@ ArmyShared = {
 			compare : function(x, y, moveMap, rangeMap)
 			{	
 				var objs = Field.getObject(x, y);
+				var building = Field.getBuildingObject(x,y);
 
 				if(!objs || !objs[0])
 				{
@@ -143,14 +179,27 @@ ArmyShared = {
 					return;
 				}	
 				
-				var buildModif = this._buildingModificator(objs);
+				var buildModif = this._buildingModificator(building);
 				var armyModif = this._armyModificator(tile);
+				var tileModificator = {tileSpeed : 0, tileRange : 0};
+				var tileModificator = this.getTileBoost(building, tile);				
 
-				var mov = tile.configuration.movement;
-				var range = tile.configuration.range;
+				var tileMove = tile.configuration.movement;
+				var tileRange = tile.configuration.range;
 
-				this._countFar(x, y, moveMap, mov + buildModif.move + armyModif.move);
-				this._countFar(x, y, rangeMap, range + buildModif.range + armyModif.range);
+				var move = tileMove + buildModif.move + armyModif.move + tileModificator.tileSpeed;
+				var range = tileRange + buildModif.range + armyModif.range + tileModificator.tileRange;
+				if(move < 1)
+				{
+					move = 1;
+				}
+				if(range < 1)
+				{
+					range = 1;
+				}
+
+				this._countFar(x, y, moveMap, move);
+				this._countFar(x, y, rangeMap, range);
 			},
 
 			setSurrounding : function(x, y, map)
@@ -175,8 +224,21 @@ ArmyShared = {
 
 			indexMovement : function()
 			{
-				var speed = this.speed;
-				var range = this.range;
+				var building = Field.getBuildingObject(this.position.x, this.position.y);
+				var boost = {range : 0};
+
+				if(building && building.boost)
+				{
+					boost = this.getRangeBoost(building.boost);
+
+					if(this.range == 0)
+					{
+						boost.range = 0;
+					}
+				}
+
+				var speed = this.speed;				
+				var range = this.range + boost.range;
 
 				var moveMap = [];
 				var rangeMap = [];
@@ -196,18 +258,29 @@ ArmyShared = {
 				for(var y = 0; y <= maxRange; y++)
 				{
 					for(var x = 0; x <= maxRange; x++)
-					{
+					{	
+						var map;				
 						var pX = this.position.x + x;
 						var pY = this.position.y + y;
+
+						map = this.compare(pX, pY, moveMap, rangeMap);
+						map = this.compare(pX+1, pY, moveMap, rangeMap);
+						map = this.compare(pX-1, pY, moveMap, rangeMap);
+						map = this.compare(pX, pY+1, moveMap, rangeMap);
+						map = this.compare(pX, pY-1, moveMap, rangeMap);
 
 						var mX = this.position.x - x;
 						var mY = this.position.y - y;
 
-						var map = this.compare(pX, pY, moveMap, rangeMap);
-						map= this.compare(pX, mY, moveMap, rangeMap);
-						map = this.compare(mX, pY, moveMap, rangeMap);
 						map = this.compare(mX, mY, moveMap, rangeMap);
-						
+						map = this.compare(mX+1, mY, moveMap, rangeMap);
+						map = this.compare(mX-1, mY, moveMap, rangeMap);
+						map = this.compare(mX, mY+1, moveMap, rangeMap);
+						map = this.compare(mX, mY+1, moveMap, rangeMap);
+
+
+						map = this.compare(pX, mY, moveMap, rangeMap);
+						map = this.compare(mX, pY, moveMap, rangeMap);
 					}	
 				}
 				
@@ -327,7 +400,7 @@ ArmyShared = {
 
 				for(var i = 0; i < rangeMap.length; i++)
 				{
-					if(rangeMap[i].x == playerObj.position.x && rangeMap[i].y == playerObj.position.y && playerObj.player != this.player)
+					if(rangeMap[i].x == playerObj.position.x && rangeMap[i].y == playerObj.position.y)
 					{									
 						var result = this.fight(playerObj);
 

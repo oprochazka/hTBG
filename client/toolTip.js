@@ -52,6 +52,7 @@ ToolTip = {
 					config = ObjectDesc.getConfiguration(clickedObject.type);
 
 					textConfig = [
+						{key : "Type", value : config.type},
 						{key : "Production", value : config.earnGold + " G"},
 						{key : "Health", value : clickedObject.initHealth},
 						{key : "Units per Turn", value : clickedObject.productUnits || 0}
@@ -61,6 +62,7 @@ ToolTip = {
 				{
 					config = ObjectDesc.getConfiguration(clickedObject.type);
 					textConfig = [
+						{key : "Type", value : config.type},
 						{key : "Health", value : clickedObject.initHealth},
 						{key : "Fights", value : clickedObject.initFights},
 						{key : "Movement", value : clickedObject.initSpeed},

@@ -39,6 +39,7 @@ BuildingShared = {
 				this.productUnits = 0;
 				this.initProductUnits = config.initProductUnits;
 				this.initHealth = config.initHealth;
+				this.boost = config.boost;
 				
 				if(!config.initHealth)
 				{

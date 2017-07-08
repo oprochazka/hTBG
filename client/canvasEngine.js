@@ -27,20 +27,21 @@ function initialization()
   Field.initModule(canvas, 64, 64, CanvasUi.canvasUi);
   Client.initModule();
 
-  
+  var width = canvas.width;
+  var height = canvas.height;
 
 
   canvas.addEventListener('mousemove', function(evt) {
       var mousePos = getMousePos(canvas, evt);
       
-      if(mousePos.y < 960 - CanvasUi.canvasUi.position.h)
+      if(mousePos.y < height - GameEngine.gameManager.getFooter().position.h)
       {
         Field.refreshMouse(mousePos, evt);
-        CanvasUi.canvasUi.mouseOut(mousePos, evt);
+        GameEngine.gameManager.getFooter().mouseOut(mousePos, evt);
       }
       else
       {
-        CanvasUi.canvasUi.refreshMouse(mousePos, evt);        
+        GameEngine.gameManager.getFooter().refreshMouse(mousePos, evt);        
       }
 
     }, false);
@@ -48,26 +49,26 @@ function initialization()
   canvas.addEventListener('click', function(evt) {
       var mousePos = getMousePos(canvas, evt );
 
-      if(mousePos.y < 960 - CanvasUi.canvasUi.position.h)
+      if(mousePos.y < height - GameEngine.gameManager.getFooter().position.h)
       {
         Field.onClick(mousePos, evt, "left");
       }
        else
       {
-        CanvasUi.canvasUi.onClick(mousePos, evt, "left");
+        GameEngine.gameManager.getFooter().onClick(mousePos, evt, "left");
       }
 
     }, false);
 
   canvas.addEventListener('contextmenu', function (evt){
      var mousePos = getMousePos(canvas, evt);
-      if(mousePos.y < 960 - CanvasUi.canvasUi.position.h)
+      if(mousePos.y < height - GameEngine.gameManager.getFooter().position.h)
       {
         Field.onClick(mousePos, evt, "right");
       }
       else
       {
-        CanvasUi.canvasUi.onClick(mousePos, evt, "right");
+        GameEngine.gameManager.getFooter().onClick(mousePos, evt, "right");
       }
   }, false);
 
@@ -90,7 +91,8 @@ function gameLoop ()
     window.requestAnimationFrame(gameLoop);        
 
     Field.render();
-    CanvasUi.canvasUi.render();
+    GameEngine.gameManager.getFooter().render();
+    GameEngine.gameManager.getTopPanel().render();
 
     first = false;
     var player = GameEngine.gameManager.getControllPlayer();

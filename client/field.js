@@ -25,7 +25,7 @@ Field = {
 		this.squareH = squareH;
 
 		this.canvas = canvas;
-		this.canvasUi = canvasUi;
+		this.canvasUi = GameEngine.gameManager.getFooter();
 
 		Tile.initModule(this.squareW, this.squareH);
 

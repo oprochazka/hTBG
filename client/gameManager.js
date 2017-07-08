@@ -1,13 +1,34 @@
 GameManager = {
 	makeGameManager : function()
 	{	
+		var canvasW = 1536;
+		var canvasH = 960;
+
 		var shared = GameManagerShared.makeGameManagerShared();
 		var slideWindow = SlideWindow.makeSlideWindow();
+
+		var canvasUi = CanvasUi.makeCanvasUi();
+ 		canvasUi.setPosition(0, canvasH - canvasUi.position.h);
+
+ 		var topPanel = CanvasUi.makeCanvasUi(canvasW, 30);
+
 
 		var out = {
 			autoFocus : true,
 			slideWindow : slideWindow,
 			lastChosenObject : 0,
+			footer : canvasUi,
+			topPanel : topPanel,
+
+			getFooter : function()
+			{
+				return this.footer;
+			},
+
+			getTopPanel : function()
+			{
+				return this.topPanel;
+			},
 
 			newTurn: function(playerId)
 			{

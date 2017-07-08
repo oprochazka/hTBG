@@ -42,7 +42,7 @@ ObjectDesc = {
 
 		if(config.name == "army")
 		{			
-			if(config.type == "builder")
+			if(config.productObject && config.productObject.length > 0)
 			{			
 				return Builder.makeBuilder;
 			}

@@ -1,16 +1,12 @@
 CanvasUi = {
-	canvasUi : null,
-
 	initModule : function()
 	{
-	  	this.canvasUi = CanvasUi.makeCanvasUi();
- 		this.canvasUi.setPosition(0, 960 - this.canvasUi.position.h);
 	},
 
-	makeCanvasUi : function()
+	makeCanvasUi : function(w, h)
 	{
-		var w = 1536;
-		var h = 80;
+		var w = w || 1536;
+		var h = h || 80;
 
 		var background = Draw.makeFillSquare(w, h);
 		background.setColor("rgba(114,8,8,0.5)");

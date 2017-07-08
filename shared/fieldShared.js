@@ -123,6 +123,11 @@ FieldShared = {
   	{
   		var objects = Field.getObject(x,y);
 
+  		if(!objects)
+  		{
+  			return;
+  		}
+
 		for(var x = 0; x < objects.length; x++)
 		{			
 			if(objects[x].name == "building")
