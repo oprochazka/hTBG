@@ -1,11 +1,11 @@
 SlideWindow = {
-	makeSlideWindow : function()
+	makeSlideWindow : function(w, h)
 	{	  	
 		var slideWindow = {
 			x : 0,
 			y : 0,
-			w : 24,
-			h : 15,			
+			w : w,
+			h : h,			
 
 			centerToPosition : function(x, y)
 			{		

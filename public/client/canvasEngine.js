@@ -1,8 +1,8 @@
 var testSquare;
 var first = true;
 
-var canvasW = 1536;
-var canvasH = 960;
+var canvasW = 0;
+var canvasH = 0;
 
 function getMousePos (canvas, evt) {
     var rect = canvas.getBoundingClientRect();
@@ -14,17 +14,30 @@ function getMousePos (canvas, evt) {
 
 function initialization()
 {
+  var w = window.innerWidth;
+  var h = window.innerHeight;
+  var marginRight = 300;
+  var marginBot = 20;
+  var tileSize = 64;
+
+  canvasW = Math.floor((w-marginRight)/tileSize)*tileSize;
+  canvasH = Math.floor((h-marginBot)/tileSize)*tileSize;
+
   var canvas = document.getElementById('canvasLayer1');
+  canvas.width = canvasW;
+  canvas.height = canvasH;
+
 
   $('body').on('contextmenu', '#canvasLayer1', function(e){ return false; });
+
 
   canvas.onselectstart = function () { return false; } // ie
   canvas.onmousedown = function () { return false; }  
 
   Draw.initModule(canvas);
-  GameEngine.initModule();
+  GameEngine.initModule(canvasW, canvasH);
   CanvasUi.initModule();
-  Field.initModule(canvas, 64, 64, CanvasUi.canvasUi);
+  Field.initModule(canvas, tileSize, tileSize, CanvasUi.canvasUi);
   Client.initModule();
 
   var width = canvas.width;
@@ -71,8 +84,6 @@ function initialization()
         GameEngine.gameManager.getFooter().onClick(mousePos, evt, "right");
       }
   }, false);
-
-
 
   UIPlayer.init();
 }

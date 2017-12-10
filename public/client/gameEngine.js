@@ -8,9 +8,9 @@ GameEngine = {
 	gameManager : null,
 	flagEnd : false,
 
-	initModule : function()
+	initModule : function(canvasW, canvasH)
 	{		
-		this.gameManager = GameManager.makeGameManager();
+		this.gameManager = GameManager.makeGameManager(canvasW, canvasH);
 		this.server = this.ip+ ":" +this.port;
 	},
 

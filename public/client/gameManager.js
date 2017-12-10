@@ -1,13 +1,11 @@
 GameManager = {
-	makeGameManager : function()
+	makeGameManager : function(canvasW, canvasH)
 	{	
-		var canvasW = 1536;
-		var canvasH = 960;
-
+		var tileSize = 64;
 		var shared = GameManagerShared.makeGameManagerShared();
-		var slideWindow = SlideWindow.makeSlideWindow();
+		var slideWindow = SlideWindow.makeSlideWindow(canvasW / tileSize, canvasH/ tileSize);
 
-		var canvasUi = CanvasUi.makeCanvasUi();
+		var canvasUi = CanvasUi.makeCanvasUi(canvasW, 80);
  		canvasUi.setPosition(0, canvasH - canvasUi.position.h);
 
  		var topPanel = CanvasUi.makeCanvasUi(canvasW, 30);
