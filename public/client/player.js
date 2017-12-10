@@ -5,10 +5,10 @@ Player = {
 		var oldNewTurn = playerShared.newTurn;		
 		var oldOnDefeat = playerShared.onDefeat;
 
-		var nextTurnAudio = new Audio("./sound/endTurn.mp3");
-		var constructing = new Audio("./sound/construct.mp3");
-		var buyArmy = new Audio("./sound/horn.mp3");
-		var defeatAudio = new Audio("./sound/bardMelody.mp3");
+		var nextTurnAudio = new Audio("http://"+ GameEngine.server + "/sound/endTurn.mp3");
+		var constructing = new Audio("http://"+ GameEngine.server +"/sound/construct.mp3");
+		var buyArmy = new Audio("http://"+ GameEngine.server +"/sound/horn.mp3");
+		var defeatAudio = new Audio("http://"+ GameEngine.server +"/sound/bardMelody.mp3");
 
 		var player = {
 			buildObject : function(player, data)

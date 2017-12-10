@@ -7,6 +7,7 @@ Server = {
 
     initModule : function()
     {        
+        var sharedPath = "./../public/";
         var webSocketsServerPort = 1337;
         var webSocketServer = require('websocket').server;
         var http = require('http');
@@ -15,24 +16,24 @@ Server = {
 
         var merge = require('merge'), original, cloned;
 
-        require("./../shared/tilesDesc.js");   
-        require("./../shared/buildingDesc.js");   
-        require("./../shared/armyDesc.js");  
+        require(sharedPath + "shared/tilesDesc.js");   
+        require(sharedPath + "shared/buildingDesc.js");   
+        require(sharedPath + "shared/armyDesc.js");  
         
-        require("./../shared/builderDesc.js");        
+        require(sharedPath+"shared/builderDesc.js");        
 
-        require("./../shared/playerEntityShared.js");
-        require("./../shared/builderShared.js");                
-        require("./../shared/fieldShared.js");
-        require("./../shared/armyShared.js");
-        require("./../shared/tileShared.js");
-        require("./../shared/buildingShared.js");
-        require("./../shared/playerShared.js");                             
+        require(sharedPath+"shared/playerEntityShared.js");
+        require(sharedPath+"shared/builderShared.js");                
+        require(sharedPath+"shared/fieldShared.js");
+        require(sharedPath+"shared/armyShared.js");
+        require(sharedPath+"shared/tileShared.js");
+        require(sharedPath+"shared/buildingShared.js");
+        require(sharedPath+"shared/playerShared.js");                             
 
-        require("./../shared/gameManagerShared.js");       
+        require(sharedPath+"shared/gameManagerShared.js");       
         require("./gameEngine.js");       
 
-        require("./../shared/objectDesc.js");
+        require(sharedPath+"shared/objectDesc.js");
         
 
         var server = http.createServer(function(request, response) {
@@ -50,7 +51,7 @@ Server = {
 
         //GameEngine.startServer();
         //TextureMap.loadTexture("./../maps/map1.png");
-        GameEngine.startServerMap("./../maps/map1.png", "./../maps/map1Desc.png")
+        GameEngine.startServerMap("./maps/map1.png", "./maps/map1Desc.png")
     },
 
     testing : function()
