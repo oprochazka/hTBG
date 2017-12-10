@@ -1,13 +1,15 @@
 Draw = {
     canvas : null,
-
+    context : null, 
     initModule : function(canvas)
     {
         this.canvas = canvas;
+        
+        this.context = canvas.getContext('2d');
     },
 
     makeLine : function( x, y, w, h) {
-        var context = Draw.canvas.getContext('2d');
+        var context = Draw.context;
         context.moveTo(x, y);
         context.lineTo( w, h);
     },
@@ -43,7 +45,7 @@ Draw = {
         
         render : function()
         {
-          var context = Draw.canvas.getContext('2d');
+          var context = Draw.context;
 
           context.beginPath();
 
@@ -69,7 +71,7 @@ Draw = {
           w : w,
           h : h,
           image : null,
-          color : "rgba(0, 0, 0, 0.0)",
+          color : null,
           focused : false
         };
 
@@ -121,29 +123,29 @@ Draw = {
 
         square.drawImage = function()
         {
-            var context = Draw.canvas.getContext('2d');
+            var context = Draw.context;
             context.drawImage(square.image, 0, 0, square.w, square.h, square.x, square.y, square.w, square.h);
         }
 
         square.render = function()
         {
-          var context = Draw.canvas.getContext('2d')
+          var context = Draw.context;
 
           if(square.image)
           {
             square.drawImage();
           }
-          context.beginPath();
-          context.lineWidth = 1;
-          context.strokeStyle=square.color;
+          if(square.color)
+          {
+            context.beginPath();
+            context.lineWidth = 1;
+            context.strokeStyle=square.color;
 
-          Draw.makeLine(square.x,square.y, square.x + square.w, square.y);
-          Draw.makeLine(square.x + square.w,square.y, square.x + square.w, square.y + square.h);
-          Draw.makeLine(square.x + square.w, square.y + square.h, square.x, square.y + square.h);
-          Draw.makeLine(square.x, square.y + square.h, square.x, square.y);
+            context.rect(square.x,square.y,square.w,square.h);
+            context.stroke();
 
-          context.closePath();
-          context.stroke();
+            context.closePath();
+          }
         }
 
         square.setImage = function(img)
@@ -210,7 +212,7 @@ Draw = {
 
         square.render = function()
         {
-          var context = Draw.canvas.getContext('2d');
+          var context = Draw.context;
 
           context.beginPath();
 
@@ -256,7 +258,7 @@ Draw = {
 
         render : function()
         {
-          var context = Draw.canvas.getContext('2d');
+          var context = Draw.context;
           context.font = this.font;
           context.fillStyle=this.color;        
           
