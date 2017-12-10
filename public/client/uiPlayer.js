@@ -51,23 +51,28 @@ UIPlayer = {
 
 	},
 
-	refreshUi: function(player)
+	refreshUi: function()
 	{
-		//this.nickName.innerHTML = player.name;
+		var player = GameEngine.gameManager.getControllPlayer();
+		if(!player) return;
+		
+		this.nickName.innerHTML = player.name;
 
-		//this.building.innerHTML = player.building.length;
-		//this.army.innerHTML = player.army.length;
-		//this.yourTurn.style = "display: none";
+		this.building.innerHTML = player.building.length;
+		this.army.innerHTML = player.army.length;
+		this.yourTurn.style = "display: none";
+
+		this.refreshPlayers();
 
 		if(GameEngine.gameManager.turnPlayer)
 		{
-		//	this.playerTurn.innerHTML =  "<span>" + GameEngine.gameManager.turnPlayer.name + "</span>";				
+			this.playerTurn.innerHTML =  "<span>" + GameEngine.gameManager.turnPlayer.name + "</span>";				
 		}
 		if(GameEngine.gameManager.turnPlayer == GameEngine.gameManager.getControllPlayer())
 		{
-		//	this.yourTurn.style = "display: block";
+			this.yourTurn.style = "display: block";
 		}
 
-		//this.playerGold.innerHTML =  GameEngine.gameManager.getControllPlayer().gold;	
+		this.playerGold.innerHTML =  GameEngine.gameManager.getControllPlayer().gold;	
 	}
 };

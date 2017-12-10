@@ -76,6 +76,8 @@ Client = {
                 return;
             }
 
+            UIPlayer.refreshUi(player);
+
             if(json.type == "players")
             {            
                 GameEngine.gameManager.loadPlayers(json.data);

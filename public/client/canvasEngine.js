@@ -106,12 +106,7 @@ function gameLoop ()
     GameEngine.gameManager.getTopPanel().render();
 
     first = false;
-    var player = GameEngine.gameManager.getControllPlayer();
-    if(player)
-    {
-      UIPlayer.refreshUi(player);
-    }
-
+    
     if(GameEngine.flagEnd)
     {
       GameEngine.flagEnd.render();
