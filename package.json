@@ -7,9 +7,12 @@
   },
   "dependencies": {
     "body-parser": "~1.18.2",
+    "connect-redis": "^3.3.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
+    "express-authentication": "^0.3.2",
+    "express-session": "^1.15.6",
     "get-pixels": "^3.3.0",
     "merge": "^1.2.0",
     "morgan": "~1.9.0",
