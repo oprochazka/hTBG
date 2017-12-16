@@ -12,6 +12,7 @@ function getMousePos (canvas, evt) {
     };
   }
 
+
 function initialization()
 {
   var w = window.innerWidth;

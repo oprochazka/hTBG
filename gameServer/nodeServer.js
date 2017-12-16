@@ -51,7 +51,13 @@ Server = {
 
         //GameEngine.startServer();
         //TextureMap.loadTexture("./../maps/map1.png");
-        GameEngine.startServerMap("./maps/map1.png", "./maps/map1Desc.png")
+        
+    },
+
+    startGame: function(map)
+    {
+        console.log("wtf");
+        GameEngine.startServerMap("./maps/"+ map +".png", "./maps/"+ map +"Desc.png")
     },
 
     testing : function()
@@ -69,7 +75,6 @@ Server = {
 
     _onActionMsg : function(json)
     {        
-
         if((json.sender != GameEngine.gameManager.getCurrentPlayer().id) && !GameEngine.allMove)
         {            
             return;
@@ -113,6 +118,17 @@ Server = {
         }   
     },
 
+    _onAdminMsg : function(json)
+    {   
+       if(json.type == "start")
+       {      
+            console.log(json)
+            Server.startGame(json.map);  
+
+            return true;
+       }
+    },
+
     _onAccepting : function()
     {
         this.wsServer.on('request', function(request) {
@@ -130,7 +146,12 @@ Server = {
                 
                 if (message.type === 'utf8') { 
                     var json = JSON.parse(message.utf8Data);
-                   
+                    
+                    if(Server._onAdminMsg(json))
+                    {
+                        return;
+                    }
+
                     if(json.type == "startPlayer")
                     {                       
                         if(!GameEngine.checkPassword(json.name, json.password))

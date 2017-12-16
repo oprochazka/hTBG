@@ -8,11 +8,14 @@ Field = {
 
 	initModule: function()
 	{
-		
+		FieldShared.initModule()
 	},
 
 	makeFieldByMap : function(w, h, mapArray, objects)
 	{
+		Field.tileField = [];
+		FieldShared.tileField = [];
+
 		console.log(w, h, mapArray.length);
 		this.tilesW = w;
 		this.tilesH = h;
@@ -44,7 +47,10 @@ Field = {
 	},
 
 	makeField : function(w, h)
-	{		
+	{				
+		Field.tileField = [];
+		FieldShared.tileField = [];
+
 		Tile.initModule(this.squareW, this.squareH);
 
 		this.tilesW = w;

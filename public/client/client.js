@@ -5,20 +5,40 @@ Client = {
     {
         window.WebSocket = window.WebSocket || window.MozWebSocket;
 
-        // if browser doesn't support WebSocket, just show some notification and exit
         if (!window.WebSocket) {
-           
             return;
         }
+        this.getSessionId();
+    },
 
+    onStart: function(userData)
+    {
+        console.log(new WebSocket('ws://'+ GameEngine.ip +':' + Configure.gamePort));
         this.connection = new WebSocket('ws://'+ GameEngine.ip +':' + Configure.gamePort);
-
-        this._onOpenConnection();
+        this._onOpenConnection(userData);
         this._onError();
         this._onMessage();
         this._setInterval();
-
     },
+
+    getSessionId: function()
+    {
+      fetch("http://localhost:8080/logged", {
+          method: "GET",
+          dataType: "json",
+          credentials: "include",
+          headers: {
+              'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+              'Content-Type': 'application/x-www-form-urlencoded'
+         }
+      })
+      .then(result => result.json())
+      .then(object => {
+        this.onStart(object);
+        console.log(object);
+      });
+    },
+
 
     sendMessage : function (msg)
     {
@@ -35,9 +55,17 @@ Client = {
         }
     },
 
-    _onOpenConnection : function()
+    _onOpenConnection : function(object)
     {
+        
+
         this.connection.onopen = function () {
+            if(object)
+            {       
+                GameEngine.addPlayer(object.user, "test"); 
+                GameEngine.yourName =object.user;
+                return;
+            }
 
             var person = window.prompt("Your Name: ","NoOne");
             var password = window.prompt("Password: ","");

@@ -22,6 +22,7 @@ GameEngine = {
 
 	startServerMap : function(path, pathDesc)
 	{
+		console.log("starting server");
 		this.gameManager = GameManager.makeGameManager();
 
 		TextureMap.loadTexture(path, pathDesc);
@@ -38,7 +39,7 @@ GameEngine = {
 		{
 			Field.makeField(this.tileW, this.tileH);	
 		}
-		
+		//Server.sendBroadcast(JSON.stringify({type : "start"}));
 	},
 
 	nextTurn : function(player)

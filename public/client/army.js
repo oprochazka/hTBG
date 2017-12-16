@@ -1,7 +1,14 @@
+
 Army = {
 
 	makeArmy : function(img)
 	{
+		var hurtAudio = new Audio("http://"+ GameEngine.server +"/sound/hurt.mp3");	
+		var fightAudio = new Audio("http://"+ GameEngine.server +"/sound/fight.mp3");
+		var marchAudio = new Audio("http://"+ GameEngine.server +"/sound/march.mp3");
+		var destroyAudio = new Audio("http://"+ GameEngine.server +"/sound/destroy.mp3");
+
+		
 		var armyShared = ArmyShared.makeArmyShared(img);	
 		var square = Draw.makeFillSquare(20, 20);	
 
@@ -10,10 +17,6 @@ Army = {
 		var oldMoved = armyShared.moved;
 		var oldLoad = armyShared.load;
 
-		var hurtAudio = new Audio("http://"+ GameEngine.server +"/sound/hurt.mp3");	
-		var fightAudio = new Audio("http://"+ GameEngine.server +"/sound/fight.mp3");
-		var marchAudio = new Audio("http://"+ GameEngine.server +"/sound/march.mp3");
-		var destroyAudio = new Audio("http://"+ GameEngine.server +"/sound/destroy.mp3");
 		
 		var army = {	
 			moveMap : null,

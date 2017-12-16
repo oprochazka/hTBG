@@ -1,15 +1,17 @@
 Player = {
 	makePlayer : function(name)
 	{
-		var playerShared = PlayerShared.makePlayerShared(name);
-		var oldNewTurn = playerShared.newTurn;		
-		var oldOnDefeat = playerShared.onDefeat;
-
 		var nextTurnAudio = new Audio("http://"+ GameEngine.server + "/sound/endTurn.mp3");
 		var constructing = new Audio("http://"+ GameEngine.server +"/sound/construct.mp3");
 		var buyArmy = new Audio("http://"+ GameEngine.server +"/sound/horn.mp3");
 		var defeatAudio = new Audio("http://"+ GameEngine.server +"/sound/bardMelody.mp3");
 
+
+		var playerShared = PlayerShared.makePlayerShared(name);
+		var oldNewTurn = playerShared.newTurn;		
+		var oldOnDefeat = playerShared.onDefeat;
+
+		
 		var player = {
 			buildObject : function(player, data)
 			{							                
